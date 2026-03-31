@@ -15,4 +15,4 @@ Instalación (Windows, opciones rápidas)
 Compilar el informe (ejecutar desde la carpeta Informe)
 ````bash
 # abre PowerShell o el terminal de VS Code en ...\Proyecto\Informe
-pandoc Perfil_proyecto_pdf.md Perfil_proyecto.md -o Perfil_proyecto.pdf --number-sections --pdf-engine=xelatex
+pandoc compilacion.md documento_proyecto.md -o documento_proyecto.pdf --number-sections --pdf-engine=xelatex
