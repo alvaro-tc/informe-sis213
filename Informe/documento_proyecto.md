@@ -163,18 +163,25 @@ Como Ingeniero de Requerimientos y Datos, el análisis preliminar dictamina que 
 
 **Tecnologías seleccionadas (Pila MERN):**
 
-| Capa                     | Tecnología              | Justificación                                                                                                          |
-| :----------------------- | :---------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| **Frontend**             | React.js 18             | Biblioteca declarativa con re-renderizado eficiente (Virtual DOM), ideal para interfaces POS reactivas en tiempo real. |
-| **Estilos**              | Tailwind CSS            | Framework _utility-first_ que agiliza el diseño de interfaces responsivas y táctiles.                                  |
-| **Estado global**        | Redux Toolkit           | Manejo centralizado del estado (carrito de pedidos, sesión de usuario, estado de mesas).                               |
-| **_Backend_**            | Node.js + Express.js    | Entorno no bloqueante basado en eventos, eficiente para múltiples peticiones concurrentes.                             |
-| **Base de datos**        | MongoDB + Mongoose      | Base de datos NoSQL documental, flexible para catálogos dinámicos y estructuras de órdenes variables.                  |
-| **Autenticación**        | JWT                     | Autenticación _stateless_ y segura, compatible con arquitecturas RESTful y control de roles por _middleware_.          |
-| **Facturación**          | PDFKit / jsPDF          | Generación programática de recibos y facturas en PDF desde el servidor Node.js.                                        |
-| **Contenedores**         | Docker + Docker Compose | Estandarización del entorno de ejecución entre máquinas del equipo.                                                    |
-| **Despliegue**           | AWS EC2 / DigitalOcean  | Infraestructura _cloud_ confiable con alta disponibilidad y escalado bajo demanda.                                     |
-| **Control de versiones** | Git + GitHub            | Gestión del código fuente con ramas por _feature_, facilitando el trabajo paralelo del equipo.                         |
+\begingroup\small
+\begin{longtable}{|p{2.2cm}|p{3.2cm}|p{8.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Capa & \bfseries \color{white} Tecnología & \bfseries \color{white} Justificación \\ \hline
+\endhead
+\textbf{Frontend} & React.js 18 & Biblioteca declarativa con re-renderizado eficiente (Virtual DOM), ideal para interfaces POS reactivas en tiempo real. \\ \hline
+\textbf{Estilos} & Tailwind CSS & Framework \emph{utility-first} que agiliza el diseño de interfaces responsivas y táctiles. \\ \hline
+\textbf{Estado global} & Redux Toolkit & Manejo centralizado del estado (carrito de pedidos, sesión de usuario, estado de mesas). \\ \hline
+\textbf{\emph{Backend}} & Node.js + Express.js & Entorno no bloqueante basado en eventos, eficiente para múltiples peticiones concurrentes. \\ \hline
+\textbf{Base de datos} & MongoDB + Mongoose & Base de datos NoSQL documental, flexible para catálogos dinámicos y estructuras de órdenes variables. \\ \hline
+\textbf{Autenticación} & JWT & Autenticación \emph{stateless} y segura, compatible con arquitecturas RESTful y control de roles por \emph{middleware}. \\ \hline
+\textbf{Facturación} & PDFKit / jsPDF & Generación programática de recibos y facturas en PDF desde el servidor Node.js. \\ \hline
+\textbf{Contenedores} & Docker + Docker Compose & Estandarización del entorno de ejecución entre máquinas del equipo. \\ \hline
+\textbf{Despliegue} & AWS EC2 / DigitalOcean & Infraestructura \emph{cloud} confiable con alta disponibilidad y escalado bajo demanda. \\ \hline
+\textbf{Control de versiones} & Git + GitHub & Gestión del código fuente con ramas por \emph{feature}, facilitando el trabajo paralelo del equipo. \\ \hline
+\caption{Tecnologías seleccionadas (Pila MERN)}
+\label{tab:tecnologias_mern}
+\end{longtable}
+\endgroup
 
 A continuación se presenta el diagrama de la arquitectura propuesta:
 
@@ -189,16 +196,23 @@ A continuación se presenta el diagrama de la arquitectura propuesta:
 
 El proyecto tiene una duración total de **4 meses (16 semanas)**, organizado en 8 _Sprints_ de 2 semanas cada uno bajo el marco Scrum.
 
-|    Sprint    | Semanas | Fase                     | Actividades principales                                                                                                                                           | Entregable                                                 |
-| :----------: | :-----: | :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------- |
-| **Sprint 0** |   1–2   | Inicio y Diseño          | Levantamiento de requerimientos, diseño de _wireframes_ UI/UX, modelado de base de datos, configuración del repositorio GitHub y entorno Docker.                  | _Product Backlog_, diseño de BD, _wireframes_ aprobados.   |
-| **Sprint 1** |   3–4   | _Backend_ – Fundamentos  | Configuración de Express.js, conexión MongoDB con Mongoose, modelos de datos (User, Product, Table, Order), sistema de autenticación JWT y _middleware_ de roles. | API de autenticación funcional (registro, _login_, roles). |
-| **Sprint 2** |   5–6   | _Backend_ – Módulos Core | APIs RESTful para gestión de productos del menú (CRUD), gestión de mesas (CRUD + estados) y gestión de órdenes (crear, actualizar estado).                        | _Endpoints_ de Products, Tables y Orders documentados.     |
-| **Sprint 3** |   7–8   | _Frontend_ – Base y Auth | Configuración de React.js + Redux Toolkit + React Router, pantallas de _Login_, _layout_ principal y conexión con el API de autenticación.                        | _Frontend_ base funcional con _login_ y roles.             |
-| **Sprint 4** |  9–10   | _Frontend_ – POS         | Módulo POS táctil: selección de categorías, productos, cantidad y adición al carrito de órdenes; envío de pedidos al _backend_.                                   | Interfaz POS funcional conectada al _backend_.             |
-| **Sprint 5** |  11–12  | Mesas y Dashboard        | Panel visual de estados de mesas, módulo de administración de menú (alta/baja de productos), vista de órdenes activas para cocina.                                | Gestión de mesas e interfaz de cocina operativa.           |
-| **Sprint 6** |  13–14  | Facturación y Pagos      | Módulo de generación de facturas en PDF, cálculo automático de totales, integración de métodos de pago simulados, historial de ventas.                            | Facturación y cierre de órdenes completo.                  |
-| **Sprint 7** |  15–16  | Cierre: QA y Despliegue  | Pruebas funcionales e integración (QA), corrección de _bugs_, despliegue en AWS/DigitalOcean con Docker, documentación técnica final y capacitación al usuario.   | Sistema desplegado en producción y manual de usuario.      |
+\begingroup\small
+\begin{longtable}{|p{1.2cm}|p{1.5cm}|p{2.6cm}|p{5.5cm}|p{3cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Sprint & \bfseries \color{white} Semanas & \bfseries \color{white} Fase & \bfseries \color{white} Actividades principales & \bfseries \color{white} Entregable \\ \hline
+\endhead
+\textbf{0} & 1–2 & Inicio y Diseño & Levantamiento de requerimientos, diseño de \emph{wireframes} UI/UX, modelado de base de datos, configuración del repositorio GitHub y entorno Docker. & \emph{Product Backlog}, diseño de BD, \emph{wireframes} aprobados. \\ \hline
+\textbf{1} & 3–4 & \emph{Backend} – Fundamentos & Configuración de Express.js, conexión MongoDB con Mongoose, modelos de datos (User, Product, Table, Order), sistema de autenticación JWT y \emph{middleware} de roles. & API de autenticación funcional (registro, \emph{login}, roles). \\ \hline
+\textbf{2} & 5–6 & \emph{Backend} – Módulos Core & APIs RESTful para gestión de productos del menú (CRUD), gestión de mesas (CRUD + estados) y gestión de órdenes (crear, actualizar estado). & \emph{Endpoints} de Products, Tables y Orders documentados. \\ \hline
+\textbf{3} & 7–8 & \emph{Frontend} – Base y Auth & Configuración de React.js + Redux Toolkit + React Router, pantallas de \emph{Login}, \emph{layout} principal y conexión con el API de autenticación. & \emph{Frontend} base funcional con \emph{login} y roles. \\ \hline
+\textbf{4} & 9–10 & \emph{Frontend} – POS & Módulo POS táctil: selección de categorías, productos, cantidad y adición al carrito de órdenes; envío de pedidos al \emph{backend}. & Interfaz POS funcional conectada al \emph{backend}. \\ \hline
+\textbf{5} & 11–12 & Mesas y Dashboard & Panel visual de estados de mesas, módulo de administración de menú (alta/baja de productos), vista de órdenes activas para cocina. & Gestión de mesas e interfaz de cocina operativa. \\ \hline
+\textbf{6} & 13–14 & Facturación y Pagos & Módulo de generación de facturas en PDF, cálculo automático de totales, integración de métodos de pago simulados, historial de ventas. & Facturación y cierre de órdenes completo. \\ \hline
+\textbf{7} & 15–16 & Cierre: QA y Despliegue & Pruebas funcionales e integración (QA), corrección de \emph{bugs}, despliegue en AWS/DigitalOcean con Docker, documentación técnica final y capacitación al usuario. & Sistema desplegado en producción y manual de usuario. \\ \hline
+\caption{Cronograma de Sprints}
+\label{tab:cronograma_sprints}
+\end{longtable}
+\endgroup
 
 ---
 
@@ -303,14 +317,21 @@ El Equipo de Desarrollo es autoorganizado y multifuncional. Es responsable de co
 
 **_Product Backlog_** (Pila de producto): Lista única, ordenada y emergente de todo lo que se necesita en el producto, gestionada exclusivamente por el _Product Owner_. A continuación se presentan los ítems iniciales:
 
-|  ID   | Historia de Usuario                                                                                        | Prioridad | Puntos |
-| :---: | :--------------------------------------------------------------------------------------------------------- | :-------: | :----: |
-| US-01 | _Como_ mesero, _quiero_ iniciar sesión con mis credenciales _para_ acceder solo a las funciones de mi rol. |   Alta    |   3    |
-| US-02 | _Como_ cajero, _quiero_ ver el panel de mesas y su estado actual _para_ saber cuáles están ocupadas.       |   Alta    |   5    |
-| US-03 | _Como_ mesero, _quiero_ agregar productos al pedido de una mesa desde la interfaz POS táctil.              |   Alta    |   8    |
-| US-04 | _Como_ administrador, _quiero_ registrar y editar los productos del menú con sus precios.                  |   Alta    |   5    |
-| US-05 | _Como_ cajero, _quiero_ generar e imprimir la factura de una orden cerrada en PDF.                         |   Media   |   8    |
-| US-06 | _Como_ administrador, _quiero_ ver el historial de ventas del día con totales por método de pago.          |   Media   |   5    |
+\begingroup\small
+\begin{longtable}{|p{1.2cm}|p{8cm}|p{1.8cm}|p{1.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Prioridad & \bfseries \color{white} Puntos \\ \hline
+\endhead
+US-01 & \emph{Como} mesero, \emph{quiero} iniciar sesión con mis credenciales \emph{para} acceder solo a las funciones de mi rol. & Alta & 3 \\ \hline
+US-02 & \emph{Como} cajero, \emph{quiero} ver el panel de mesas y su estado actual \emph{para} saber cuáles están ocupadas. & Alta & 5 \\ \hline
+US-03 & \emph{Como} mesero, \emph{quiero} agregar productos al pedido de una mesa desde la interfaz POS táctil. & Alta & 8 \\ \hline
+US-04 & \emph{Como} administrador, \emph{quiero} registrar y editar los productos del menú con sus precios. & Alta & 5 \\ \hline
+US-05 & \emph{Como} cajero, \emph{quiero} generar e imprimir la factura de una orden cerrada en PDF. & Media & 8 \\ \hline
+US-06 & \emph{Como} administrador, \emph{quiero} ver el historial de ventas del día con totales por método de pago. & Media & 5 \\ \hline
+\caption{Product Backlog Inicial}
+\label{tab:product_backlog}
+\end{longtable}
+\endgroup
 
 **_Sprint Backlog_** (Pila del ciclo): Conjunto de ítems del _Product Backlog_ seleccionados para el _Sprint_ actual, más el plan del equipo para entregar el Incremento y lograr el _Sprint Goal_. Es propiedad del Equipo de Desarrollo y se actualiza diariamente mediante un tablero Kanban con columnas: **Por hacer → En progreso → En revisión → Hecho**.
 
@@ -389,13 +410,20 @@ El sistema se dividirá lógicamente en una aplicación cliente _Single Page App
 
 Se diseña bajo el paradigma documental (NoSQL) garantizando el aislamiento financiero. Las restricciones en el esquema aseguran que una "Orden" sea indivisible e incorpore el carrito completo para inmutabilidad histórica.
 
-| Campo (Documento JSON) | Tipo       | Validaciones / Vínculos | Descripción                                                                                    |
-| :--------------------- | :--------- | :---------------------- | :--------------------------------------------------------------------------------------------- |
-| `_id`                  | ObjectId   | Único (PK lógica)       | Identificador nativo de MongoDB para la factura.                                               |
-| `usuario_id`           | ObjectId   | Ref: 'Usuario'          | ID del cajero responsable de cobrar la orden.                                                  |
-| `mesa_asignada`        | String/Int | Requerido               | Mesa física vinculada al pedido.                                                               |
-| `cartItems`            | Array      | Contiene Objetos        | Arreglo desnormalizado con los productos, cantidades y precios exactos en el momento de venta. |
-| `total_pagado`         | Number     | Mínimo 0                | Monto económico final calculado y liquidado.                                                   |
+\begingroup\small
+\begin{longtable}{|p{3.5cm}|p{1.5cm}|p{3.2cm}|p{5.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Campo (Documento JSON) & \bfseries \color{white} Tipo & \bfseries \color{white} Validaciones / Vínculos & \bfseries \color{white} Descripción \\ \hline
+\endhead
+\_id & ObjectId & Único (PK lógica) & Identificador nativo de MongoDB para la factura. \\ \hline
+usuario\_id & ObjectId & Ref: 'Usuario' & ID del cajero responsable de cobrar la orden. \\ \hline
+mesa\_asignada & String/Int & Requerido & Mesa física vinculada al pedido. \\ \hline
+cartItems & Array & Contiene Objetos & Arreglo desnormalizado con los productos, cantidades y precios exactos en el momento de venta. \\ \hline
+total\_pagado & Number & Mínimo 0 & Monto económico final calculado y liquidado. \\ \hline
+\caption{Diccionario para colección de Órdenes (Base de Datos)}
+\label{tab:diccionario_bd}
+\end{longtable}
+\endgroup
 
 ## IMPLEMENTACIÓN DE LOS MÓDULOS DEL SISTEMA
 
