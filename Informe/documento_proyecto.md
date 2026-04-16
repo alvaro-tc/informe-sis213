@@ -702,10 +702,10 @@ El Diagrama de Contenedores descompone el sistema en sus bloques tecnológicos d
 \hline
 \rowcolor{headerblue} \bfseries \color{white} Atributo & \bfseries \color{white} Detalle \\ \hline
 \endhead
-**Tecnología** & React.js 18 + Redux Toolkit + React Router DOM \\ \hline
-**Tipo** & Single Page Application (SPA) — ejecutada en el navegador \\ \hline
-**Responsabilidad** & Renderizar la interfaz del POS, el panel de administración y los reportes. Gestionar el estado global de la sesión y del carrito de compras. \\ \hline
-**Comunicación** & Envía peticiones HTTP/REST en formato JSON a la API Backend a través de \texttt{axios}. Recibe el JWT del backend y lo adjunta en la cabecera \texttt{Authorization} de cada petición subsiguiente. \\ \hline
+Tecnología & React.js 18 + Redux Toolkit + React Router DOM \\ \hline
+Tipo & Single Page Application (SPA) — ejecutada en el navegador \\ \hline
+Responsabilidad & Renderizar la interfaz del POS, el panel de administración y los reportes. Gestionar el estado global de la sesión y del carrito de compras. \\ \hline
+Comunicación & Envía peticiones HTTP/REST en formato JSON a la API Backend a través de \texttt{axios}. Recibe el JWT del backend y lo adjunta en la cabecera \texttt{Authorization} de cada petición subsiguiente. \\ \hline
 \caption{Especificaciones Técnicas del Frontend}
 \label{tab:especificaciones_frontend}
 \end{longtable}
@@ -718,10 +718,10 @@ El Diagrama de Contenedores descompone el sistema en sus bloques tecnológicos d
 \hline
 \rowcolor{headerblue} \bfseries \color{white} Atributo & \bfseries \color{white} Detalle \\ \hline
 \endhead
-**Tecnología** & Node.js 20 LTS + Express.js 4 \\ \hline
-**Tipo** & Servidor de API RESTful — desplegado en contenedor Docker (AWS EC2) \\ \hline
-**Responsabilidad** & Exponer los \textit{endpoints} REST (\texttt{/api/auth}, \texttt{/api/users}, \texttt{/api/products}, \texttt{/api/tables}, \texttt{/api/orders}, \texttt{/api/payments}). Ejecutar la lógica de negocio, validaciones, cálculos transaccionales y control de acceso por roles mediante \textit{middlewares} JWT. \\ \hline
-**Comunicación** & Recibe peticiones HTTPS del Frontend. Lee y escribe documentos en MongoDB a través del ODM Mongoose. Invoca la API de la Pasarela de Pagos externa cuando se procesa un cobro electrónico. \\ \hline
+Tecnología & Node.js 20 LTS + Express.js 4 \\ \hline
+Tipo & Servidor de API RESTful — desplegado en contenedor Docker (AWS EC2) \\ \hline
+Responsabilidad & Exponer los \textit{endpoints} REST (\texttt{/api/user}, \texttt{/api/order}, \texttt{/api/table}, \texttt{/api/payment}, \texttt{/api/category}, \texttt{/api/dish}, \texttt{/api/metric}). Ejecutar la lógica de negocio, validaciones, cálculos transaccionales y control de acceso por roles mediante \textit{middlewares} JWT. \\ \hline
+Comunicación & Recibe peticiones HTTPS del Frontend. Lee y escribe documentos en MongoDB a través del ODM Mongoose. Invoca la API de la Pasarela de Pagos externa cuando se procesa un cobro electrónico. \\ \hline
 \caption{Especificaciones Técnicas del Backend}
 \label{tab:especificaciones_backend}
 \end{longtable}
@@ -734,10 +734,10 @@ El Diagrama de Contenedores descompone el sistema en sus bloques tecnológicos d
 \hline
 \rowcolor{headerblue} \bfseries \color{white} Atributo & \bfseries \color{white} Detalle \\ \hline
 \endhead
-**Tecnología** & MongoDB 7 (desplegado en contenedor Docker o MongoDB Atlas) \\ \hline
-**Tipo** & Base de datos NoSQL orientada a documentos \\ \hline
-**Responsabilidad** & Persistir de forma duradera todos los documentos del sistema: usuarios (\texttt{users}), productos (\texttt{products}), mesas (\texttt{tables}), órdenes (\texttt{orders}) y pagos (\texttt{payments}). \\ \hline
-**Comunicación** & Solo es accedida directamente por el Backend API a través del driver Mongoose. No expone puertos públicos; es accesible únicamente dentro de la red privada del entorno Docker. \\ \hline
+Tecnología & MongoDB 7 (desplegado en contenedor Docker o MongoDB Atlas) \\ \hline
+Tipo & Base de datos NoSQL orientada a documentos \\ \hline
+Responsabilidad & Persistir de forma duradera todos los documentos del sistema: usuarios (\texttt{users}), productos (\texttt{products}), mesas (\texttt{tables}), órdenes (\texttt{orders}) y pagos (\texttt{payments}). \\ \hline
+Comunicación & Solo es accedida directamente por el Backend API a través del driver Mongoose. No expone puertos públicos; es accesible únicamente dentro de la red privada del entorno Docker. \\ \hline
 \caption{Especificaciones Técnicas de la Base de Datos}
 \label{tab:especificaciones_bd}
 \end{longtable}
@@ -846,6 +846,43 @@ Constituye el eje central del sistema TPS. Registra cada transacción de venta d
 \texttt{updatedAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de la última modificación. & Actualizado automáticamente por la opción \texttt{timestamps} de Mongoose. \\ \hline
 \caption{Diccionario de datos: Colección Orders}
 \label{tab:diccionario_orders}
+\end{longtable}
+\endgroup
+
+
+### Colección: `dishes`
+Almacena la información detallada de los platillos, productos o bebidas disponibles en el menú del restaurante.
+
+\begingroup\small
+\begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \ \hline
+\endhead
+\texttt{_id} & ObjectId & \centering \textbf{Sí} & Identificador único del platillo. & Generado automáticamente por MongoDB. \ \hline
+\texttt{name} & String & \centering \textbf{Sí} & Nombre comercial del plato o bebida. & Debe ser único para evitar duplicados en el menú. \ \hline
+\texttt{price} & Number & \centering \textbf{Sí} & Precio de venta al público. & Se almacena como valor numérico (decimal/flotante). \ \hline
+\texttt{category} & ObjectId & \centering \textbf{Sí} & Referencia a la categoría del plato. & Vinculado a la colección \texttt{categories} mediante \textit{Population}. \ \hline
+\texttt{type} & String & \centering \textbf{No} & Clasificación del tipo de producto. & Valor por defecto: \texttt{"General"}. Permite agrupar por etiquetas personalizadas. \ \hline
+\caption{Diccionario de datos: Colección Dishes}
+\label{tab:diccionario_dishes}
+\end{longtable}
+\endgroup
+
+
+### Colección: `categories`
+Esta colección clasifica los productos (ej. Entradas, Platos Fuertes, Bebidas) para facilitar la navegación en el punto de venta y agrupar los platillos por familias.
+
+\begingroup\small
+\begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \ \hline
+\endhead
+\texttt{_id} & ObjectId & \centering \textbf{Sí} & Identificador único de la categoría. & Generado automáticamente por MongoDB. \ \hline
+\texttt{name} & String & \centering \textbf{Sí} & Nombre de la categoría. & Indexado como \texttt{unique: true} para evitar duplicidad de nombres. \ \hline
+\texttt{bgColor} & String & \centering \textbf{No} & Color de fondo para la interfaz visual. & Valor por defecto: \texttt{"#b73e3e"}. Almacenado en formato Hexadecimal. \ \hline
+\texttt{icon} & String & \centering \textbf{No} & Icono o emoji representativo. & Valor por defecto: \texttt{"🍲"}. Se utiliza para la identificación rápida en el frontend. \ \hline
+\caption{Diccionario de datos: Colección Categories}
+\label{tab:diccionario_categories}
 \end{longtable}
 \endgroup
 
