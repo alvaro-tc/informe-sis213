@@ -683,7 +683,8 @@ El Diagrama de Contexto es la vista de más alto nivel. Su propósito es mostrar
 
 **Sistemas externos:**
 
-- **Pasarela de Pagos (Razorpay / Simulada):** Sistema externo de procesamiento de cobros electrónicos con el que el módulo de pagos del POS se comunica para registrar y confirmar transacciones con tarjeta o QR.
+- **Módulo de Simulación de Pagos (Mock Gateway):** Sistema encargado de emular el comportamiento de una pasarela de pagos real. Permite registrar y confirmar transacciones mediante tarjetas de crédito o códigos QR de forma controlada, validando la lógica de negocio del POS sin necesidad de interactuar con entidades bancarias externas.
+Si bien el sistema fue diseñado siguiendo los estándares de integración de pasarelas como Razorpay o Libelula, la versión actual del prototipo utiliza un Entorno de Simulación (Mock Gateway). Esta decisión permite validar el flujo completo de la lógica de negocio (apertura, cobro y cierre de mesa) sin incurrir en costos transaccionales ni depender de conectividad externa durante las pruebas de estrés del sistema.
 - **Servicio de Hosting Cloud (AWS EC2 / DigitalOcean):** Infraestructura de nube donde se despliegan los contenedores Docker que alojan la API y la base de datos del sistema.
 
 **Relaciones clave en este nivel:**
@@ -801,7 +802,7 @@ Gestiona la información de las mesas físicas del establecimiento y su estado o
 
 #### Colección: `payments`
 
-Registra los comprobantes de las transacciones financieras procesadas, almacenando los identificadores de seguimiento de la pasarela de pagos y el estado de cada operación.
+Registra los comprobantes de las transacciones financieras procesadas, almacenando los identificadores de seguimiento del sistema de cobros y el estado de cada operación.
 
 \begingroup\small
 \begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
@@ -809,15 +810,15 @@ Registra los comprobantes de las transacciones financieras procesadas, almacenan
 \rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
 \endhead
 \texttt{\_id} & ObjectId & \centering \textbf{Sí} \arraybackslash & Identificador único del documento. & Generado automáticamente por MongoDB. \\ \hline
-\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en la pasarela externa. & Proporcionado por Razorpay o la pasarela configurada (ej. \texttt{pay\_Abc123XYZ}). \\ \hline
-\texttt{orderId} & String & \centering No \arraybackslash & Identificador del pedido asociado al pago. & Relación lógica con la colección \texttt{orders}. Almacenado como \texttt{String} para compatibilidad con IDs de pasarela. \\ \hline
-\texttt{amount} & Number & \centering No \arraybackslash & Monto total de la transacción. & Valor numérico decimal. Representa el importe cobrado (con impuestos). \\ \hline
-\texttt{currency} & String & \centering No \arraybackslash & Código de la moneda de la transacción. & Ej: \texttt{"BOB"} (Boliviano), \texttt{"USD"}, \texttt{"ARS"}. \\ \hline
-\texttt{status} & String & \centering No \arraybackslash & Estado de la operación de pago. & Valores posibles: \texttt{"Captured"}, \texttt{"Pending"}, \texttt{"Failed"}, \texttt{"Refunded"}. \\ \hline
-\texttt{method} & String & \centering No \arraybackslash & Canal o instrumento de pago utilizado. & Ej: \texttt{"Cash"}, \texttt{"Credit Card"}, \texttt{"QR"}, \texttt{"Razorpay"}. \\ \hline
+\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en el procesador. & ID retornado por el simulador o pasarela externa (ej. \texttt{TXN\_829312}). \\ \hline
+\texttt{orderId} & String & \centering No \arraybackslash & Identificador del pedido asociado al pago. & Relación lógica con la colección \texttt{orders}. Almacenado como \texttt{String} para compatibilidad. \\ \hline
+\texttt{amount} & Number & \centering No \arraybackslash & Monto total de la transacción. & Valor numérico decimal. Representa el importe cobrado. \\ \hline
+\texttt{currency} & String & \centering No \arraybackslash & Código de la moneda de la transacción. & Ej: \texttt{"BOB"}, \texttt{"USD"}. \\ \hline
+\texttt{status} & String & \centering No \arraybackslash & Estado de la operación de pago. & Valores posibles: \texttt{"Captured"}, \texttt{"Pending"}, \texttt{"Failed"}. \\ \hline
+\texttt{method} & String & \centering No \arraybackslash & Canal o instrumento de pago utilizado. & Ej: \texttt{"Cash"}, \texttt{"Card"}, \texttt{"QR"}, \texttt{"Transfer"}. \\ \hline
 \texttt{email} & String & \centering No \arraybackslash & Correo electrónico del pagador. & Utilizado para el envío del comprobante digital. \\ \hline
-\texttt{contact} & String & \centering No \arraybackslash & Dato de contacto adicional del pagador. & Número de teléfono u otro identificador de contacto. \\ \hline
-\texttt{createdAt} & Date & \centering No \arraybackslash & Fecha y hora de registro del pago. & Registrado manualmente mediante \texttt{Date.now()} al momento de procesar el cobro. \\ \hline
+\texttt{contact} & String & \centering No \arraybackslash & Dato de contacto adicional. & Número de teléfono o contacto del cliente. \\ \hline
+\texttt{createdAt} & Date & \centering No \arraybackslash & Fecha y hora de registro del pago. & Generado al momento de procesar el cobro exitoso. \\ \hline
 \caption{Diccionario de datos: Colección Payments}
 \label{tab:diccionario_payments}
 \end{longtable}
@@ -826,7 +827,7 @@ Registra los comprobantes de las transacciones financieras procesadas, almacenan
 
 #### Colección: `orders`
 
-Constituye el eje central del sistema TPS. Registra cada transacción de venta de forma integral e inmutable, vinculando los datos del cliente, los productos consumidos, el detalle de facturación, la mesa asignada y el método de pago.
+Constituye el eje central del sistema. Registra cada transacción de venta de forma integral, vinculando los datos del cliente, los productos consumidos, el resumen de facturación, la mesa asignada y el método de pago procesado.
 
 \begingroup\small
 \begin{longtable}{|p{2.4cm}|p{1.4cm}|p{1.6cm}|p{3.2cm}|p{4.9cm}|}
@@ -834,16 +835,16 @@ Constituye el eje central del sistema TPS. Registra cada transacción de venta d
 \rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
 \endhead
 \texttt{\_id} & ObjectId & \centering \textbf{Sí} \arraybackslash & Identificador único del documento. & Generado automáticamente por MongoDB. \\ \hline
-\texttt{customerDetails} & Object & \centering \textbf{Sí} \arraybackslash & Datos del cliente para quien se abre el pedido. & Objeto anidado con los sub-campos: \texttt{name} (String), \texttt{phone} (Number) y \texttt{guests} (Number). \\ \hline
+\texttt{customerDetails} & Object & \centering \textbf{Sí} \arraybackslash & Datos del cliente para quien se abre el pedido. & Objeto anidado: \texttt{name} (String), \texttt{phone} (Number) y \texttt{guests} (Number). \\ \hline
 \texttt{orderStatus} & String & \centering \textbf{Sí} \arraybackslash & Estado actual del pedido en el flujo de servicio. & Valores posibles: \texttt{"Pending"}, \texttt{"In Preparation"}, \texttt{"Served"}, \texttt{"Paid"}. \\ \hline
 \texttt{orderDate} & Date & \centering No \arraybackslash & Fecha y hora de creación del pedido. & Valor por defecto: \texttt{Date.now()}. \\ \hline
-\texttt{bills} & Object & \centering \textbf{Sí} \arraybackslash & Resumen de facturación calculado por el backend. & Objeto anidado: \texttt{total} (subtotal), \texttt{tax} (\% impuesto) y \texttt{totalWithTax} (monto final). \\ \hline
-\texttt{items} & Array & \centering No \arraybackslash & Lista de productos incluidos en el pedido. & Arreglo de objetos. Contiene nombre, precio y cantidad desnormalizados para inmutabilidad. \\ \hline
-\texttt{table} & ObjectId & \centering No \arraybackslash & Mesa física asignada al pedido. & \textbf{Clave foránea lógica} $\rightarrow$ referencia al documento \texttt{\_id} de la colección \texttt{tables}. \\ \hline
-\texttt{paymentMethod} & String & \centering No \arraybackslash & Método de pago con el que se cerró el pedido. & Ej: \texttt{"Cash"}, \texttt{"Razorpay"}. \\ \hline
-\texttt{paymentData} & Object & \centering No \arraybackslash & Datos de confirmación retornados por la pasarela. & Contiene IDs de seguimiento (ej. \texttt{razorpay\_payment\_id}, \texttt{razorpay\_order\_id}). \\ \hline
-\texttt{createdAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de registro del documento. & Generado automáticamente por la opción \texttt{timestamps} de Mongoose. \\ \hline
-\texttt{updatedAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de la última modificación. & Actualizado automáticamente por la opción \texttt{timestamps} de Mongoose. \\ \hline
+\texttt{bills} & Object & \centering \textbf{Sí} \arraybackslash & Resumen de facturación calculado por el servidor. & Objeto anidado: \texttt{total}, \texttt{tax} y \texttt{totalWithTax}. \\ \hline
+\texttt{items} & Array & \centering No \arraybackslash & Lista de productos incluidos en el pedido. & Arreglo de objetos con datos desnormalizados para garantizar la inmutabilidad histórica. \\ \hline
+\texttt{table} & ObjectId & \centering No \arraybackslash & Mesa física asignada al pedido. & \textbf{Referencia lógica} $\rightarrow$ vinculada al \texttt{\_id} de la colección \texttt{tables}. \\ \hline
+\texttt{paymentMethod} & String & \centering No \arraybackslash & Método de pago utilizado para el cierre. & Ej: \texttt{"Cash"}, \texttt{"Digital Payment"}, \texttt{"QR"}. \\ \hline
+\texttt{paymentData} & Object & \centering No \arraybackslash & Metadatos de confirmación de la transacción. & Almacena IDs de seguimiento generados por el simulador o pasarela externa (\texttt{transaction\_id}). \\ \hline
+\texttt{createdAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de registro del documento. & Generado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
+\texttt{updatedAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de la última modificación. & Actualizado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
 \caption{Diccionario de datos: Colección Orders}
 \label{tab:diccionario_orders}
 \end{longtable}
@@ -856,13 +857,17 @@ Almacena la información detallada de los platillos, productos o bebidas disponi
 \begingroup\small
 \begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
 \hline
-\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \ \hline
+\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
 \endhead
-\texttt{_id} & ObjectId & \centering \textbf{Sí} & Identificador único del platillo. & Generado automáticamente por MongoDB. \ \hline
-\texttt{name} & String & \centering \textbf{Sí} & Nombre comercial del plato o bebida. & Debe ser único para evitar duplicados en el menú. \ \hline
-\texttt{price} & Number & \centering \textbf{Sí} & Precio de venta al público. & Se almacena como valor numérico (decimal/flotante). \ \hline
-\texttt{category} & ObjectId & \centering \textbf{Sí} & Referencia a la categoría del plato. & Vinculado a la colección \texttt{categories} mediante \textit{Population}. \ \hline
-\texttt{type} & String & \centering \textbf{No} & Clasificación del tipo de producto. & Valor por defecto: \texttt{"General"}. Permite agrupar por etiquetas personalizadas. \ \hline
+\texttt{\_id} & ObjectId & \centering \textbf{Sí} & Identificador único del platillo. & Generado automáticamente por MongoDB. \\ \hline
+\texttt{name} & String & \centering \textbf{Sí} & Nombre comercial del plato o bebida. & Debe ser único para evitar duplicados en el menú. \\ \hline
+
+\texttt{price} & Number & \centering \textbf{Sí} & Precio de venta al público. & Se almacena como valor numérico (decimal/flotante). \\ \hline
+
+\texttt{category} & ObjectId & \centering \textbf{Sí} & Referencia a la categoría del plato. & Vinculado a la colección \texttt{categories} mediante \textit{Population}. \\ \hline
+
+\texttt{type} & String & \centering \textbf{No} & Clasificación del tipo de producto. & Valor por defecto: \texttt{"General"}. Permite agrupar por etiquetas personalizadas. \\ \hline
+
 \caption{Diccionario de datos: Colección Dishes}
 \label{tab:diccionario_dishes}
 \end{longtable}
@@ -875,12 +880,16 @@ Esta colección clasifica los productos (ej. Entradas, Platos Fuertes, Bebidas) 
 \begingroup\small
 \begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
 \hline
-\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \ \hline
+\rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
+
 \endhead
-\texttt{_id} & ObjectId & \centering \textbf{Sí} & Identificador único de la categoría. & Generado automáticamente por MongoDB. \ \hline
-\texttt{name} & String & \centering \textbf{Sí} & Nombre de la categoría. & Indexado como \texttt{unique: true} para evitar duplicidad de nombres. \ \hline
-\texttt{bgColor} & String & \centering \textbf{No} & Color de fondo para la interfaz visual. & Valor por defecto: \texttt{"#b73e3e"}. Almacenado en formato Hexadecimal. \ \hline
-\texttt{icon} & String & \centering \textbf{No} & Icono o emoji representativo. & Valor por defecto: \texttt{"🍲"}. Se utiliza para la identificación rápida en el frontend. \ \hline
+\texttt{\_id} & ObjectId & \centering \textbf{Sí} & Identificador único de la categoría. & Generado automáticamente por MongoDB. \\ \hline
+\texttt{name} & String & \centering \textbf{Sí} & Nombre de la categoría. & Indexado como \texttt{unique: true} para evitar duplicidad de nombres. \\ \hline
+
+\texttt{bgColor} & String & \centering \textbf{No} & Color de fondo para la interfaz visual. & Valor por defecto: \texttt{"\#b73e3e"}. Almacenado en formato Hexadecimal. \\ \hline
+
+\texttt{icon} & String & \centering \textbf{No} & Icono o emoji representativo. & Valor por defecto: \texttt{"🍲"}. Se utiliza para la identificación rápida en el frontend. \\ \hline
+
 \caption{Diccionario de datos: Colección Categories}
 \label{tab:diccionario_categories}
 \end{longtable}
