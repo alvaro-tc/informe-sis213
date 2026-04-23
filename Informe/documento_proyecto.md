@@ -124,18 +124,21 @@ Desarrollar un prototipo funcional de un Sistema de Información Organizacional 
 ## Justificación
 
 ### Justificación Técnica
+
 El desarrollo de este prototipo se fundamenta en la implementación de una arquitectura web moderna y de alta disponibilidad, estructurada bajo el entorno Cliente-Servidor empleando el stack MERN. Esta elección garantiza una separación absoluta entre la interfaz de usuario y la lógica de negocio. Se construirá un backend funcional y asíncrono utilizando Node.js y Express.js, optimizado para el procesamiento rápido de múltiples transacciones concurrentes (TPS). Para la persistencia de datos, se utilizará MongoDB, una base de datos orientada a documentos que otorga la flexibilidad necesaria para manejar carritos de compra dinámicos y catálogos escalables. En términos de seguridad, el sistema prescindirá del manejo tradicional de sesiones, implementando en su lugar autenticación sin estado mediante JSON Web Tokens (JWT) y el cifrado irreversible de contraseñas con el algoritmo Bcrypt. Esta infraestructura dota al sistema de una alta escalabilidad técnica, permitiendo futuras integraciones o el despliegue en infraestructuras en la nube (Cloud Hosting) sin necesidad de refactorizar el código base.
 
 ### Justificación Organizacional
+
 A nivel organizacional, el prototipo representa un salto cualitativo en la gestión de procesos internos de la cafetería. La automatización de transacciones permite estandarizar el ciclo de servicio, eliminando las ambigüedades y retrasos propios de los procesos manuales y la comunicación verbal. Se establecerá un estricto control de usuarios mediante la implementación de un modelo de acceso basado en roles (RBAC), asegurando que los operadores (cajeros) y los tomadores de decisiones (administradores) interactúen únicamente con las interfaces y datos correspondientes a sus responsabilidades. Además, la capacidad del sistema para la generación de reportes automáticos dotará a la gerencia de información estructurada y en tiempo real sobre el rendimiento del negocio, transformando datos aislados en conocimiento estratégico.
 
 ### Justificación Económica
-La viabilidad y necesidad del proyecto se sustentan en el impacto financiero positivo que genera la digitalización. La implementación del TPS asegura una drástica reducción de errores operativos; al automatizar el cálculo de subtotales, impuestos y cambio, se eliminan los recurrentes descuadres de caja diarios. Esto se traduce inmediatamente en la prevención de fugas de capital. Asimismo, la optimización del tiempo por cada transacción permite aumentar la capacidad de atención en horas pico (mayor rotación de mesas), elevando los ingresos. A mediano plazo, estas mejoras operativas confluyen en una notable reducción de costos operativos y administrativos.
 
+La viabilidad y necesidad del proyecto se sustentan en el impacto financiero positivo que genera la digitalización. La implementación del TPS asegura una drástica reducción de errores operativos; al automatizar el cálculo de subtotales, impuestos y cambio, se eliminan los recurrentes descuadres de caja diarios. Esto se traduce inmediatamente en la prevención de fugas de capital. Asimismo, la optimización del tiempo por cada transacción permite aumentar la capacidad de atención en horas pico (mayor rotación de mesas), elevando los ingresos. A mediano plazo, estas mejoras operativas confluyen en una notable reducción de costos operativos y administrativos.
 
 ## Límites y Alcances
 
 ### Límites
+
 El alcance del presente proyecto se enmarca dentro de las siguientes restricciones técnicas y operativas:
 
 - El sistema será exclusivamente web, requiriendo un navegador moderno y conexión a la red local o internet para su funcionamiento.
@@ -144,6 +147,7 @@ El alcance del presente proyecto se enmarca dentro de las siguientes restriccion
 - No incluirá integración con sistemas externos en esta fase (como plataformas de delivery de terceros, o pasarelas de impuestos gubernamentales directas).
 
 ### Alcances
+
 El sistema funcional entregado al finalizar el proyecto permitirá realizar las siguientes operaciones:
 
 - Gestionar procesos operativos centrales, incluyendo la asignación y liberación de mesas de la cafetería.
@@ -152,10 +156,10 @@ El sistema funcional entregado al finalizar el proyecto permitirá realizar las 
 - Generar reportes financieros e históricos de ventas filtrados por fechas o turnos.
 - Administrar información maestra del negocio, como el alta, baja y modificación de productos, precios y categorías del catálogo.
 
-
 ## Metodología del Proyecto
 
 ### Tipo de estudio
+
 La presente investigación se define bajo tres enfoques metodológicos:
 
 - **Aplicado:** Ya que no se limita a la investigación teórica, sino que busca resolver un problema operativo concreto de la cafetería mediante la construcción de una herramienta útil.
@@ -163,6 +167,7 @@ La presente investigación se define bajo tres enfoques metodológicos:
 - **Descriptivo:** Puesto que requiere analizar, detallar y comprender la naturaleza del flujo de trabajo actual de la organización para poder traducirlo a requerimientos de software.
 
 ### Metodología de desarrollo
+
 Para la construcción del software se adoptará **Scrum**, un marco de trabajo ágil iterativo e incremental, ideal para proyectos tecnológicos donde los requerimientos pueden evolucionar.
 
 - **Sprint:** El desarrollo se dividirá en ciclos de trabajo cortos y de duración fija (ej. dos semanas), garantizando revisiones periódicas.
@@ -171,6 +176,7 @@ Para la construcción del software se adoptará **Scrum**, un marco de trabajo �
 - **Entregables:** Al finalizar cada Sprint, se presentará un incremento de software funcional (un módulo operativo, como el panel de login o la interfaz de toma de pedidos) listo para ser validado por los interesados.
 
 ### Técnicas
+
 Para garantizar que el sistema capture fielmente la realidad del negocio y se diseñe con robustez técnica, se aplicarán las siguientes técnicas:
 
 - **Entrevistas:** Se realizarán entrevistas estructuradas a los actores clave (el administrador y el personal de caja). El objetivo es extraer requerimientos funcionales precisos, comprender los cuellos de botella actuales en la toma de pedidos y definir las métricas que la gerencia necesita visualizar en los reportes diarios.
@@ -181,10 +187,9 @@ Para garantizar que el sistema capture fielmente la realidad del negocio y se di
 
 ## Análisis preliminar del sistema TPS
 
-El relevamiento inicial demuestra que los **procesos actuales** de la cafetería son enteramente manuales. El ciclo de servicio se basa en la transcripción de pedidos en libretas, cálculos matemáticos mentales y arqueos de caja basados en anotaciones físicas. Los **problemas** derivados de esta operatividad son severos: pérdida constante de comandas, errores humanos en el cobro, lentitud en el servicio y una total falta de auditoría que resulta en discrepancias financieras. 
+El relevamiento inicial demuestra que los **procesos actuales** de la cafetería son enteramente manuales. El ciclo de servicio se basa en la transcripción de pedidos en libretas, cálculos matemáticos mentales y arqueos de caja basados en anotaciones físicas. Los **problemas** derivados de esta operatividad son severos: pérdida constante de comandas, errores humanos en el cobro, lentitud en el servicio y una total falta de auditoría que resulta en discrepancias financieras.
 
 En cuanto a los **usuarios**, el personal opera sin una jerarquía digital; cualquiera puede modificar o anular un registro físico sin dejar rastro. Las **transacciones**, que deberían ser tratadas como eventos inmutables de entrada de capital, carecen de respaldo. Finalmente, la **información** generada por el negocio se pierde al finalizar el día, privando a la gerencia de datos históricos críticos para analizar qué productos se venden más o en qué horarios se requiere más personal.
-
 
 ## Propuesta de solución
 
@@ -192,9 +197,9 @@ Para resolver la problemática descrita, se propone el desarrollo y despliegue d
 
 - **Arquitectura:** El sistema se construirá bajo el patrón Cliente — Servidor, separando la capa de presentación visual de la capa de procesamiento lógico y acceso a datos, garantizando rendimiento y seguridad.
 - **Tecnologías seleccionadas:**
-    * **Backend (Servidor y Lógica):** Se desarrollará en **Node.js** utilizando el framework Express.js, creando una API RESTful encargada de la validación matemática, autenticación de usuarios y reglas de negocio.
-    * **Base de datos (Persistencia):** Se utilizará **MongoDB** (NoSQL), modelada mediante Mongoose, para almacenar de forma ágil y estructurada los usuarios, catálogos y el historial inmutable de órdenes de venta.
-    * **Frontend (Cliente y UI):** Se construirá con la biblioteca **React.js** (junto con HTML, CSS y JavaScript), desarrollando una interfaz de usuario interactiva, dinámica y adaptada a pantallas táctiles, que permita a los cajeros operar con máxima velocidad y mínima fricción.
+  - **Backend (Servidor y Lógica):** Se desarrollará en **Node.js** utilizando el framework Express.js, creando una API RESTful encargada de la validación matemática, autenticación de usuarios y reglas de negocio.
+  - **Base de datos (Persistencia):** Se utilizará **MongoDB** (NoSQL), modelada mediante Mongoose, para almacenar de forma ágil y estructurada los usuarios, catálogos y el historial inmutable de órdenes de venta.
+  - **Frontend (Cliente y UI):** Se construirá con la biblioteca **React.js** (junto con HTML, CSS y JavaScript), desarrollando una interfaz de usuario interactiva, dinámica y adaptada a pantallas táctiles, que permita a los cajeros operar con máxima velocidad y mínima fricción.
 
 ## Cronograma
 
@@ -410,7 +415,7 @@ La cafetería opera con tres actores principales que interactúan con el sistema
 
 - **Administrador:** Actor con control total del sistema. Gestiona el catálogo de productos, categorías y precios; administra usuarios y roles; supervisa el inventario de insumos; genera reportes financieros y de ventas; y toma decisiones estratégicas apoyadas en los indicadores del _dashboard_.
 - **Cajero / Operador POS:** Actor de atención directa. Registra ventas, selecciona productos del menú digital, asigna la mesa correspondiente, procesa el cobro y emite el comprobante digital al cliente.
-- **Encargado de Cocina:** Actor de apoyo operativo. Recibe notificaciones de pedidos en producción, actualiza la disponibilidad de productos cuando un insumo se agota y gestiona el menú semanal disponible.
+- **Staff:** Actor de apoyo operativo. Recibe notificaciones de pedidos en producción, actualiza la disponibilidad de productos cuando un insumo se agota y gestiona el menú semanal disponible.
 
 **Procesos principales identificados:**
 
@@ -434,107 +439,88 @@ El flujo de información sigue la dirección: **Entrada (interfaz POS / administ
 
 Los requerimientos funcionales expresan lo que el sistema **debe hacer** operativamente. Se organizan por módulo funcional según el análisis del sistema.
 
-**4.1 Gestión de Ventas y Pedidos**
+**Autenticación y Control de Acceso**
 
 \begingroup\small
 \begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
 \endhead
-RF-01 & Registrar cada venta con detalle: producto, cantidad, precio y hora de transacción. & Cajero/Admin & Media \\ \hline
-RF-08 & Recibir pedidos que ya están hechos o que están en producción. & Admin/Cajero & Media \\ \hline
-RF-09 & Notificar que el pedido del cliente está preparado o en producción. & Enc. cocina/Admin & Media \\ \hline
-RF-11 & Emitir comprobantes o tickets digitales al cliente al momento del pago. & Cajero/Admin & Media \\ \hline
-RF-12 & Soportar múltiples formas de pago: efectivo, código QR. & Cajero/Admin & Alta \\ \hline
-RF-13 & Visualizar historial de ventas filtrado por día, semana o mes. & Admin & Media \\ \hline
-RF-14 & Cancelar o modificar pedidos antes de su despacho, con trazabilidad del cambio. & Cajero/Admin & Alta \\ \hline
+RF-01 & Permitir el inicio de sesión de usuarios del sistema mediante credenciales registradas. & Admin, Cajero, Cocina & Alta \\ \hline
+RF-02 & Gestionar roles de usuario: crear, editar y eliminar cuentas del personal operativo. & Admin & Alta \\ \hline
+RF-03 & Restringir el acceso a funcionalidades del sistema según el rol asignado al usuario autenticado. & Sistema/Admin & Alta \\ \hline
+\caption{Requerimientos funcionales — Autenticación y Control de Acceso}
+\label{tab:rf_auth}
+\end{longtable}
+\endgroup
+
+**Gestión de Ventas y Pedidos**
+
+\begingroup\small
+\begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
+\endhead
+RF-04 & Registrar pedidos de clientes vinculados a una mesa y al cajero en turno. & Cajero & Alta \\ \hline
+RF-05 & Agregar, editar y eliminar productos dentro de un pedido antes de su despacho. & Cajero & Alta \\ \hline
+RF-06 & Enviar pedidos registrados al área de cocina para su preparación. & Cajero & Alta \\ \hline
+RF-09 & Notificar al cajero automáticamente cuando el pedido esté listo para ser servido. & Sistema & Media \\ \hline
+RF-10 & Gestionar el estado de mesas del establecimiento (disponible, ocupada). & Cajero & Media \\ \hline
+RF-11 & Generar facturas o comprobantes digitales automáticamente por cada pedido cerrado. & Sistema & Alta \\ \hline
+RF-12 & Calcular automáticamente el total del pedido, incluyendo subtotales e impuestos. & Sistema & Alta \\ \hline
+RF-13 & Registrar pagos de pedidos con el método de pago utilizado (efectivo, QR). & Cajero & Alta \\ \hline
+RF-14 & Registrar y actualizar el estado del pago de cada orden (pagado, pendiente). & Sistema & Alta \\ \hline
 \caption{Requerimientos funcionales — Gestión de Ventas y Pedidos}
 \label{tab:rf_ventas}
 \end{longtable}
 \endgroup
 
-**4.2 Control de Inventario**
+**Gestión del Área de Cocina**
 
 \begingroup\small
 \begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
 \endhead
-RF-03 & Registrar todos los productos e insumos con su stock actual y unidad de medida. & Admin & Alta \\ \hline
-RF-15 & Descontar automáticamente del inventario al momento de registrar una venta. & Sistema/Admin & Alta \\ \hline
-RF-16 & Emitir alertas automáticas cuando un insumo alcance el nivel mínimo de stock. & Sistema/Admin & Alta \\ \hline
-RF-17 & Registrar entradas de mercadería vinculadas a órdenes de compra y proveedores. & Admin & Alta \\ \hline
-RF-18 & Identificar productos con alta rotación y aquellos con riesgo de desperdicio. & Admin & Media \\ \hline
-RF-19 & Generar reportes de merma y diferencias de inventario. & Admin & Media \\ \hline
-\caption{Requerimientos funcionales — Control de Inventario}
-\label{tab:rf_inventario}
+RF-04 & Registrar pedidos de clientes vinculados a una mesa y al cajero en turno. & Cajero & Alta \\ \hline
+RF-05 & Agregar, editar y eliminar productos dentro de un pedido antes de su despacho. & Cajero & Alta \\ \hline
+RF-06 & Enviar pedidos registrados al área de cocina para su preparación. & Cajero & Alta \\ \hline
+RF-09 & Notificar al cajero automáticamente cuando el pedido esté listo para ser servido. & Sistema & Media \\ \hline
+RF-10 & Gestionar el estado de mesas del establecimiento (disponible, ocupada). & Cajero & Media \\ \hline
+RF-11 & Generar facturas o comprobantes digitales automáticamente por cada pedido cerrado. & Sistema & Alta \\ \hline
+RF-12 & Calcular automáticamente el total del pedido, incluyendo subtotales e impuestos. & Sistema & Alta \\ \hline
+RF-13 & Registrar pagos de pedidos con el método de pago utilizado (efectivo, QR). & Cajero & Alta \\ \hline
+RF-14 & Registrar y actualizar el estado del pago de cada orden (pagado, pendiente). & Sistema & Alta \\ \hline
+\caption{Requerimientos funcionales — Gestión de Ventas y Pedidos}
+\label{tab:rf_ventas}
 \end{longtable}
 \endgroup
 
-**4.3 Gestión de Menú y Productos**
+**Gestión de Menú y Productos**
 
 \begingroup\small
 \begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
 \endhead
-RF-05 & Crear, editar y desactivar productos del menú de forma rápida y sencilla. & Enc. cocina/Admin & Media \\ \hline
-RF-06 & Asignar precios de venta y costos de producción a cada producto para calcular el margen real. & Admin & Alta \\ \hline
-RF-07 & Agrupar productos por categorías: bebidas calientes, jugos, almuerzos, \emph{snacks}, postres, etc. & Admin & Alta \\ \hline
-RF-10 & Elaborar el menú disponible semanal actualizado. & Enc. cocina/Admin & Media \\ \hline
-RF-20 & Marcar productos como no disponibles cuando el insumo correspondiente se haya agotado. & Enc. cocina/Admin & Alta \\ \hline
-RF-21 & Gestionar combos o menús del día con precios especiales. & Admin & Media \\ \hline
+RF-15 & Gestionar el catálogo de productos del menú: crear, editar y eliminar ítems. & Admin & Alta \\ \hline
+RF-16 & Gestionar categorías del menú (bebidas calientes, jugos, almuerzos, \emph{snacks}, postres). & Admin & Media \\ \hline
+RF-17 & Controlar la disponibilidad de productos según el estado del inventario de insumos. & Admin & Media \\ \hline
 \caption{Requerimientos funcionales — Gestión de Menú y Productos}
 \label{tab:rf_menu}
 \end{longtable}
 \endgroup
 
-**4.4 Reportes y Apoyo a la Toma de Decisiones**
+**Reportes y Apoyo a la Toma de Decisiones**
 
 \begingroup\small
 \begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
 \endhead
-RF-04 & Reporte de productos más vendidos para identificar los artículos estrella del menú. & Admin & Media \\ \hline
-RF-22 & Generar reporte de ingresos diarios, semanales y mensuales con comparativos históricos. & Admin & Alta \\ \hline
-RF-23 & Analizar horas pico para optimizar la asignación de personal por turno. & Admin & Media \\ \hline
-RF-24 & Comparar costos versus ingresos por producto y por categoría. & Admin & Alta \\ \hline
-RF-25 & Mostrar un panel de control (\emph{dashboard}) con indicadores clave en tiempo real. & Admin & Alta \\ \hline
+RF-18 & Visualizar reportes de ventas e ingresos filtrados por período (día, semana, mes). & Admin & Media \\ \hline
 \caption{Requerimientos funcionales — Reportes y Toma de Decisiones}
 \label{tab:rf_reportes}
-\end{longtable}
-\endgroup
-
-**4.5 Gestión de Proveedores y Compras**
-
-\begingroup\small
-\begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
-\hline
-\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
-\endhead
-RF-02 & Registrar proveedores con sus datos de contacto y condiciones comerciales. & Admin & Media \\ \hline
-RF-26 & Generar y registrar órdenes de compra vinculadas automáticamente al inventario. & Admin & Alta \\ \hline
-RF-27 & Mantener historial de compras por proveedor para evaluación y negociación. & Admin & Media \\ \hline
-RF-28 & Registrar precios de compra históricos para analizar variaciones de costo. & Admin & Media \\ \hline
-\caption{Requerimientos funcionales — Gestión de Proveedores y Compras}
-\label{tab:rf_proveedores}
-\end{longtable}
-\endgroup
-
-**4.6 Gestión de Personal y Turnos**
-
-\begingroup\small
-\begin{longtable}{|p{1.2cm}|p{7.5cm}|p{2.5cm}|p{1.8cm}|}
-\hline
-\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Actor & \bfseries \color{white} Prioridad \\ \hline
-\endhead
-RF-29 & Registrar datos básicos de empleados: nombre, cargo y turno asignado. & Admin & Media \\ \hline
-RF-30 & Asociar cada venta al empleado que la realizó para garantizar trazabilidad y control. & Admin & Alta \\ \hline
-RF-31 & Registrar asistencia y puntualidad por turno. & Admin & Baja \\ \hline
-RF-32 & Gestionar permisos de acceso diferenciados por rol: administrador y cajero/operario. & Admin & Alta \\ \hline
-\caption{Requerimientos funcionales — Gestión de Personal y Turnos}
-\label{tab:rf_personal}
 \end{longtable}
 \endgroup
 
@@ -547,19 +533,20 @@ Establecen las restricciones y la forma en cómo debe operar y comportarse estru
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Descripción del Requerimiento & \bfseries \color{white} Categoría & \bfseries \color{white} Prioridad \\ \hline
 \endhead
-RNF-01 & El registro de cada venta no debe superar los 5 segundos de respuesta. & Rendimiento & Media \\ \hline
-RNF-02 & Cada registro de venta se realizará con un \emph{token} para verificación e historial del administrador. & Confiabilidad & Alta \\ \hline
-RNF-03 & Control de acceso mediante usuario y contraseña con roles diferenciados. & Seguridad & Alta \\ \hline
-RNF-04 & Adición de claves únicas para reservas o llegadas de pedidos, evitando valores duplicados. & Disponibilidad & Media \\ \hline
-RNF-05 & Arquitectura que permita incorporar nuevos productos, usuarios o sucursales sin rediseño del sistema. & Escalabilidad & Alta \\ \hline
-RNF-06 & Interfaz intuitiva que permita operar al personal sin capacitación técnica avanzada. & Usabilidad & Alta \\ \hline
-RNF-07 & Diseño adaptado para uso en pantallas de mostrador. & Usabilidad & Media \\ \hline
-RNF-08 & El sistema debe estar disponible durante todo el horario de operación sin interrupciones no planificadas. & Disponibilidad & Alta \\ \hline
-RNF-09 & Las consultas de reportes deben completarse en menos de 10 segundos. & Rendimiento & Media \\ \hline
-RNF-10 & Protección de datos sensibles frente a accesos no autorizados. & Seguridad & Alta \\ \hline
-RNF-11 & Respaldo automático de datos para evitar pérdida de información. & Confiabilidad & Alta \\ \hline
-RNF-12 & Posibilidad de recuperar datos de los últimos 30 días. & Confiabilidad & Alta \\ \hline
-RNF-13 & El sistema debe contar con documentación técnica para facilitar mantenimiento. & Mantenibilidad & Media \\ \hline
+RNF-01 & El sistema debe cifrar las contraseñas de los usuarios mediante \emph{hashing} irreversible con Bcrypt (factor de coste: 10). & Seguridad & Alta \\ \hline
+RNF-02 & El sistema debe implementar autenticación segura sin estado mediante JSON Web Tokens (JWT). & Seguridad & Alta \\ \hline
+RNF-03 & El sistema debe controlar el acceso a cada recurso y ruta según el rol del usuario autenticado. & Seguridad & Alta \\ \hline
+RNF-04 & El sistema debe responder a las solicitudes del usuario en menos de 2 segundos bajo condiciones normales de operación. & Rendimiento & Alta \\ \hline
+RNF-05 & El sistema debe soportar múltiples usuarios concurrentes sin degradación del rendimiento durante el horario de operación. & Rendimiento & Alta \\ \hline
+RNF-06 & El sistema debe actualizar el estado de pedidos y mesas en tiempo real sin necesidad de recargar la página. & Rendimiento & Media \\ \hline
+RNF-07 & La interfaz de usuario debe ser intuitiva, permitiendo operar al personal sin capacitación técnica avanzada. & Usabilidad & Alta \\ \hline
+RNF-08 & El sistema debe ser \emph{responsive} y adaptado para uso en pantallas de mostrador y dispositivos táctiles. & Usabilidad & Media \\ \hline
+RNF-09 & El sistema debe permitir una navegación fluida entre módulos sin interrupciones ni tiempos de espera perceptibles. & Usabilidad & Media \\ \hline
+RNF-10 & El sistema debe tener una arquitectura modular que facilite el mantenimiento y la incorporación de nuevas funcionalidades. & Mantenibilidad & Alta \\ \hline
+RNF-11 & El sistema debe ser escalable para incorporar nuevos productos, usuarios o sucursales sin rediseño de la arquitectura base. & Mantenibilidad & Media \\ \hline
+RNF-12 & El sistema debe estar disponible durante todo el horario de operación del establecimiento, sin interrupciones no planificadas. & Disponibilidad & Alta \\ \hline
+RNF-13 & El sistema debe manejar errores de forma controlada, informando al usuario con mensajes descriptivos sin exponer detalles internos del sistema. & Confiabilidad & Alta \\ \hline
+RNF-14 & El sistema debe garantizar la integridad de los datos transaccionales mediante propiedades ACID en las operaciones de escritura críticas. & Datos & Alta \\ \hline
 \caption{Requerimientos no funcionales del Sistema POS}
 \label{tab:rnf}
 \end{longtable}
@@ -571,48 +558,50 @@ RNF-13 & El sistema debe contar con documentación técnica para facilitar mante
 
 Las historias de usuario se redactan siguiendo el formato estándar: _Como_ [rol], _quiero_ [acción], _para_ [beneficio]. Se ordenan por módulo funcional y se acompañan de criterios de aceptación que sirven como base para las pruebas de validación.
 
-**Módulo de autenticación y roles:**
+\begingroup\small
+\begin{longtable}{|p{2cm}|p{3.5cm}|p{5cm}|p{4cm}|p{4cm}|p{2cm}|p{1.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Descripción (Como, Quiero, Para) & \bfseries \color{white} Criterio de Aceptación 1 (Dado, Cuando, Entonces) & \bfseries \color{white} Criterio de Aceptación 2 (Dado, Cuando, Entonces) & \bfseries \color{white} Prioridad (MoSCoW) & \bfseries \color{white} Story Points \\ \hline
+\endhead
 
-- _Como_ administrador, _quiero_ crear y gestionar cuentas de usuario con roles diferenciados _para_ garantizar que cada empleado acceda únicamente a las funciones de su responsabilidad.
-  - _Criterio de aceptación:_ Un cajero que intente acceder a la sección de reportes o administración recibe un error 403 y es redirigido a su panel POS.
+\multicolumn{7}{|c|}{\bfseries SPRINT 1} \\ \hline
+HU-01 & Registro e inicio de sesión de empleados & Como empleado, Quiero registrarme e iniciar sesión con mis credenciales, Para acceder al sistema según mi rol asignado & Dado que soy un nuevo empleado, Cuando completo el formulario de registro con nombre, correo, teléfono, contraseña y rol, Entonces mi cuenta es creada y soy redirigido al sistema & Dado que tengo una cuenta existente, Cuando ingreso mi correo y contraseña válidos, Entonces recibo un token JWT y soy redirigido a mi vista correspondiente según mi rol & Must-have & 5 \\ \hline
+HU-02 & Control de acceso por rol & Como administrador, Quiero que cada empleado solo acceda a las vistas permitidas para su rol, Para garantizar la seguridad y el flujo correcto del sistema & Dado que soy un barista, Cuando intento acceder a la ruta /dashboard, Entonces soy redirigido o bloqueado con un mensaje de acceso denegado & Dado que soy un mesero, Cuando inicio sesión, Entonces solo veo las opciones de Inicio, Órdenes, Mesas y Menú en la navegación & Must-have & 3 \\ \hline
+HU-03 & Panel de inicio con métricas del negocio & Como mesero o administrador, Quiero ver un resumen del estado del negocio al ingresar al sistema, Para tomar decisiones rápidas sobre las operaciones del día & Dado que inicio sesión exitosamente, Cuando se carga la página de inicio, Entonces veo las métricas de ingresos totales y mesas ocupadas en tarjetas & Dado que estoy en la página de inicio, Cuando hay órdenes recientes, Entonces las veo listadas con su estado, mesa y hora de creación & Must-have & 3 \\ \hline
+HU-04 & Gestión de mesas del restaurante & Como administrador, Quiero crear, editar y eliminar mesas con número, capacidad y color, Para mantener actualizada la distribución física de la cafetería & Dado que estoy en el Dashboard > Mesas, Cuando creo una nueva mesa con número y capacidad, Entonces aparece en la vista de mesas con estado Disponible & Dado que existe una mesa con una orden activa, Cuando intento eliminarla, Entonces el sistema me impide hacerlo o me advierte del conflicto & Must-have & 3 \\ \hline
+HU-05 & Visualización del estado de las mesas & Como mesero, Quiero ver todas las mesas con su estado actual en tiempo real, Para saber cuáles están disponibles, ocupadas o en uso & Dado que estoy en la página de Mesas, Cuando se carga la vista, Entonces cada tarjeta muestra número de mesa, capacidad, estado y el nombre del cliente si está ocupada & Dado que hay mesas con distintos estados, Cuando aplico el filtro En uso, Entonces solo se muestran las mesas con órdenes activas & Must-have & 2 \\ \hline
+HU-06 & Gestión de categorías del menú & Como administrador, Quiero crear, editar y eliminar categorías de menú con nombre, color e ícono, Para organizar visualmente los productos disponibles & Dado que estoy en Dashboard > Categorías, Cuando creo una categoría con nombre, color e ícono, Entonces aparece disponible al crear o editar platos & Dado que una categoría tiene platos asociados, Cuando intento eliminarla, Entonces el sistema procesa la solicitud o me muestra el impacto de la acción & Must-have & 2 \\ \hline
+HU-07 & Gestión de platos del menú & Como administrador, Quiero crear, editar y eliminar platos con nombre, precio, categoría e insumos requeridos, Para mantener el menú actualizado con los productos disponibles & Dado que estoy en Dashboard > Productos, Cuando creo un plato asignándole insumos y cantidades requeridas, Entonces el plato queda vinculado a esos insumos para el descuento automático de inventario & Dado que existe un plato con precio o ingredientes desactualizados, Cuando lo edito y guardo, Entonces los cambios se reflejan inmediatamente en el menú de toma de órdenes & Must-have & 5 \\ \hline
+HU-08 & Toma de órdenes en el menú & Como mesero, Quiero seleccionar una mesa, ingresar los datos del cliente, agregar platos al carrito y confirmar la orden, Para registrar el pedido del cliente de forma rápida y sin errores & Dado que ingreso al módulo de Menú, Cuando selecciono una mesa, completo los datos del cliente y agrego platos al carrito, Entonces se calcula automáticamente el total con impuesto y puedo confirmar la orden & Dado que confirmo una orden con método de pago en efectivo, Cuando el sistema la registra, Entonces la orden aparece en la KDS del barista y en la lista de órdenes activas & Must-have & 8 \\ \hline
+HU-09 & Visualización y filtrado de órdenes & Como mesero o administrador, Quiero ver todas las órdenes con su estado actual y filtrarlas, Para hacer seguimiento del flujo de trabajo de la cocina & Dado que estoy en la página de Órdenes, Cuando se carga la lista, Entonces veo todas las órdenes con cliente, mesa, ítems, total y estado & Dado que quiero ver solo las órdenes pendientes, Cuando selecciono el filtro En Progreso, Entonces la lista se actualiza mostrando únicamente esas órdenes & Must-have & 3 \\ \hline
 
-- _Como_ cajero, _quiero_ iniciar sesión con mis credenciales de forma rápida _para_ comenzar a operar el POS sin demoras al inicio del turno.
-  - _Criterio de aceptación:_ El _login_ exitoso redirige al panel POS en menos de 2 segundos y el _token_ JWT expira automáticamente al cerrar sesión.
+\multicolumn{7}{|c|}{\bfseries SPRINT 2} \\ \hline
+HU-10 & Pantalla KDS para barista / cocina & Como barista, Quiero ver las órdenes entrantes en mi pantalla de cocina organizadas por estado, Para preparar los pedidos en el orden correcto & Dado que se crea una nueva orden, Cuando aparece en la pestaña Entradas de la KDS, Entonces veo el número de mesa, cliente, ítems y cantidad de cada uno & Dado que comienzo a preparar un pedido, Cuando lo muevo al estado Preparando, Entonces desaparece de Entradas y aparece en la pestaña Preparando & Must-have & 5 \\ \hline
+HU-11 & Actualización del estado de una orden & Como barista o mesero, Quiero actualizar el estado de una orden (En Progreso $\rightarrow$ Preparando $\rightarrow$ Lista $\rightarrow$ Completada), Para comunicar el avance del pedido al equipo & Dado que una orden está en estado Preparando, Cuando el barista la marca como Lista, Entonces el mesero puede verla en la lista de órdenes listas para entregar & Dado que una orden fue entregada al cliente, Cuando se marca como Completada, Entonces pasa al historial y la mesa puede liberarse & Must-have & 3 \\ \hline
+HU-12 & Pago en línea con Razorpay & Como mesero, Quiero procesar pagos en línea mediante la pasarela Razorpay al confirmar una orden, Para ofrecer al cliente una alternativa de pago sin efectivo & Dado que el cliente elige pago en línea, Cuando selecciono ese método y confirmo, Entonces se abre el modal de Razorpay con el monto correcto de la orden & Dado que el cliente completa el pago en Razorpay, Cuando el pago es verificado, Entonces la orden queda registrada con los datos del pago y se genera la factura & Must-have & 5 \\ \hline
+HU-13 & Generación de factura / comprobante & Como mesero, Quiero generar una factura al completar una orden, Para entregar al cliente un comprobante detallado de su consumo & Dado que una orden fue pagada, Cuando accedo a la opción de factura, Entonces se muestra un documento con ítems, cantidades, subtotal, impuesto y total & Dado que estoy viendo la factura generada, Cuando selecciono imprimir, Entonces el sistema abre el diálogo de impresión con el formato correcto & Must-have & 3 \\ \hline
+HU-14 & Gestión de insumos del inventario & Como administrador, Quiero agregar, editar y eliminar insumos con stock, unidades y umbrales mínimos/máximos, Para controlar con precisión los materiales disponibles en la cafetería & Dado que estoy en la página de Insumos, Cuando agrego un nuevo insumo con nombre, unidad, stock actual, stock mínimo y costo unitario, Entonces aparece en la lista con su estado de stock calculado & Dado que el stock de un insumo cambió, Cuando lo edito con el nuevo valor y guardo, Entonces el estado (Crítico/Bajo/Normal/Abundante) se recalcula automáticamente & Must-have & 5 \\ \hline
+HU-15 & Descuento automático de inventario al crear orden & Como administrador, Quiero que al registrar una orden el sistema descuente automáticamente los insumos utilizados, Para mantener el inventario actualizado sin intervención manual & Dado que se confirma una orden con platos que tienen insumos asociados, Cuando el sistema la registra, Entonces el stock de cada insumo es reducido según la cantidad usada por plato x cantidad pedida & Dado que se registra el descuento, Cuando reviso el historial de consumos del insumo, Entonces aparece un registro con la fecha, cantidad y descripción de la orden & Must-have & 5 \\ \hline
+HU-16 & Alertas de stock crítico y bajo & Como administrador, Quiero recibir alertas visuales cuando un insumo llega a nivel crítico o bajo, Para reabastecerlo antes de que afecte las operaciones & Dado que el stock de un insumo cae por debajo del stock mínimo, Cuando accedo a la página de Insumos, Entonces ese insumo aparece destacado con un indicador Crítico o Bajo & Dado que hay múltiples insumos con stock crítico, Cuando veo el panel de alertas, Entonces se listan todos los insumos que requieren atención con su nivel actual & Must-have & 3 \\ \hline
+HU-17 & Reabastecimiento manual de insumos & Como administrador, Quiero registrar el reabastecimiento de un insumo indicando la cantidad recibida, Para actualizar el stock y mantener el historial de entradas & Dado que recibo una entrega de insumos, Cuando ingreso la cantidad a reponer en el formulario de Reponer, Entonces el stock del insumo aumenta por esa cantidad & Dado que se registra un reabastecimiento, Cuando reviso las métricas de inventario, Entonces el insumo ya no aparece en el panel de alertas si superó el umbral mínimo & Must-have & 2 \\ \hline
+HU-18 & Registro manual de consumo de insumos & Como administrador, Quiero registrar consumos de insumos fuera de órdenes (mermas, pruebas, limpieza), Para tener un historial de consumo completo y preciso & Dado que necesito registrar un consumo especial, Cuando ingreso la cantidad y descripción en el formulario de consumo, Entonces el stock baja y el evento queda en el historial del insumo & Dado que se registra el consumo, Cuando reviso el detalle del insumo, Entonces veo el registro con fecha, cantidad, costo estimado y descripción & Should-have & 2 \\ \hline
+HU-19 & Métricas de gasto diario en inventario & Como administrador, Quiero ver un gráfico de gasto en inventario de los últimos 7 días, Para entender los costos operativos y detectar anomalías & Dado que estoy en la página de Insumos, Cuando accedo a la sección de métricas, Entonces veo un gráfico de barras con el gasto por día de los últimos 7 días & Dado que el gasto de un día es inusualmente alto, Cuando reviso el gráfico, Entonces puedo identificar fácilmente el día y compararlo con el promedio & Should-have & 3 \\ \hline
+HU-20 & Gestión de empleados desde el dashboard & Como administrador, Quiero ver la lista de empleados activos y eliminar cuentas desde el panel de administración, Para mantener el control del acceso al sistema & Dado que estoy en Dashboard > Empleados, Cuando se carga la lista, Entonces veo el nombre, correo, teléfono y rol de cada empleado & Dado que un empleado ya no trabaja en la cafetería, Cuando elimino su cuenta, Entonces no puede volver a iniciar sesión con esas credenciales & Should-have & 2 \\ \hline
+HU-21 & Métricas globales del sistema & Como administrador, Quiero ver estadísticas globales del negocio (total de órdenes, ingresos, platos, mesas, mesas ocupadas) en el dashboard, Para tomar decisiones informadas sobre la operación & Dado que accedo a la pestaña de Métricas del Dashboard, Cuando se carga la vista, Entonces veo tarjetas con el total de órdenes, ingresos totales, platos activos, categorías y mesas & Dado que acaba de crearse una nueva orden, Cuando actualizo las métricas, Entonces los contadores reflejan los datos más recientes & Should-have & 3 \\ \hline
+HU-22 & Modo oscuro / claro en la interfaz & Como cualquier usuario, Quiero alternar entre modo oscuro y modo claro, Para adaptar la interfaz a las condiciones de iluminación del entorno donde trabajo & Dado que estoy usando el sistema en un área poco iluminada, Cuando activo el modo oscuro desde la barra de navegación, Entonces toda la interfaz cambia a paleta oscura sin recargar la página & Dado que cambié al modo oscuro, Cuando cierro y vuelvo a abrir el navegador, Entonces el sistema recuerda mi preferencia y mantiene el tema seleccionado & Should-have & 2 \\ \hline
+HU-23 & Búsqueda y filtrado de insumos & Como administrador, Quiero buscar insumos por nombre y filtrarlos por estado de stock, Para encontrar rápidamente los insumos que necesito gestionar & Dado que hay muchos insumos registrados, Cuando escribo parte del nombre en el buscador, Entonces la lista se filtra en tiempo real mostrando solo los coincidentes & Dado que quiero ver solo los insumos críticos, Cuando aplico el filtro Crítico, Entonces la lista muestra únicamente los insumos con ese estado & Should-have & 2 \\ \hline
 
-**Módulo de ventas y pedidos:**
+\multicolumn{7}{|c|}{\bfseries NO ASIGNADO} \\ \hline
+HU-24 & Notificaciones de stock bajo en tiempo real & Como administrador, Quiero recibir notificaciones emergentes cuando se detecta un insumo por debajo del mínimo después de una orden, Para reaccionar de inmediato sin tener que revisar el inventario manualmente & Dado que se confirma una orden y el descuento deja un insumo por debajo del mínimo, Cuando la orden es procesada, Entonces el sistema muestra una notificación toast con el nombre del insumo afectado & Dado que recibo la notificación, Cuando la descarto, Entonces puedo continuar con la operación normal sin interrupciones & Could-have & 3 \\ \hline
+HU-25 & Exportación del historial de órdenes a CSV & Como administrador, Quiero exportar el historial de órdenes a un archivo CSV, Para analizarlo en Excel u otras herramientas externas de reportes & Dado que estoy en la sección de órdenes del Dashboard, Cuando hago clic en Exportar CSV, Entonces se descarga un archivo con todas las órdenes incluyendo fecha, mesa, cliente, ítems y total & Dado que aplico un filtro por fecha antes de exportar, Cuando descargo el archivo, Entonces solo contiene las órdenes del rango seleccionado & Could-have & 5 \\ \hline
+HU-26 & App móvil nativa para meseros & Como mesero, Quiero una aplicación móvil nativa (iOS/Android) para tomar órdenes desde mi celular, Para no depender de una tablet o computadora fija en el salón & Dado que descargo la app en mi teléfono, Cuando inicio sesión, Entonces tengo acceso completo al módulo de mesas y toma de órdenes con interfaz optimizada para pantalla pequeña & Dado que tomo una orden desde el móvil, Cuando la confirmo, Entonces aparece en la KDS del barista igual que si se hubiera creado desde la web & Won't-have & 13 \\ \hline
+HU-27 & Programa de fidelización de clientes & Como administrador, Quiero registrar clientes frecuentes y acumular puntos por compra, Para ofrecerles descuentos o beneficios como estrategia de retención & Dado que un cliente realiza su quinta compra, Cuando el mesero ingresa su número de teléfono al tomar la orden, Entonces el sistema muestra sus puntos acumulados y si aplica algún beneficio & Dado que un cliente canjea sus puntos, Cuando el mesero aplica el descuento, Entonces la factura refleja el descuento y los puntos son deducidos & Won't-have & 8 \\ \hline
+HU-28 & Integración con plataformas de delivery & Como administrador, Quiero recibir órdenes de plataformas externas (Uber Eats, Rappi) directamente en el POS, Para centralizar todas las órdenes en un solo sistema & Dado que llega un pedido de Uber Eats, Cuando el sistema lo recibe vía webhook, Entonces aparece automáticamente en la KDS con la etiqueta de la plataforma de origen & Dado que la plataforma de delivery cambia el estado de la orden, Cuando el sistema sincroniza, Entonces el estado en el POS se actualiza para reflejar el cambio & Won't-have & 21 \\ \hline
 
-- _Como_ cajero en turno, _quiero_ seleccionar productos del menú digital por categoría y agregarlos al carrito _para_ construir el pedido del cliente de forma ágil y sin errores de suma.
-  - _Criterio de aceptación:_ El subtotal se actualiza en tiempo real con cada producto añadido o eliminado; el sistema no permite confirmar el cobro si el carrito está vacío.
-
-- _Como_ cajero, _quiero_ cancelar o modificar un pedido antes de su despacho _para_ corregir errores del cliente sin afectar la contabilidad.
-  - _Criterio de aceptación:_ La modificación queda registrada en la bitácora con fecha, hora y usuario que realizó el cambio.
-
-- _Como_ cajero, _quiero_ emitir un comprobante digital al cliente al momento del pago _para_ acreditar la transacción de forma inmediata.
-  - _Criterio de aceptación:_ El sistema genera el PDF del comprobante en menos de 3 segundos tras confirmar el cobro.
-
-**Módulo de inventario:**
-
-- _Como_ administrador, _quiero_ que el sistema descuente automáticamente los insumos del inventario al registrar cada venta _para_ mantener el stock actualizado sin intervención manual.
-  - _Criterio de aceptación:_ El stock de cada insumo se reduce correctamente tras cada venta confirmada; si el stock llega al mínimo, el sistema emite una alerta visible en el _dashboard_.
-
-- _Como_ administrador, _quiero_ registrar la entrada de mercadería vinculada a una orden de compra _para_ mantener el historial de compras por proveedor y actualizar el inventario.
-  - _Criterio de aceptación:_ La entrada de mercadería incrementa el stock del insumo correspondiente y queda vinculada al proveedor y la orden de compra en el historial.
-
-**Módulo de menú y productos:**
-
-- _Como_ encargado de cocina, _quiero_ marcar un producto como no disponible cuando su insumo se agota _para_ evitar que los cajeros lo incluyan en pedidos que no podrán completarse.
-  - _Criterio de aceptación:_ El producto marcado como no disponible desaparece de la interfaz POS del cajero en tiempo real y reaparece al actualizarse el stock.
-
-- _Como_ administrador, _quiero_ asignar precios de venta y costos de producción a cada producto _para_ calcular el margen real de cada ítem del menú.
-  - _Criterio de aceptación:_ El sistema calcula y muestra el margen porcentual en el panel de administración de productos.
-
-**Módulo de reportes:**
-
-- _Como_ administrador, _quiero_ visualizar un _dashboard_ con indicadores clave en tiempo real _para_ tomar decisiones operativas durante el turno sin necesidad de generar reportes manuales.
-  - _Criterio de aceptación:_ El _dashboard_ muestra ventas del día, productos más vendidos, alertas de stock crítico y total de ingresos actualizados en intervalos menores a 30 segundos.
-
-- _Como_ administrador, _quiero_ generar reportes de ingresos por día, semana o mes con comparativos históricos _para_ analizar la evolución financiera del negocio.
-  - _Criterio de aceptación:_ El reporte se genera en PDF en menos de 10 segundos y refleja exactamente los datos de las transacciones registradas en el período seleccionado.
+\caption{Backlog del Sistema POS Cafetería 5}
+\label{tab:backlog}
+\end{longtable}
+\endgroup
 
 ### Diagramas UML
 
@@ -684,13 +673,12 @@ El Diagrama de Contexto es la vista de más alto nivel. Su propósito es mostrar
 **Sistemas externos:**
 
 - **Módulo de Simulación de Pagos (Mock Gateway):** Sistema encargado de emular el comportamiento de una pasarela de pagos real. Permite registrar y confirmar transacciones mediante tarjetas de crédito o códigos QR de forma controlada, validando la lógica de negocio del POS sin necesidad de interactuar con entidades bancarias externas.
-Si bien el sistema fue diseñado siguiendo los estándares de integración de pasarelas como Razorpay o Libelula, la versión actual del prototipo utiliza un Entorno de Simulación (Mock Gateway). Esta decisión permite validar el flujo completo de la lógica de negocio (apertura, cobro y cierre de mesa) sin incurrir en costos transaccionales ni depender de conectividad externa durante las pruebas de estrés del sistema.
+  Si bien el sistema fue diseñado siguiendo los estándares de integración de pasarelas como Razorpay o Libelula, la versión actual del prototipo utiliza un Entorno de Simulación (Mock Gateway). Esta decisión permite validar el flujo completo de la lógica de negocio (apertura, cobro y cierre de mesa) sin incurrir en costos transaccionales ni depender de conectividad externa durante las pruebas de estrés del sistema.
 - **Servicio de Hosting Cloud (AWS EC2 / DigitalOcean):** Infraestructura de nube donde se despliegan los contenedores Docker que alojan la API y la base de datos del sistema.
 
 **Relaciones clave en este nivel:**
 
 El _Administrador_ y el _Cajero_ acceden al Sistema POS a través del protocolo HTTPS desde sus respectivos navegadores. El Sistema POS se comunica con la _Pasarela de Pagos_ mediante llamadas HTTP/REST para procesar cobros electrónicos, y reside desplegado en el _Servicio de Hosting Cloud_.
-
 
 #### Nivel 2 — Diagrama de Contenedores (_Containers_)
 
@@ -744,7 +732,6 @@ Comunicación & Solo es accedida directamente por el Backend API a través del d
 \end{longtable}
 \endgroup
 
-
 ## Diseño de la Base de Datos
 
 ### Paradigma de persistencia
@@ -752,7 +739,6 @@ Comunicación & Solo es accedida directamente por el Backend API a través del d
 El sistema adopta **MongoDB** como motor de base de datos NoSQL orientado a documentos, gestionado a través del ODM (Object Document Mapper) **Mongoose**. Esta elección responde a los requisitos de un TPS moderno: flexibilidad en el esquema para los ítems de la orden (cuyo número varía por transacción), alta velocidad de escritura para el registro de ventas en tiempo real, y soporte nativo para transacciones ACID multi-documento mediante _Sessions_ en MongoDB 4+.
 
 A pesar del paradigma documental, el diseño lógico preserva los principios de integridad referencial relacionales mediante el uso de `ObjectId` y la configuración `ref` de Mongoose, que permiten realizar operaciones de _populate_ (equivalentes a `JOIN`) entre colecciones relacionadas.
-
 
 ### Diccionarios de Datos
 
@@ -776,13 +762,11 @@ Almacena los registros del personal operativo y administrativo con acceso al sis
 \caption{Diccionario de datos: Colección Users}
 \label{tab:diccionario_users}
 \end{longtable}
-\endgroup                                                            |
-
+\endgroup |
 
 #### Colección: `tables`
 
 Gestiona la información de las mesas físicas del establecimiento y su estado operativo en tiempo real.
-
 
 \begingroup\small
 \begin{longtable}{|p{2.2cm}|p{1.5cm}|p{1.8cm}|p{3.5cm}|p{4.5cm}|}
@@ -799,7 +783,6 @@ Gestiona la información de las mesas físicas del establecimiento y su estado o
 \end{longtable}
 \endgroup
 
-
 #### Colección: `payments`
 
 Registra los comprobantes de las transacciones financieras procesadas, almacenando los identificadores de seguimiento del sistema de cobros y el estado de cada operación.
@@ -810,7 +793,7 @@ Registra los comprobantes de las transacciones financieras procesadas, almacenan
 \rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
 \endhead
 \texttt{\_id} & ObjectId & \centering \textbf{Sí} \arraybackslash & Identificador único del documento. & Generado automáticamente por MongoDB. \\ \hline
-\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en el procesador. & ID retornado por el simulador o pasarela externa (ej. \texttt{TXN\_829312}). \\ \hline
+\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en el procesador. & ID retornado por el simulador o pasarela externa (ej. \texttt{TXN_829312}). \\ \hline
 \texttt{orderId} & String & \centering No \arraybackslash & Identificador del pedido asociado al pago. & Relación lógica con la colección \texttt{orders}. Almacenado como \texttt{String} para compatibilidad. \\ \hline
 \texttt{amount} & Number & \centering No \arraybackslash & Monto total de la transacción. & Valor numérico decimal. Representa el importe cobrado. \\ \hline
 \texttt{currency} & String & \centering No \arraybackslash & Código de la moneda de la transacción. & Ej: \texttt{"BOB"}, \texttt{"USD"}. \\ \hline
@@ -823,7 +806,6 @@ Registra los comprobantes de las transacciones financieras procesadas, almacenan
 \label{tab:diccionario_payments}
 \end{longtable}
 \endgroup
-
 
 #### Colección: `orders`
 
@@ -842,7 +824,7 @@ Constituye el eje central del sistema. Registra cada transacción de venta de fo
 \texttt{items} & Array & \centering No \arraybackslash & Lista de productos incluidos en el pedido. & Arreglo de objetos con datos desnormalizados para garantizar la inmutabilidad histórica. \\ \hline
 \texttt{table} & ObjectId & \centering No \arraybackslash & Mesa física asignada al pedido. & \textbf{Referencia lógica} $\rightarrow$ vinculada al \texttt{\_id} de la colección \texttt{tables}. \\ \hline
 \texttt{paymentMethod} & String & \centering No \arraybackslash & Método de pago utilizado para el cierre. & Ej: \texttt{"Cash"}, \texttt{"Digital Payment"}, \texttt{"QR"}. \\ \hline
-\texttt{paymentData} & Object & \centering No \arraybackslash & Metadatos de confirmación de la transacción. & Almacena IDs de seguimiento generados por el simulador o pasarela externa (\texttt{transaction\_id}). \\ \hline
+\texttt{paymentData} & Object & \centering No \arraybackslash & Metadatos de confirmación de la transacción. & Almacena IDs de seguimiento generados por el simulador o pasarela externa (\texttt{transaction_id}). \\ \hline
 \texttt{createdAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de registro del documento. & Generado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
 \texttt{updatedAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de la última modificación. & Actualizado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
 \caption{Diccionario de datos: Colección Orders}
@@ -850,8 +832,8 @@ Constituye el eje central del sistema. Registra cada transacción de venta de fo
 \end{longtable}
 \endgroup
 
-
 ### Colección: `dishes`
+
 Almacena la información detallada de los platillos, productos o bebidas disponibles en el menú del restaurante.
 
 \begingroup\small
@@ -873,8 +855,8 @@ Almacena la información detallada de los platillos, productos o bebidas disponi
 \end{longtable}
 \endgroup
 
-
 ### Colección: `categories`
+
 Esta colección clasifica los productos (ej. Entradas, Platos Fuertes, Bebidas) para facilitar la navegación en el punto de venta y agrupar los platillos por familias.
 
 \begingroup\small
@@ -895,7 +877,6 @@ Esta colección clasifica los productos (ej. Entradas, Platos Fuertes, Bebidas) 
 \end{longtable}
 \endgroup
 
-
 ### Relaciones entre colecciones
 
 El modelo de datos, aunque documental (NoSQL), establece relaciones lógicas explícitas entre las colecciones mediante referencias `ObjectId`, preservando la integridad referencial del sistema TPS:
@@ -913,7 +894,6 @@ El modelo de datos, aunque documental (NoSQL), establece relaciones lógicas exp
 \label{tab:relaciones_modelo}
 \end{longtable}
 \endgroup
-
 
 ## IMPLEMENTACIÓN DE LOS MÓDULOS DEL SISTEMA
 
@@ -948,7 +928,6 @@ Este submódulo administra el registro de las mesas físicas del establecimiento
 - **Actualización de estado (Update):** El estado de una mesa es actualizado automáticamente por el backend durante el flujo transaccional: se marca como `"Occupied"` al abrir una orden, y vuelve a `"Available"` al confirmar el pago y cerrar la transacción. El Administrador también puede actualizar manualmente el estado o los datos de una mesa a través de `PUT /api/tables/:id`.
 
 - **Baja de mesa (Delete):** La eliminación de una mesa del registro solo está permitida si no tiene una orden activa vinculada (`currentOrder: null`), preservando la integridad referencial del historial.
-
 
 ### Módulo de Usuarios y Roles
 
