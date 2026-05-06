@@ -1,4 +1,4 @@
-# MARCO REFERENCIAL DEL SISTEMA TPS
+# MARCO REFERENCIAL DEL SISTEMA TPS 
 
 ## Introducción
 
@@ -556,100 +556,205 @@ RNF-14 & El sistema debe garantizar la integridad de los datos transaccionales m
 
 ### Historias de Usuario
 
-Las historias de usuario se redactan siguiendo el formato estándar: _Como_ [rol], _quiero_ [acción], _para_ [beneficio]. Se ordenan por módulo funcional y se acompañan de criterios de aceptación que sirven como base para las pruebas de validación.
+Las historias de usuario del Sistema POS Cafetería se elaboraron bajo el formato ágil estándar: \textit{Como} [rol], \textit{quiero} [acción], \textit{para} [beneficio], acompañadas de criterios de aceptación con el esquema \textit{Dado / Cuando / Entonces}. Se presentan agrupadas por módulo funcional, en correspondencia directa con el Product Backlog del proyecto (28 historias de usuario, 122 story points en total).
 
-\begingroup\small
-\begin{longtable}{|p{2cm}|p{3.5cm}|p{5cm}|p{4cm}|p{4cm}|p{2cm}|p{1.5cm}|}
+**5.1 Módulo de Autenticación y Control de Acceso**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
 \hline
-\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Descripción (Como, Quiero, Para) & \bfseries \color{white} Criterio de Aceptación 1 (Dado, Cuando, Entonces) & \bfseries \color{white} Criterio de Aceptación 2 (Dado, Cuando, Entonces) & \bfseries \color{white} Prioridad (MoSCoW) & \bfseries \color{white} Story Points \\ \hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
 \endhead
+HU-01 & Registro e inicio de sesión de empleados & Como empleado, quiero registrarme e iniciar sesión con mis credenciales, para acceder al sistema según mi rol asignado. & \textbf{CA1:} Dado que soy un nuevo empleado, cuando completo el formulario con nombre, correo, teléfono, contraseña y rol, entonces mi cuenta es creada y soy redirigido al sistema.\newline\newline\textbf{CA2:} Dado que tengo cuenta existente, cuando ingreso credenciales válidas, entonces recibo un token JWT y soy redirigido a mi vista según mi rol. & Must-have & 5 & Sprint 1 \\ \hline
+HU-02 & Control de acceso por rol & Como administrador, quiero que cada empleado solo acceda a las vistas permitidas para su rol, para garantizar la seguridad y el flujo correcto del sistema. & \textbf{CA1:} Dado que soy barista, cuando intento acceder a la ruta del dashboard, entonces soy bloqueado con un mensaje de acceso denegado.\newline\newline\textbf{CA2:} Dado que soy mesero, cuando inicio sesión, entonces solo veo las opciones de Inicio, Órdenes, Mesas y Menú en la navegación. & Must-have & 3 & Sprint 1 \\ \hline
+\caption{Historias de Usuario — Módulo de Autenticación y Control de Acceso}
+\label{tab:hu_autenticacion}
+\end{longtable}
+\endgroup
 
-\multicolumn{7}{|c|}{\bfseries SPRINT 1} \\ \hline
-HU-01 & Registro e inicio de sesión de empleados & Como empleado, Quiero registrarme e iniciar sesión con mis credenciales, Para acceder al sistema según mi rol asignado & Dado que soy un nuevo empleado, Cuando completo el formulario de registro con nombre, correo, teléfono, contraseña y rol, Entonces mi cuenta es creada y soy redirigido al sistema & Dado que tengo una cuenta existente, Cuando ingreso mi correo y contraseña válidos, Entonces recibo un token JWT y soy redirigido a mi vista correspondiente según mi rol & Must-have & 5 \\ \hline
-HU-02 & Control de acceso por rol & Como administrador, Quiero que cada empleado solo acceda a las vistas permitidas para su rol, Para garantizar la seguridad y el flujo correcto del sistema & Dado que soy un barista, Cuando intento acceder a la ruta /dashboard, Entonces soy redirigido o bloqueado con un mensaje de acceso denegado & Dado que soy un mesero, Cuando inicio sesión, Entonces solo veo las opciones de Inicio, Órdenes, Mesas y Menú en la navegación & Must-have & 3 \\ \hline
-HU-03 & Panel de inicio con métricas del negocio & Como mesero o administrador, Quiero ver un resumen del estado del negocio al ingresar al sistema, Para tomar decisiones rápidas sobre las operaciones del día & Dado que inicio sesión exitosamente, Cuando se carga la página de inicio, Entonces veo las métricas de ingresos totales y mesas ocupadas en tarjetas & Dado que estoy en la página de inicio, Cuando hay órdenes recientes, Entonces las veo listadas con su estado, mesa y hora de creación & Must-have & 3 \\ \hline
-HU-04 & Gestión de mesas del restaurante & Como administrador, Quiero crear, editar y eliminar mesas con número, capacidad y color, Para mantener actualizada la distribución física de la cafetería & Dado que estoy en el Dashboard > Mesas, Cuando creo una nueva mesa con número y capacidad, Entonces aparece en la vista de mesas con estado Disponible & Dado que existe una mesa con una orden activa, Cuando intento eliminarla, Entonces el sistema me impide hacerlo o me advierte del conflicto & Must-have & 3 \\ \hline
-HU-05 & Visualización del estado de las mesas & Como mesero, Quiero ver todas las mesas con su estado actual en tiempo real, Para saber cuáles están disponibles, ocupadas o en uso & Dado que estoy en la página de Mesas, Cuando se carga la vista, Entonces cada tarjeta muestra número de mesa, capacidad, estado y el nombre del cliente si está ocupada & Dado que hay mesas con distintos estados, Cuando aplico el filtro En uso, Entonces solo se muestran las mesas con órdenes activas & Must-have & 2 \\ \hline
-HU-06 & Gestión de categorías del menú & Como administrador, Quiero crear, editar y eliminar categorías de menú con nombre, color e ícono, Para organizar visualmente los productos disponibles & Dado que estoy en Dashboard > Categorías, Cuando creo una categoría con nombre, color e ícono, Entonces aparece disponible al crear o editar platos & Dado que una categoría tiene platos asociados, Cuando intento eliminarla, Entonces el sistema procesa la solicitud o me muestra el impacto de la acción & Must-have & 2 \\ \hline
-HU-07 & Gestión de platos del menú & Como administrador, Quiero crear, editar y eliminar platos con nombre, precio, categoría e insumos requeridos, Para mantener el menú actualizado con los productos disponibles & Dado que estoy en Dashboard > Productos, Cuando creo un plato asignándole insumos y cantidades requeridas, Entonces el plato queda vinculado a esos insumos para el descuento automático de inventario & Dado que existe un plato con precio o ingredientes desactualizados, Cuando lo edito y guardo, Entonces los cambios se reflejan inmediatamente en el menú de toma de órdenes & Must-have & 5 \\ \hline
-HU-08 & Toma de órdenes en el menú & Como mesero, Quiero seleccionar una mesa, ingresar los datos del cliente, agregar platos al carrito y confirmar la orden, Para registrar el pedido del cliente de forma rápida y sin errores & Dado que ingreso al módulo de Menú, Cuando selecciono una mesa, completo los datos del cliente y agrego platos al carrito, Entonces se calcula automáticamente el total con impuesto y puedo confirmar la orden & Dado que confirmo una orden con método de pago en efectivo, Cuando el sistema la registra, Entonces la orden aparece en la KDS del barista y en la lista de órdenes activas & Must-have & 8 \\ \hline
-HU-09 & Visualización y filtrado de órdenes & Como mesero o administrador, Quiero ver todas las órdenes con su estado actual y filtrarlas, Para hacer seguimiento del flujo de trabajo de la cocina & Dado que estoy en la página de Órdenes, Cuando se carga la lista, Entonces veo todas las órdenes con cliente, mesa, ítems, total y estado & Dado que quiero ver solo las órdenes pendientes, Cuando selecciono el filtro En Progreso, Entonces la lista se actualiza mostrando únicamente esas órdenes & Must-have & 3 \\ \hline
+**5.2 Módulo de Dashboard y Panel de Control**
 
-\multicolumn{7}{|c|}{\bfseries SPRINT 2} \\ \hline
-HU-10 & Pantalla KDS para barista / cocina & Como barista, Quiero ver las órdenes entrantes en mi pantalla de cocina organizadas por estado, Para preparar los pedidos en el orden correcto & Dado que se crea una nueva orden, Cuando aparece en la pestaña Entradas de la KDS, Entonces veo el número de mesa, cliente, ítems y cantidad de cada uno & Dado que comienzo a preparar un pedido, Cuando lo muevo al estado Preparando, Entonces desaparece de Entradas y aparece en la pestaña Preparando & Must-have & 5 \\ \hline
-HU-11 & Actualización del estado de una orden & Como barista o mesero, Quiero actualizar el estado de una orden (En Progreso $\rightarrow$ Preparando $\rightarrow$ Lista $\rightarrow$ Completada), Para comunicar el avance del pedido al equipo & Dado que una orden está en estado Preparando, Cuando el barista la marca como Lista, Entonces el mesero puede verla en la lista de órdenes listas para entregar & Dado que una orden fue entregada al cliente, Cuando se marca como Completada, Entonces pasa al historial y la mesa puede liberarse & Must-have & 3 \\ \hline
-HU-12 & Pago en línea con Razorpay & Como mesero, Quiero procesar pagos en línea mediante la pasarela Razorpay al confirmar una orden, Para ofrecer al cliente una alternativa de pago sin efectivo & Dado que el cliente elige pago en línea, Cuando selecciono ese método y confirmo, Entonces se abre el modal de Razorpay con el monto correcto de la orden & Dado que el cliente completa el pago en Razorpay, Cuando el pago es verificado, Entonces la orden queda registrada con los datos del pago y se genera la factura & Must-have & 5 \\ \hline
-HU-13 & Generación de factura / comprobante & Como mesero, Quiero generar una factura al completar una orden, Para entregar al cliente un comprobante detallado de su consumo & Dado que una orden fue pagada, Cuando accedo a la opción de factura, Entonces se muestra un documento con ítems, cantidades, subtotal, impuesto y total & Dado que estoy viendo la factura generada, Cuando selecciono imprimir, Entonces el sistema abre el diálogo de impresión con el formato correcto & Must-have & 3 \\ \hline
-HU-14 & Gestión de insumos del inventario & Como administrador, Quiero agregar, editar y eliminar insumos con stock, unidades y umbrales mínimos/máximos, Para controlar con precisión los materiales disponibles en la cafetería & Dado que estoy en la página de Insumos, Cuando agrego un nuevo insumo con nombre, unidad, stock actual, stock mínimo y costo unitario, Entonces aparece en la lista con su estado de stock calculado & Dado que el stock de un insumo cambió, Cuando lo edito con el nuevo valor y guardo, Entonces el estado (Crítico/Bajo/Normal/Abundante) se recalcula automáticamente & Must-have & 5 \\ \hline
-HU-15 & Descuento automático de inventario al crear orden & Como administrador, Quiero que al registrar una orden el sistema descuente automáticamente los insumos utilizados, Para mantener el inventario actualizado sin intervención manual & Dado que se confirma una orden con platos que tienen insumos asociados, Cuando el sistema la registra, Entonces el stock de cada insumo es reducido según la cantidad usada por plato x cantidad pedida & Dado que se registra el descuento, Cuando reviso el historial de consumos del insumo, Entonces aparece un registro con la fecha, cantidad y descripción de la orden & Must-have & 5 \\ \hline
-HU-16 & Alertas de stock crítico y bajo & Como administrador, Quiero recibir alertas visuales cuando un insumo llega a nivel crítico o bajo, Para reabastecerlo antes de que afecte las operaciones & Dado que el stock de un insumo cae por debajo del stock mínimo, Cuando accedo a la página de Insumos, Entonces ese insumo aparece destacado con un indicador Crítico o Bajo & Dado que hay múltiples insumos con stock crítico, Cuando veo el panel de alertas, Entonces se listan todos los insumos que requieren atención con su nivel actual & Must-have & 3 \\ \hline
-HU-17 & Reabastecimiento manual de insumos & Como administrador, Quiero registrar el reabastecimiento de un insumo indicando la cantidad recibida, Para actualizar el stock y mantener el historial de entradas & Dado que recibo una entrega de insumos, Cuando ingreso la cantidad a reponer en el formulario de Reponer, Entonces el stock del insumo aumenta por esa cantidad & Dado que se registra un reabastecimiento, Cuando reviso las métricas de inventario, Entonces el insumo ya no aparece en el panel de alertas si superó el umbral mínimo & Must-have & 2 \\ \hline
-HU-18 & Registro manual de consumo de insumos & Como administrador, Quiero registrar consumos de insumos fuera de órdenes (mermas, pruebas, limpieza), Para tener un historial de consumo completo y preciso & Dado que necesito registrar un consumo especial, Cuando ingreso la cantidad y descripción en el formulario de consumo, Entonces el stock baja y el evento queda en el historial del insumo & Dado que se registra el consumo, Cuando reviso el detalle del insumo, Entonces veo el registro con fecha, cantidad, costo estimado y descripción & Should-have & 2 \\ \hline
-HU-19 & Métricas de gasto diario en inventario & Como administrador, Quiero ver un gráfico de gasto en inventario de los últimos 7 días, Para entender los costos operativos y detectar anomalías & Dado que estoy en la página de Insumos, Cuando accedo a la sección de métricas, Entonces veo un gráfico de barras con el gasto por día de los últimos 7 días & Dado que el gasto de un día es inusualmente alto, Cuando reviso el gráfico, Entonces puedo identificar fácilmente el día y compararlo con el promedio & Should-have & 3 \\ \hline
-HU-20 & Gestión de empleados desde el dashboard & Como administrador, Quiero ver la lista de empleados activos y eliminar cuentas desde el panel de administración, Para mantener el control del acceso al sistema & Dado que estoy en Dashboard > Empleados, Cuando se carga la lista, Entonces veo el nombre, correo, teléfono y rol de cada empleado & Dado que un empleado ya no trabaja en la cafetería, Cuando elimino su cuenta, Entonces no puede volver a iniciar sesión con esas credenciales & Should-have & 2 \\ \hline
-HU-21 & Métricas globales del sistema & Como administrador, Quiero ver estadísticas globales del negocio (total de órdenes, ingresos, platos, mesas, mesas ocupadas) en el dashboard, Para tomar decisiones informadas sobre la operación & Dado que accedo a la pestaña de Métricas del Dashboard, Cuando se carga la vista, Entonces veo tarjetas con el total de órdenes, ingresos totales, platos activos, categorías y mesas & Dado que acaba de crearse una nueva orden, Cuando actualizo las métricas, Entonces los contadores reflejan los datos más recientes & Should-have & 3 \\ \hline
-HU-22 & Modo oscuro / claro en la interfaz & Como cualquier usuario, Quiero alternar entre modo oscuro y modo claro, Para adaptar la interfaz a las condiciones de iluminación del entorno donde trabajo & Dado que estoy usando el sistema en un área poco iluminada, Cuando activo el modo oscuro desde la barra de navegación, Entonces toda la interfaz cambia a paleta oscura sin recargar la página & Dado que cambié al modo oscuro, Cuando cierro y vuelvo a abrir el navegador, Entonces el sistema recuerda mi preferencia y mantiene el tema seleccionado & Should-have & 2 \\ \hline
-HU-23 & Búsqueda y filtrado de insumos & Como administrador, Quiero buscar insumos por nombre y filtrarlos por estado de stock, Para encontrar rápidamente los insumos que necesito gestionar & Dado que hay muchos insumos registrados, Cuando escribo parte del nombre en el buscador, Entonces la lista se filtra en tiempo real mostrando solo los coincidentes & Dado que quiero ver solo los insumos críticos, Cuando aplico el filtro Crítico, Entonces la lista muestra únicamente los insumos con ese estado & Should-have & 2 \\ \hline
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-03 & Panel de inicio con métricas del negocio & Como mesero o administrador, quiero ver un resumen del estado del negocio al ingresar al sistema, para tomar decisiones rápidas sobre las operaciones del día. & \textbf{CA1:} Dado que inicio sesión exitosamente, cuando se carga la página de inicio, entonces veo métricas de ingresos totales y mesas ocupadas en tarjetas.\newline\newline\textbf{CA2:} Dado que estoy en la página de inicio, cuando hay órdenes recientes, entonces las veo listadas con su estado, mesa y hora de creación. & Must-have & 3 & Sprint 1 \\ \hline
+HU-21 & Métricas globales del sistema & Como administrador, quiero ver estadísticas globales del negocio en el dashboard, para tomar decisiones informadas sobre la operación. & \textbf{CA1:} Dado que accedo a la pestaña de Métricas, cuando se carga la vista, entonces veo tarjetas con total de órdenes, ingresos totales, platos activos, categorías y mesas.\newline\newline\textbf{CA2:} Dado que se crea una nueva orden, cuando actualizo las métricas, entonces los contadores reflejan los datos más recientes. & Should-have & 3 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Dashboard y Panel de Control}
+\label{tab:hu_dashboard}
+\end{longtable}
+\endgroup
 
-\multicolumn{7}{|c|}{\bfseries NO ASIGNADO} \\ \hline
-HU-24 & Notificaciones de stock bajo en tiempo real & Como administrador, Quiero recibir notificaciones emergentes cuando se detecta un insumo por debajo del mínimo después de una orden, Para reaccionar de inmediato sin tener que revisar el inventario manualmente & Dado que se confirma una orden y el descuento deja un insumo por debajo del mínimo, Cuando la orden es procesada, Entonces el sistema muestra una notificación toast con el nombre del insumo afectado & Dado que recibo la notificación, Cuando la descarto, Entonces puedo continuar con la operación normal sin interrupciones & Could-have & 3 \\ \hline
-HU-25 & Exportación del historial de órdenes a CSV & Como administrador, Quiero exportar el historial de órdenes a un archivo CSV, Para analizarlo en Excel u otras herramientas externas de reportes & Dado que estoy en la sección de órdenes del Dashboard, Cuando hago clic en Exportar CSV, Entonces se descarga un archivo con todas las órdenes incluyendo fecha, mesa, cliente, ítems y total & Dado que aplico un filtro por fecha antes de exportar, Cuando descargo el archivo, Entonces solo contiene las órdenes del rango seleccionado & Could-have & 5 \\ \hline
-HU-26 & App móvil nativa para meseros & Como mesero, Quiero una aplicación móvil nativa (iOS/Android) para tomar órdenes desde mi celular, Para no depender de una tablet o computadora fija en el salón & Dado que descargo la app en mi teléfono, Cuando inicio sesión, Entonces tengo acceso completo al módulo de mesas y toma de órdenes con interfaz optimizada para pantalla pequeña & Dado que tomo una orden desde el móvil, Cuando la confirmo, Entonces aparece en la KDS del barista igual que si se hubiera creado desde la web & Won't-have & 13 \\ \hline
-HU-27 & Programa de fidelización de clientes & Como administrador, Quiero registrar clientes frecuentes y acumular puntos por compra, Para ofrecerles descuentos o beneficios como estrategia de retención & Dado que un cliente realiza su quinta compra, Cuando el mesero ingresa su número de teléfono al tomar la orden, Entonces el sistema muestra sus puntos acumulados y si aplica algún beneficio & Dado que un cliente canjea sus puntos, Cuando el mesero aplica el descuento, Entonces la factura refleja el descuento y los puntos son deducidos & Won't-have & 8 \\ \hline
-HU-28 & Integración con plataformas de delivery & Como administrador, Quiero recibir órdenes de plataformas externas (Uber Eats, Rappi) directamente en el POS, Para centralizar todas las órdenes en un solo sistema & Dado que llega un pedido de Uber Eats, Cuando el sistema lo recibe vía webhook, Entonces aparece automáticamente en la KDS con la etiqueta de la plataforma de origen & Dado que la plataforma de delivery cambia el estado de la orden, Cuando el sistema sincroniza, Entonces el estado en el POS se actualiza para reflejar el cambio & Won't-have & 21 \\ \hline
+**5.3 Módulo de Gestión de Mesas**
 
-\caption{Backlog del Sistema POS Cafetería 5}
-\label{tab:backlog}
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-04 & Gestión de mesas del restaurante & Como administrador, quiero crear, editar y eliminar mesas con número, capacidad y color, para mantener actualizada la distribución física de la cafetería. & \textbf{CA1:} Dado que estoy en el módulo de Mesas, cuando creo una nueva mesa con número y capacidad, entonces aparece en la vista con estado Disponible.\newline\newline\textbf{CA2:} Dado que existe una mesa con una orden activa, cuando intento eliminarla, entonces el sistema me impide hacerlo o me advierte del conflicto. & Must-have & 3 & Sprint 1 \\ \hline
+HU-05 & Visualización del estado de las mesas & Como mesero, quiero ver todas las mesas con su estado actual en tiempo real, para saber cuáles están disponibles, ocupadas o en uso. & \textbf{CA1:} Dado que estoy en la página de Mesas, cuando se carga la vista, entonces cada tarjeta muestra número, capacidad, estado y nombre del cliente si está ocupada.\newline\newline\textbf{CA2:} Dado que hay mesas con distintos estados, cuando aplico el filtro \emph{En uso}, entonces solo se muestran las mesas con órdenes activas. & Must-have & 2 & Sprint 1 \\ \hline
+\caption{Historias de Usuario — Módulo de Gestión de Mesas}
+\label{tab:hu_mesas}
+\end{longtable}
+\endgroup
+
+**5.4 Módulo de Gestión del Menú**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-06 & Gestión de categorías del menú & Como administrador, quiero crear, editar y eliminar categorías de menú con nombre, color e ícono, para organizar visualmente los productos disponibles. & \textbf{CA1:} Dado que estoy en la sección de Categorías, cuando creo una con nombre, color e ícono, entonces aparece disponible al crear o editar platos.\newline\newline\textbf{CA2:} Dado que una categoría tiene platos asociados, cuando intento eliminarla, entonces el sistema procesa la solicitud o muestra el impacto de la acción. & Must-have & 2 & Sprint 1 \\ \hline
+HU-07 & Gestión de platos del menú & Como administrador, quiero crear, editar y eliminar platos con nombre, precio, categoría e insumos requeridos, para mantener el menú actualizado con los productos disponibles. & \textbf{CA1:} Dado que estoy en la sección de Productos, cuando creo un plato asignándole insumos y cantidades, entonces queda vinculado a esos insumos para el descuento automático de inventario.\newline\newline\textbf{CA2:} Dado que un plato tiene precio o ingredientes desactualizados, cuando lo edito y guardo, entonces los cambios se reflejan inmediatamente en el menú. & Must-have & 5 & Sprint 1 \\ \hline
+\caption{Historias de Usuario — Módulo de Gestión del Menú}
+\label{tab:hu_menu_hu}
+\end{longtable}
+\endgroup
+
+**5.5 Módulo de Toma y Gestión de Órdenes**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-08 & Toma de órdenes en el menú & Como mesero, quiero seleccionar una mesa, ingresar los datos del cliente, agregar platos al carrito y confirmar la orden, para registrar el pedido de forma rápida y sin errores. & \textbf{CA1:} Dado que ingreso al módulo de Menú, cuando selecciono mesa, completo datos del cliente y agrego platos, entonces se calcula el total con impuesto y puedo confirmar la orden.\newline\newline\textbf{CA2:} Dado que confirmo una orden en efectivo, cuando el sistema la registra, entonces aparece en la KDS del barista y en la lista de órdenes activas. & Must-have & 8 & Sprint 1 \\ \hline
+HU-09 & Visualización y filtrado de órdenes & Como mesero o administrador, quiero ver todas las órdenes con su estado actual y filtrarlas, para hacer seguimiento del flujo de trabajo de la cocina. & \textbf{CA1:} Dado que estoy en la página de Órdenes, cuando se carga la lista, entonces veo todas las órdenes con cliente, mesa, ítems, total y estado.\newline\newline\textbf{CA2:} Dado que quiero ver solo las órdenes pendientes, cuando selecciono el filtro \emph{En Progreso}, entonces la lista se actualiza mostrando únicamente esas órdenes. & Must-have & 3 & Sprint 1 \\ \hline
+\caption{Historias de Usuario — Módulo de Toma y Gestión de Órdenes}
+\label{tab:hu_ordenes}
+\end{longtable}
+\endgroup
+
+**5.6 Módulo de Cocina (KDS)**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-10 & Pantalla KDS para barista/cocina & Como barista, quiero ver las órdenes entrantes en mi pantalla de cocina organizadas por estado, para preparar los pedidos en el orden correcto. & \textbf{CA1:} Dado que se crea una nueva orden, cuando aparece en la pestaña \emph{Entradas} de la KDS, entonces veo el número de mesa, cliente, ítems y cantidad de cada uno.\newline\newline\textbf{CA2:} Dado que comienzo a preparar un pedido, cuando lo muevo a estado \emph{Preparando}, entonces desaparece de Entradas y aparece en la pestaña correspondiente. & Must-have & 5 & Sprint 2 \\ \hline
+HU-11 & Actualización del estado de una orden & Como barista o mesero, quiero actualizar el estado de una orden (En Progreso, Preparando, Lista, Completada), para comunicar el avance del pedido al equipo. & \textbf{CA1:} Dado que una orden está en estado \emph{Preparando}, cuando el barista la marca como \emph{Lista}, entonces el mesero puede verla en la lista de órdenes listas para entregar.\newline\newline\textbf{CA2:} Dado que una orden fue entregada al cliente, cuando se marca como \emph{Completada}, entonces pasa al historial y la mesa puede liberarse. & Must-have & 3 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Cocina (KDS)}
+\label{tab:hu_kds}
+\end{longtable}
+\endgroup
+
+**5.7 Módulo de Pagos y Facturación**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-12 & Pago en línea con Razorpay & Como mesero, quiero procesar pagos en línea mediante la pasarela Razorpay al confirmar una orden, para ofrecer al cliente una alternativa de pago sin efectivo. & \textbf{CA1:} Dado que el cliente elige pago en línea, cuando selecciono ese método y confirmo, entonces se abre el modal de Razorpay con el monto correcto de la orden.\newline\newline\textbf{CA2:} Dado que el cliente completa el pago, cuando es verificado por Razorpay, entonces la orden queda registrada con los datos del pago y se genera la factura. & Must-have & 5 & Sprint 2 \\ \hline
+HU-13 & Generación de factura / comprobante & Como mesero, quiero generar una factura al completar una orden, para entregar al cliente un comprobante detallado de su consumo. & \textbf{CA1:} Dado que una orden fue pagada, cuando accedo a la opción de factura, entonces se muestra un documento con ítems, cantidades, subtotal, impuesto y total.\newline\newline\textbf{CA2:} Dado que estoy viendo la factura generada, cuando selecciono imprimir, entonces el sistema abre el diálogo de impresión con el formato correcto. & Must-have & 3 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Pagos y Facturación}
+\label{tab:hu_pagos}
+\end{longtable}
+\endgroup
+
+**5.8 Módulo de Gestión de Inventario**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-14 & Gestión de insumos del inventario & Como administrador, quiero agregar, editar y eliminar insumos con stock, unidades y umbrales mínimos y máximos, para controlar con precisión los materiales disponibles en la cafetería. & \textbf{CA1:} Dado que estoy en la página de Insumos, cuando agrego un nuevo insumo con nombre, unidad, stock actual, stock mínimo y costo unitario, entonces aparece en la lista con su estado de stock calculado.\newline\newline\textbf{CA2:} Dado que el stock de un insumo cambió, cuando lo edito y guardo, entonces el estado (Crítico/Bajo/Normal/Abundante) se recalcula automáticamente. & Must-have & 5 & Sprint 2 \\ \hline
+HU-15 & Descuento automático de inventario al crear orden & Como administrador, quiero que al registrar una orden el sistema descuente automáticamente los insumos utilizados, para mantener el inventario actualizado sin intervención manual. & \textbf{CA1:} Dado que se confirma una orden con platos con insumos asociados, cuando el sistema la registra, entonces el stock de cada insumo se reduce según la cantidad usada por plato.\newline\newline\textbf{CA2:} Dado que se registra el descuento, cuando reviso el historial de consumos, entonces aparece un registro con fecha, cantidad y descripción de la orden. & Must-have & 5 & Sprint 2 \\ \hline
+HU-16 & Alertas de stock crítico y bajo & Como administrador, quiero recibir alertas visuales cuando un insumo llega a nivel crítico o bajo, para reabastecerlo antes de que afecte las operaciones. & \textbf{CA1:} Dado que el stock cae por debajo del mínimo, cuando accedo a la página de Insumos, entonces ese insumo aparece destacado con un indicador \emph{Crítico} o \emph{Bajo}.\newline\newline\textbf{CA2:} Dado que hay múltiples insumos con stock crítico, cuando veo el panel de alertas, entonces se listan todos los insumos que requieren atención con su nivel actual. & Must-have & 3 & Sprint 2 \\ \hline
+HU-17 & Reabastecimiento manual de insumos & Como administrador, quiero registrar el reabastecimiento de un insumo indicando la cantidad recibida, para actualizar el stock y mantener el historial de entradas. & \textbf{CA1:} Dado que recibo una entrega de insumos, cuando ingreso la cantidad a reponer en el formulario, entonces el stock del insumo aumenta por esa cantidad.\newline\newline\textbf{CA2:} Dado que se registra un reabastecimiento, cuando reviso las métricas, entonces el insumo ya no aparece en el panel de alertas si superó el umbral mínimo. & Must-have & 2 & Sprint 2 \\ \hline
+HU-18 & Registro manual de consumo de insumos & Como administrador, quiero registrar consumos de insumos fuera de órdenes (mermas, pruebas, limpieza), para tener un historial de consumo completo y preciso. & \textbf{CA1:} Dado que necesito registrar un consumo especial, cuando ingreso la cantidad y descripción, entonces el stock baja y el evento queda en el historial del insumo.\newline\newline\textbf{CA2:} Dado que se registra el consumo, cuando reviso el detalle del insumo, entonces veo el registro con fecha, cantidad, costo estimado y descripción. & Should-have & 2 & Sprint 2 \\ \hline
+HU-19 & Métricas de gasto diario en inventario & Como administrador, quiero ver un gráfico de gasto en inventario de los últimos 7 días, para entender los costos operativos y detectar anomalías. & \textbf{CA1:} Dado que estoy en la página de Insumos, cuando accedo a la sección de métricas, entonces veo un gráfico de barras con el gasto por día de los últimos 7 días.\newline\newline\textbf{CA2:} Dado que el gasto de un día es inusualmente alto, cuando reviso el gráfico, entonces puedo identificar fácilmente el día y compararlo con el promedio. & Should-have & 3 & Sprint 2 \\ \hline
+HU-23 & Búsqueda y filtrado de insumos & Como administrador, quiero buscar insumos por nombre y filtrarlos por estado de stock, para encontrar rápidamente los insumos que necesito gestionar. & \textbf{CA1:} Dado que hay muchos insumos registrados, cuando escribo parte del nombre en el buscador, entonces la lista se filtra en tiempo real mostrando solo los coincidentes.\newline\newline\textbf{CA2:} Dado que quiero ver solo los insumos críticos, cuando aplico el filtro \emph{Crítico}, entonces la lista muestra únicamente los insumos con ese estado. & Should-have & 2 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Gestión de Inventario}
+\label{tab:hu_inventario}
+\end{longtable}
+\endgroup
+
+**5.9 Módulo de Gestión de Empleados**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-20 & Gestión de empleados desde el dashboard & Como administrador, quiero ver la lista de empleados activos y eliminar cuentas desde el panel de administración, para mantener el control del acceso al sistema. & \textbf{CA1:} Dado que estoy en la sección de Empleados, cuando se carga la lista, entonces veo el nombre, correo, teléfono y rol de cada empleado.\newline\newline\textbf{CA2:} Dado que un empleado ya no trabaja en la cafetería, cuando elimino su cuenta, entonces no puede volver a iniciar sesión con esas credenciales. & Should-have & 2 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Gestión de Empleados}
+\label{tab:hu_empleados}
+\end{longtable}
+\endgroup
+
+**5.10 Módulo de Interfaz y Experiencia de Usuario**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{0.9cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-22 & Modo oscuro / claro en la interfaz & Como cualquier usuario, quiero alternar entre modo oscuro y modo claro, para adaptar la interfaz a las condiciones de iluminación del entorno donde trabajo. & \textbf{CA1:} Dado que estoy usando el sistema en un área poco iluminada, cuando activo el modo oscuro desde la barra de navegación, entonces toda la interfaz cambia a paleta oscura sin recargar la página.\newline\newline\textbf{CA2:} Dado que cambié al modo oscuro, cuando cierro y vuelvo a abrir el navegador, entonces el sistema recuerda mi preferencia y mantiene el tema seleccionado. & Should-have & 2 & Sprint 2 \\ \hline
+\caption{Historias de Usuario — Módulo de Interfaz y Experiencia de Usuario}
+\label{tab:hu_interfaz}
+\end{longtable}
+\endgroup
+
+**5.11 Funcionalidades Futuras (No Asignadas)**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{0.6cm}|p{1.8cm}|p{2.8cm}|p{4.2cm}|p{1.3cm}|p{0.5cm}|p{1.0cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
+\endhead
+HU-24 & Notificaciones de stock bajo en tiempo real & Como administrador, quiero recibir notificaciones emergentes cuando se detecta un insumo por debajo del mínimo después de una orden, para reaccionar de inmediato sin revisar el inventario manualmente. & \textbf{CA1:} Dado que se confirma una orden y el descuento deja un insumo bajo el mínimo, cuando la orden es procesada, entonces el sistema muestra una notificación \emph{toast} con el nombre del insumo afectado.\newline\newline\textbf{CA2:} Dado que recibo la notificación, cuando la descarto, entonces puedo continuar con la operación normal sin interrupciones. & Could-have & 3 & No asignado \\ \hline
+HU-25 & Exportación del historial de órdenes a CSV & Como administrador, quiero exportar el historial de órdenes a un archivo CSV, para analizarlo en herramientas externas de reportes. & \textbf{CA1:} Dado que estoy en la sección de órdenes del Dashboard, cuando hago clic en \emph{Exportar CSV}, entonces se descarga un archivo con todas las órdenes con fecha, mesa, cliente, ítems y total.\newline\newline\textbf{CA2:} Dado que aplico un filtro por fecha antes de exportar, cuando descargo el archivo, entonces solo contiene las órdenes del rango seleccionado. & Could-have & 5 & No asignado \\ \hline
+HU-26 & App móvil nativa para meseros & Como mesero, quiero una aplicación móvil nativa (iOS/Android) para tomar órdenes desde mi celular, para no depender de una tablet o computadora fija en el salón. & \textbf{CA1:} Dado que descargo la app en mi teléfono, cuando inicio sesión, entonces tengo acceso completo al módulo de mesas y toma de órdenes con interfaz optimizada para pantalla pequeña.\newline\newline\textbf{CA2:} Dado que tomo una orden desde el móvil, cuando la confirmo, entonces aparece en la KDS del barista igual que si se hubiera creado desde la web. & Won't-have & 13 & No asignado \\ \hline
+HU-27 & Programa de fidelización de clientes & Como administrador, quiero registrar clientes frecuentes y acumular puntos por compra, para ofrecerles descuentos o beneficios como estrategia de retención. & \textbf{CA1:} Dado que un cliente realiza su quinta compra, cuando el mesero ingresa su teléfono al tomar la orden, entonces el sistema muestra los puntos acumulados y si aplica algún beneficio.\newline\newline\textbf{CA2:} Dado que un cliente canjea sus puntos, cuando el mesero aplica el descuento, entonces la factura refleja el descuento y los puntos son deducidos. & Won't-have & 8 & No asignado \\ \hline
+HU-28 & Integración con plataformas de delivery & Como administrador, quiero recibir órdenes de plataformas externas directamente en el POS, para centralizar todas las órdenes en un solo sistema. & \textbf{CA1:} Dado que llega un pedido de una plataforma de delivery, cuando el sistema lo recibe vía webhook, entonces aparece automáticamente en la KDS con la etiqueta de la plataforma de origen.\newline\newline\textbf{CA2:} Dado que la plataforma cambia el estado de la orden, cuando el sistema sincroniza, entonces el estado en el POS se actualiza para reflejar el cambio. & Won't-have & 21 & No asignado \\ \hline
+\caption{Historias de Usuario — Funcionalidades Futuras}
+\label{tab:hu_futuras}
 \end{longtable}
 \endgroup
 
 ### Diagramas UML
 
-Los diagramas UML del sistema han sido elaborados en la herramienta Draw.io y se adjuntan como evidencia gráfica del diseño funcional. Se incluyen los siguientes tipos de diagrama:
+Los diagramas UML del sistema han sido elaborados como evidencia gráfica del diseño funcional y estructural. Se incluyen los siguientes tipos de diagrama:
 
 **Diagrama de Casos de Uso:**
-Representa las interacciones entre los actores del sistema (Administrador, Cajero, Encargado de Cocina) y los casos de uso identificados durante el análisis. Los casos de uso principales son: _Gestionar productos_, _Gestionar usuarios_, _Registrar venta_, _Emitir comprobante_, _Consultar inventario_, _Generar reporte_ y _Gestionar menú_.
+
+El diagrama de casos de uso representa las interacciones entre los tres actores del sistema —Administrador, Cajero/Mesero y Barista/Cocina— y las funcionalidades que cada uno puede ejecutar dentro del Sistema POS. El Administrador tiene acceso a la gestión de empleados, catálogo, inventario y reportes; el Cajero opera el punto de venta (toma de órdenes, pagos y facturación); y el Barista interactúa con la pantalla KDS para gestionar el estado de los pedidos en producción.
 
 \begin{diagrama}[H]
 \centering
-\includegraphics[width=0.85\linewidth]{assets/diagrama/casos_de_uso1.png}
-\caption{Diagrama de Casos de Uso del Sistema POS}
-\label{diag:casos_uso_1}
-\end{diagrama}
-
-\begin{diagrama}[H]
-\centering
-\includegraphics[width=0.85\linewidth]{assets/diagrama/casos_de_uso2.png}
-\caption{Diagrama de Casos de Uso del Sistema POS}
-\label{diag:casos_uso_2}
-\end{diagrama}
-
-\begin{diagrama}[H]
-\centering
-\includegraphics[width=0.85\linewidth]{assets/diagrama/casos_de_uso3.png}
-\caption{Diagrama de Casos de Uso del Sistema POS}
-\label{diag:casos_uso_3}
+\includegraphics[width=0.95\linewidth]{assets/diagrama/casos_de_uso1.png}
+\caption{Diagrama de Casos de Uso — Sistema POS Cafetería}
+\label{diag:casos_de_uso}
 \end{diagrama}
 
 **Diagrama de Clases:**
-Modela la estructura estática del sistema mediante las entidades principales y sus relaciones. Las clases identificadas son: `Usuario` (con atributos: id, nombre, email, contraseña, rol), `Producto` (id, nombre, precio, costo, categoría, disponible, stock), `Categoría` (id, nombre), `Orden` (id, usuario_id, mesa, estado, total, fecha, cartItems[ ]), `ItemOrden` (producto_id, cantidad, precioUnitario), `Proveedor` (id, nombre, contacto, condiciones) e `Inventario` (producto_id, stockActual, stockMínimo).
+
+El diagrama de clases expone la estructura estática del modelo de datos del sistema, mapeando las seis entidades principales del dominio: \texttt{User}, \texttt{Category}, \texttt{Dish}, \texttt{Table}, \texttt{Order} y \texttt{Payment}, complementadas por la entidad \texttt{Insumo} para el control de inventario. Se detallan los atributos tipados de cada clase, sus métodos de negocio y las relaciones de cardinalidad (1:N entre usuarios y órdenes, 1:N entre categorías y platos, 1:1 entre órdenes y pagos, y 1:1 entre mesas y su orden activa).
 
 \begin{diagrama}[H]
 \centering
-\includegraphics[width=0.85\linewidth]{assets/diagrama/clases.png}
-\caption{Diagrama de Clases del Sistema POS}
+\includegraphics[width=1.0\linewidth]{assets/diagrama/clases.png}
+\caption{Diagrama de Clases — Modelo de Dominio del Sistema POS}
 \label{diag:clases}
 \end{diagrama}
 
 **Diagrama de Actividades:**
-Representa el flujo de actividades del proceso principal del sistema: el ciclo completo de una venta, desde que el cajero inicia sesión hasta que se emite el comprobante y se actualiza el inventario.
+
+El diagrama de actividades modela el flujo completo del proceso de venta transaccional (TPS), desde el inicio de sesión del cajero hasta el cierre y liberación de la mesa. Se divide en tres swimlanes que representan las responsabilidades paralelas del Cajero/Mesero, el Sistema Backend y el Barista/Cocina. Se evidencian los puntos de decisión críticos: validación de credenciales JWT, éxito o fallo de la transacción ACID (con rollback automático ante fallos), y la generación del comprobante PDF al completar el cobro.
 
 \begin{diagrama}[H]
 \centering
 \includegraphics[width=0.75\linewidth]{assets/diagrama/actividades.png}
-\caption{Diagrama de Actividades — Flujo de Venta}
+\caption{Diagrama de Actividades — Proceso de Venta Transaccional}
 \label{diag:actividades}
 \end{diagrama}
+
 
 ## Diseño del sistema
 
@@ -870,7 +975,7 @@ Esta colección clasifica los productos (ej. Entradas, Platos Fuertes, Bebidas) 
 
 \texttt{bgColor} & String & \centering \textbf{No} & Color de fondo para la interfaz visual. & Valor por defecto: \texttt{"\#b73e3e"}. Almacenado en formato Hexadecimal. \\ \hline
 
-\texttt{icon} & String & \centering \textbf{No} & Icono o emoji representativo. & Valor por defecto: \texttt{"🍲"}. Se utiliza para la identificación rápida en el frontend. \\ \hline
+\texttt{icon} & String & \centering \textbf{No} & Icono o emoji representativo. & Valor por defecto: \texttt{"[icono]"}. Se utiliza para la identificación rápida en el frontend. \\ \hline
 
 \caption{Diccionario de datos: Colección Categories}
 \label{tab:diccionario_categories}
@@ -1095,3 +1200,4 @@ El relevamiento de información se realizó mediante las siguientes técnicas ap
 # Referencias Bibliográficas {-}
 
 <div id="refs"></div>
+

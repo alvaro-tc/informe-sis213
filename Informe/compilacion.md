@@ -1,6 +1,6 @@
 ---
 geometry: "top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm"
-fontsize: 12pt
+fontsize: 12pt 
 papersize: letter
 mainfont: "Arial"
 sansfont: "Arial"
