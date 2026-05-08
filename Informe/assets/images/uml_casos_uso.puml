@@ -1,0 +1,111 @@
+@startuml uml_casos_uso
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 12
+}
+skinparam actor {
+    BackgroundColor #DBEAFE
+    BorderColor #2563EB
+    FontSize 12
+    FontStyle Bold
+}
+skinparam packageStyle rectangle
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam linetype ortho
+
+title Diagrama de Casos de Uso — Sistema POS Cafetería
+
+actor "Administrador" as admin
+actor "Cajero / Mesero" as cajero
+actor "Barista / Cocina" as barista
+actor "Cliente" as cliente
+
+rectangle "Sistema POS Cafetería" {
+
+    package "Autenticación" {
+        (Iniciar sesión) as UC01
+        (Cerrar sesión) as UC02
+    }
+
+    package "Gestión de Personal\ny Catálogo" {
+        (Gestionar empleados) as UC03
+        (Gestionar menú y platos) as UC04
+        (Gestionar categorías) as UC05
+        (Gestionar mesas) as UC06
+    }
+
+    package "Inventario y Reportes" {
+        (Gestionar insumos) as UC07
+        (Ver alertas de stock) as UC08
+        (Ver métricas y reportes) as UC09
+    }
+
+    package "Operación POS" {
+        (Registrar orden en local) as UC10
+        (Registrar orden para llevar) as UC11
+        (Agregar platos al carrito) as UC12
+        (Confirmar orden) as UC13
+        (Ver lista de órdenes) as UC14
+        (Gestionar estado de mesas) as UC15
+    }
+
+    package "Cocina KDS" {
+        (Ver órdenes en KDS) as UC16
+        (Actualizar estado de orden) as UC17
+    }
+
+    package "Pagos y Facturación" {
+        (Seleccionar método de pago) as UC18
+        (Pagar con efectivo) as UC19
+        (Pagar con Binance Pay) as UC20
+        (Generar factura / comprobante) as UC21
+    }
+
+    package "Pedido del Cliente" {
+        (Solicitar pedido en local) as UC22
+        (Solicitar pedido para llevar) as UC23
+    }
+}
+
+admin --> UC01
+admin --> UC03
+admin --> UC04
+admin --> UC05
+admin --> UC06
+admin --> UC07
+admin --> UC08
+admin --> UC09
+admin --> UC02
+
+cajero --> UC01
+cajero --> UC10
+cajero --> UC11
+cajero --> UC14
+cajero --> UC15
+cajero --> UC18
+cajero --> UC21
+cajero --> UC02
+
+barista --> UC01
+barista --> UC16
+barista --> UC17
+barista --> UC02
+
+cliente --> UC22
+cliente --> UC23
+
+UC10 ..> UC12 : <<include>>
+UC11 ..> UC12 : <<include>>
+UC12 ..> UC13 : <<include>>
+UC13 ..> UC18 : <<include>>
+UC18 ..> UC19 : <<extend>>
+UC18 ..> UC20 : <<extend>>
+UC13 ..> UC21 : <<extend>>
+UC22 ..> UC10 : <<extend>>
+UC23 ..> UC11 : <<extend>>
+
+@enduml

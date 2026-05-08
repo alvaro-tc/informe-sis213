@@ -1,0 +1,55 @@
+@startuml uml_actividades_03_proceso_pago
+skinparam activity {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 11
+    DiamondBackgroundColor #FEF3C7
+    DiamondBorderColor #D97706
+}
+skinparam swimlane {
+    BorderColor #94A3B8
+    TitleFontColor #1E3A5F
+    TitleFontSize 12
+    TitleFontStyle Bold
+}
+skinparam noteBackgroundColor #F0FDF4
+skinparam noteBorderColor #16A34A
+skinparam StartColor #1D4ED8
+skinparam EndColor #DC2626
+
+title Diagrama de Actividades — Proceso de Pago y Facturación\nSistema POS Cafetería
+
+|Cajero / Mesero|
+start
+:Pedido entregado al cliente;
+:Selecciona método de pago;
+if (¿Método de pago?) then (Efectivo)
+    :Registra monto en efectivo;
+    :Calcula vuelto si aplica;
+else (Binance Pay)
+    :Genera solicitud de pago\nen Binance Pay API;
+    |Sistema Backend|
+    :Envía petición a\nBinance Pay API;
+    if (¿Transacción verificada?) then (Sí)
+        :Confirma pago exitoso;
+    else (No)
+        :Devuelve error de pago;
+        |Cajero / Mesero|
+        :Notifica fallo al cliente\ny reintenta;
+        stop
+    endif
+endif
+
+|Sistema Backend|
+:Registra pago en MongoDB\n(método + transactionId);
+:Actualiza orden a\nCOMPLETED;
+:Libera la mesa\n(status: AVAILABLE)\n(solo si DINE_IN);
+:Genera factura / comprobante;
+
+|Cliente|
+:Recibe comprobante\n(digital o impreso);
+
+stop
+
+@enduml

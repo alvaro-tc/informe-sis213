@@ -1,0 +1,38 @@
+@startuml uml_casos_uso_02_gestion_personal_catalogo
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 12
+}
+skinparam actor {
+    BackgroundColor #DBEAFE
+    BorderColor #2563EB
+    FontSize 12
+    FontStyle Bold
+}
+skinparam packageStyle rectangle
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam linetype ortho
+
+title Casos de Uso — Gestión de Personal y Catálogo\nSistema POS Cafetería
+
+actor "Administrador" as admin
+
+rectangle "Sistema POS Cafetería" {
+    package "Gestión de Personal y Catálogo" {
+        (Gestionar empleados) as UC03
+        (Gestionar menú y platos) as UC04
+        (Gestionar categorías) as UC05
+        (Gestionar mesas) as UC06
+    }
+}
+
+admin --> UC03
+admin --> UC04
+admin --> UC05
+admin --> UC06
+
+@enduml

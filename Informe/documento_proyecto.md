@@ -109,17 +109,17 @@ Desarrollar un prototipo funcional de un Sistema de Información Organizacional 
 
 ### Objetivos Específicos
 
-- Implementar un módulo de gestión de pedidos en tiempo real que permita a los meseros registrar, modificar y hacer seguimiento del estado de las órdenes (en preparación, servido, pagado) mediante una interfaz táctil dinámica construida con React.js.
+- Implementar un módulo de gestión de pedidos en tiempo real para permitir a los meseros registrar, modificar y hacer seguimiento del estado de las órdenes (en preparación, servido, pagado) mediante una interfaz táctil dinámica construida con React.js.
 
-- Diseñar e integrar un sistema de control de acceso basado en roles (RBAC) con autenticación segura mediante JSON Web Tokens (JWT), diferenciando los permisos y vistas del Administrador, el Cajero y el Mesero.
+- Diseñar un sistema de control de acceso basado en roles (RBAC) para diferenciar los permisos y vistas del Administrador, el Cajero y el Mesero mediante autenticación segura con JSON Web Tokens (JWT).
 
-- Desarrollar un módulo de administración visual de mesas y reservas que presente un panel de estados en tiempo real, permitiendo a los operadores conocer la disponibilidad y el estado de cada mesa del establecimiento.
+- Desarrollar un módulo de administración visual de mesas y reservas para permitir a los operadores conocer la disponibilidad y el estado de cada mesa del establecimiento mediante un panel de estados en tiempo real.
 
-- Construir las APIs RESTful del _backend_ con Node.js y Express.js, conectadas a una base de datos MongoDB, para soportar todas las operaciones CRUD de los módulos de productos, órdenes, mesas y usuarios.
+- Construir las APIs RESTful del backend para soportar todas las operaciones CRUD de los módulos de productos, órdenes, mesas y usuarios utilizando Node.js, Express.js y una base de datos MongoDB.
 
-- Implementar un módulo de facturación y generación de recibos que automatice el cálculo del cobro total y produzca comprobantes detallados en formato PDF, integrando métodos de pago simulados mediante una pasarela estándar.
+- Implementar un módulo de facturación y generación de recibos para automatizar el cálculo del cobro total y producir comprobantes detallados en formato PDF mediante la integración de métodos de pago simulados con una pasarela estándar.
 
-- Desplegar el sistema en infraestructura _cloud_ (AWS o DigitalOcean) utilizando contenedores Docker para garantizar la portabilidad, disponibilidad y escalabilidad del entorno productivo.
+- Desplegar el sistema en infraestructura cloud (AWS o DigitalOcean) para garantizar la portabilidad, disponibilidad y escalabilidad del entorno productivo utilizando contenedores Docker.
 
 ## Justificación
 
@@ -233,22 +233,22 @@ El proyecto tiene una duración total de **4 meses (16 semanas)**, organizado en
 
 Un Sistema de Información Organizacional (SIO) es un conjunto integrado de componentes — personas, procesos, datos, _hardware_ y _software_ — diseñado para recolectar, almacenar, procesar y distribuir información que apoye la coordinación, el control, el análisis y la toma de decisiones dentro de una organización [@laudon2020]. A diferencia de un simple programa informático, un SIO está profundamente imbricado con los procesos de negocio de la organización: define cómo fluye la información entre los actores, cuándo se captura, cómo se transforma y quién tiene acceso a ella.
 
-En términos más precisos, un SIO transforma datos crudos (ej. el registro de una venta) en información significativa y estructurada (ej. un reporte de ingresos diarios), que a su vez se convierte en conocimiento útil para la gestión (ej. la identificación del turno de mayor rentabilidad). Este proceso de transformación es el núcleo del valor que aportan los SIO a las organizaciones modernas.
+En términos más precisos, un SIO transforma datos crudos (ej. el registro de una venta) en información significativa y estructurada (ej. un reporte de ingresos diarios), que a su vez se convierte en conocimiento útil para la gestión (ej. la identificación del turno de mayor rentabilidad). Este proceso de transformación es el núcleo del valor que aportan los SIO a las organizaciones modernas [@obrien2011].
 
 ### Componentes
 
-Todo Sistema de Información Organizacional se articula en torno a seis componentes fundamentales que trabajan de forma interdependiente:
+Todo Sistema de Información Organizacional se articula en torno a seis componentes fundamentales que trabajan de forma interdependiente [@laudon2020]:
 
-- **Hardware:** La infraestructura física que sustenta el sistema: servidores, terminales de trabajo, dispositivos de red y, en el contexto del presente proyecto, las estaciones de trabajo desde las que el personal operará la interfaz POS.
-- **Software:** Los programas y aplicaciones que procesan los datos. Incluye tanto el _software_ de sistema (sistema operativo, entorno de ejecución Node.js) como el _software_ de aplicación desarrollado a medida (la plataforma POS web).
-- **Datos:** La materia prima del sistema. En el contexto de la cafetería, los datos son las órdenes, los productos, los usuarios, las mesas y las transacciones que el sistema captura y persiste en la base de datos MongoDB.
-- **Redes y telecomunicaciones:** La infraestructura de conectividad que permite el acceso concurrente al sistema desde múltiples dispositivos, habilitado por la arquitectura cliente-servidor del proyecto.
-- **Procedimientos:** Los protocolos y flujos de trabajo que definen cómo deben interactuar los usuarios con el sistema (ej. el proceso de apertura de turno, la toma de una orden, el cierre de caja).
-- **Recursos humanos:** Los actores que operan el sistema. En el proyecto, esto comprende al Administrador y al Cajero, cada uno con roles y permisos claramente delimitados.
+- **Hardware:** La infraestructura física que sustenta el sistema: servidores, terminales de trabajo, dispositivos de red y, en el contexto del presente proyecto, las estaciones de trabajo desde las que el personal operará la interfaz POS [@laudon2020].
+- **Software:** Los programas y aplicaciones que procesan los datos. Incluye tanto el _software_ de sistema (sistema operativo, entorno de ejecución Node.js) como el _software_ de aplicación desarrollado a medida (la plataforma POS web) [@laudon2020].
+- **Datos:** La materia prima del sistema. En el contexto de la cafetería, los datos son las órdenes, los productos, los usuarios, las mesas y las transacciones que el sistema captura y persiste en la base de datos MongoDB [@laudon2020].
+- **Redes y telecomunicaciones:** La infraestructura de conectividad que permite el acceso concurrente al sistema desde múltiples dispositivos, habilitado por la arquitectura cliente-servidor del proyecto [@laudon2020].
+- **Procedimientos:** Los protocolos y flujos de trabajo que definen cómo deben interactuar los usuarios con el sistema (ej. el proceso de apertura de turno, la toma de una orden, el cierre de caja) [@laudon2020].
+- **Recursos humanos:** Los actores que operan el sistema. En el proyecto, esto comprende al Administrador y al Cajero, cada uno con roles y permisos claramente delimitados [@laudon2020].
 
 ### Tipos de sistemas
 
-Desde una perspectiva funcional, los SIO se clasifican en distintos tipos según el nivel organizacional al que sirven. Los **Sistemas de Procesamiento de Transacciones (TPS)** operan en el nivel operativo, capturando y procesando las transacciones cotidianas del negocio. Los **Sistemas de Información Gerencial (MIS)** consolidan la información del TPS para generar reportes estructurados destinados a la gerencia media. Los **Sistemas de Soporte a Decisiones (DSS)** asisten en la toma de decisiones complejas mediante análisis de datos y modelos. Los **Sistemas de Información Ejecutiva (EIS)** proveen información estratégica de alto nivel a los directivos. El presente proyecto se enfoca en la implementación de un TPS, que actúa como la base de toda esta pirámide informacional.
+Desde una perspectiva funcional, los SIO se clasifican en distintos tipos según el nivel organizacional al que sirven. Los **Sistemas de Procesamiento de Transacciones (TPS)** operan en el nivel operativo, capturando y procesando las transacciones cotidianas del negocio. Los **Sistemas de Información Gerencial (MIS)** consolidan la información del TPS para generar reportes estructurados destinados a la gerencia media. Los **Sistemas de Soporte a Decisiones (DSS)** asisten en la toma de decisiones complejas mediante análisis de datos y modelos. Los **Sistemas de Información Ejecutiva (EIS)** proveen información estratégica de alto nivel a los directivos. El presente proyecto se enfoca en la implementación de un TPS, que actúa como la base de toda esta pirámide informacional [@laudon2020].
 
 ## Sistema de Procesamiento de Transacciones (TPS)
 
@@ -258,26 +258,26 @@ Un Sistema de Procesamiento de Transacciones es un tipo especializado de SIO dis
 
 ### Características
 
-Los TPS se distinguen de otros tipos de sistemas de información por un conjunto de atributos técnicos y funcionales que los hacen aptos para el procesamiento operativo de alto volumen:
+Los TPS se distinguen de otros tipos de sistemas de información por un conjunto de atributos técnicos y funcionales que los hacen aptos para el procesamiento operativo de alto volumen [@obrien2011]:
 
-- **Procesamiento en tiempo real (_OLTP_):** A diferencia del procesamiento por lotes (_batch_), los TPS modernos procesan cada transacción en el instante en que se produce, actualizando la base de datos de forma inmediata y reflejando el estado actual del negocio en todo momento.
-- **Alta confiabilidad y disponibilidad:** Un TPS para un punto de venta debe estar disponible durante todo el horario operativo del negocio. La indisponibilidad del sistema implica la parálisis del servicio al cliente.
+- **Procesamiento en tiempo real (_OLTP_):** A diferencia del procesamiento por lotes (_batch_), los TPS modernos procesan cada transacción en el instante en que se produce, actualizando la base de datos de forma inmediata y reflejando el estado actual del negocio en todo momento [@obrien2011].
+- **Alta confiabilidad y disponibilidad:** Un TPS para un punto de venta debe estar disponible durante todo el horario operativo del negocio. La indisponibilidad del sistema implica la parálisis del servicio al cliente [@obrien2011].
 - **Integridad transaccional (propiedades ACID):** Toda transacción en un TPS debe cumplir las propiedades de Atomicidad (la transacción se ejecuta completa o no se ejecuta), Consistencia (el sistema pasa de un estado válido a otro estado válido), Aislamiento (las transacciones concurrentes no interfieren entre sí) y Durabilidad (una transacción confirmada persiste incluso ante fallos del sistema) [@elmasri2015].
-- **Manejo de alto volumen de datos estandarizados:** Los TPS están optimizados para procesar grandes cantidades de transacciones simples y repetitivas de forma eficiente, a diferencia de los sistemas analíticos que trabajan con consultas complejas sobre datos históricos.
+- **Manejo de alto volumen de datos estandarizados:** Los TPS están optimizados para procesar grandes cantidades de transacciones simples y repetitivas de forma eficiente, a diferencia de los sistemas analíticos que trabajan con consultas complejas sobre datos históricos [@obrien2011].
 
 ### Funciones
 
-En el contexto específico del presente proyecto, el TPS ejecuta el siguiente ciclo funcional para cada transacción de venta:
+En el contexto específico del presente proyecto, el TPS ejecuta el siguiente ciclo funcional para cada transacción de venta [@obrien2011]:
 
-1. **Captura de datos de origen:** El cajero construye la orden seleccionando productos del catálogo digital y asignándola a una mesa, introduciendo los datos de la transacción en el sistema mediante la interfaz POS de React.js.
-2. **Validación y verificación:** El _backend_ (Node.js/Express.js) verifica que el usuario tenga los permisos necesarios (validación JWT), que losítulos existan en el catálogo activo y que la mesa esté disponible.
-3. **Procesamiento matemático:** El motor transaccional calcula automáticamente los subtotales por ítem, aplica los impuestos correspondientes y determina el total a cobrar, eliminando el margen de error del cálculo manual.
-4. **Actualización de la base de datos:** La transacción se escribe de forma atómica en MongoDB, vinculando el documento de la orden con el cajero responsable, la mesa asignada y los ítems del carrito con sus precios exactos en ese instante.
-5. **Emisión del comprobante:** El sistema genera el ticket o factura en formato PDF, disponible para impresión inmediata, y actualiza el estado de la mesa a "disponible".
+1. **Captura de datos de origen:** El cajero construye la orden seleccionando productos del catálogo digital y asignándola a una mesa, introduciendo los datos de la transacción en el sistema mediante la interfaz POS de React.js [@obrien2011].
+2. **Validación y verificación:** El _backend_ (Node.js/Express.js) verifica que el usuario tenga los permisos necesarios (validación JWT), que losítulos existan en el catálogo activo y que la mesa esté disponible [@obrien2011].
+3. **Procesamiento matemático:** El motor transaccional calcula automáticamente los subtotales por ítem, aplica los impuestos correspondientes y determina el total a cobrar, eliminando el margen de error del cálculo manual [@obrien2011].
+4. **Actualización de la base de datos:** La transacción se escribe de forma atómica en MongoDB, vinculando el documento de la orden con el cajero responsable, la mesa asignada y los ítems del carrito con sus precios exactos en ese instante [@obrien2011].
+5. **Emisión del comprobante:** El sistema genera el ticket o factura en formato PDF, disponible para impresión inmediata, y actualiza el estado de la mesa a "disponible" [@obrien2011].
 
 ### Evolución hacia sistemas web
 
-Los TPS han recorrido un largo camino desde las terminales monolíticas de los años setenta. La adopción de arquitecturas web modernas —como la empleada en este proyecto— representa la fase más reciente de esta evolución, caracterizada por tres ventajas fundamentales: **ubicuidad** (el sistema es accesible desde cualquier dispositivo con navegador web en la red local del negocio), **centralización** (todos los datos residen en un único repositorio en la nube, eliminando la dispersión de información), y **escalabilidad** (la arquitectura basada en microservicios y contenedores Docker permite escalar el sistema horizontalmente para absorber incrementos en la carga de trabajo sin rediseñar la arquitectura base).
+Los TPS han recorrido un largo camino desde las terminales monolíticas de los años setenta. La adopción de arquitecturas web modernas —como la empleada en este proyecto— representa la fase más reciente de esta evolución, caracterizada por tres ventajas fundamentales: **ubicuidad** (el sistema es accesible desde cualquier dispositivo con navegador web en la red local del negocio), **centralización** (todos los datos residen en un único repositorio en la nube, eliminando la dispersión de información), y **escalabilidad** (la arquitectura basada en microservicios y contenedores Docker permite escalar el sistema horizontalmente para absorber incrementos en la carga de trabajo sin rediseñar la arquitectura base) [@sommerville2015].
 
 ## Arquitectura de sistemas web
 
@@ -292,7 +292,7 @@ La arquitectura del sistema POS se basa en el modelo Cliente–Servidor, una de 
 
 ### Cliente
 
-El cliente representa la capa de presentación del sistema, encargada de interactuar directamente con el usuario final mediante una interfaz gráfica accesible desde el navegador. En este proyecto, el cliente será desarrollado utilizando React.js, permitiendo:
+El cliente representa la capa de presentación del sistema, encargada de interactuar directamente con el usuario final mediante una interfaz gráfica accesible desde el navegador. En este proyecto, el cliente será desarrollado utilizando React.js, permitiendo [@sommerville2015]:
 
 - Renderizado dinámico de componentes (Virtual DOM).
 - Interacciones en tiempo real en el POS.
@@ -307,7 +307,7 @@ Funciones principales:
 
 ### Servidor
 
-El servidor constituye la capa de lógica de negocio.
+El servidor constituye la capa de lógica de negocio [@sommerville2015].
 Tecnologías: Node.js; Express.js.
 Funciones principales:
 
@@ -317,7 +317,7 @@ Funciones principales:
 
 ### API
 
-La API permite la comunicación entre cliente y servidor mediante HTTP y JSON. Actúa como el puente documentado que estructura y transmite la información bidireccionalmente.
+La API permite la comunicación entre cliente y servidor mediante HTTP y JSON. Actúa como el puente documentado que estructura y transmite la información bidireccionalmente [@sommerville2015].
 Características:
 
 - Métodos estándar: GET, POST, PUT, DELETE.
@@ -325,7 +325,7 @@ Características:
 
 ### Base de datos
 
-Repositorio central donde reposa la persistencia de las entidades. Es el componente responsable de almacenar los datos operacionales a largo plazo para asegurar la durabilidad y disponibilidad de la información de las ventas y el menú.
+Repositorio central donde reposa la persistencia de las entidades. Es el componente responsable de almacenar los datos operacionales a largo plazo para asegurar la durabilidad y disponibilidad de la información de las ventas y el menú [@elmasri2015].
 
 ### Flujo del Sistema
 
@@ -338,27 +338,27 @@ Repositorio central donde reposa la persistencia de las entidades. Es el compone
 
 ## Seguridad en sistemas de información
 
-Como modelador y encargado de la seguridad arquitectónica, se establece que un sistema de ventas (POS) debe proteger de forma absoluta sus _endpoints_ (rutas de API) y la persistencia de datos.
+Como modelador y encargado de la seguridad arquitectónica, se establece que un sistema de ventas (POS) debe proteger de forma absoluta sus _endpoints_ (rutas de API) y la persistencia de datos [@stallings2017].
 
 ### Autenticación
 
-Se descartan las sesiones tradicionales. El sistema implementa JSON Web Tokens (JWT). Tras validar credenciales (contraseñas previamente procesadas con funciones criptográficas unidireccionales de _hash_, como _bcrypt_), el _backend_ emite un token firmado [@stallings2017]. Este token viaja en las cabeceras HTTP de cada petición del cliente, garantizando que el usuario es quien dice ser sin consultar la base de datos reiteradamente.
+Se descartan las sesiones tradicionales. El sistema implementa JSON Web Tokens (JWT) [@jones2015]. Tras validar credenciales (contraseñas previamente procesadas con funciones criptográficas unidireccionales de _hash_, como _bcrypt_ [@provos1999]), el _backend_ emite un token firmado [@stallings2017]. Este token viaja en las cabeceras HTTP de cada petición del cliente, garantizando que el usuario es quien dice ser sin consultar la base de datos reiteradamente.
 
 ### Autorización
 
-La autorización asegura que un usuario autenticado solo pueda realizar las acciones para las que está facultado. Se ejecuta verificando los niveles de privilegio incrustados y firmados criptográficamente en el token antes de responder a una petición.
+La autorización asegura que un usuario autenticado solo pueda realizar las acciones para las que está facultado. Se ejecuta verificando los niveles de privilegio incrustados y firmados criptográficamente en el token antes de responder a una petición [@stallings2017].
 
 ### Roles
 
-El modelo de datos incluye una propiedad rígida de "Rol" (ej. Administrador, Cajero). Este mecanismo se implementa mediante _Middlewares_ (bloques de código intermedios en el _backend_) que desencriptan el _payload_ del token y rechazan con un error 403 (Prohibido) cualquier intento de un Cajero de acceder a las rutas de eliminación de usuarios o reportes gerenciales.
+El modelo de datos incluye una propiedad rígida de "Rol" (ej. Administrador, Cajero). Este mecanismo se implementa mediante _Middlewares_ (bloques de código intermedios en el _backend_) que desencriptan el _payload_ del token y rechazan con un error 403 (Prohibido) cualquier intento de un Cajero de acceder a las rutas de eliminación de usuarios o reportes gerenciales [@stallings2017].
 
 ### Control de acceso
 
-Tanto a nivel de la interfaz (ocultando botones de configuración a cajeros) como a nivel de capa de datos, se aplican políticas estrictas para evitar inyecciones maliciosas o robo de sesiones, blindando el flujo desde que se presiona "Cobrar" hasta que la información reposa en el disco.
+Tanto a nivel de la interfaz (ocultando botones de configuración a cajeros) como a nivel de capa de datos, se aplican políticas estrictas para evitar inyecciones maliciosas o robo de sesiones, blindando el flujo desde que se presiona "Cobrar" hasta que la información reposa en el disco [@stallings2017].
 
 ## Base de datos
 
-El diseño de la persistencia de datos constituye el corazón del sistema, siendo responsabilidad directa de la ingeniería de datos modelar la información de la cafetería para que sea escalable, rápida y matemáticamente exacta.
+El diseño de la persistencia de datos constituye el corazón del sistema, siendo responsabilidad directa de la ingeniería de datos modelar la información de la cafetería para que sea escalable, rápida y matemáticamente exacta [@elmasri2015].
 
 ### Modelo relacional
 
@@ -366,15 +366,15 @@ Aunque tecnologías modernas como la pila MERN utilicen modelos NoSQL orientados
 
 ### Integridad
 
-Los principios lógicos de integridad se mantienen ineludibles mediante el uso de esquemas de validación estrictos (como _Mongoose_ en el caso de la pila seleccionada). Estos esquemas garantizan la exactitud de los tipos de datos ingresados y previenen la inserción de documentos huérfanos o con información financiera incompleta.
+Los principios lógicos de integridad se mantienen ineludibles mediante el uso de esquemas de validación estrictos (como _Mongoose_ en el caso de la pila seleccionada). Estos esquemas garantizan la exactitud de los tipos de datos ingresados y previenen la inserción de documentos huérfanos o con información financiera incompleta [@elmasri2015].
 
 ### Normalización
 
-Se aplican reglas de normalización para evitar anomalías; por ejemplo, la información del perfil del usuario o la descripción detallada de un producto no se repiten innecesariamente. Sin embargo, por requerimientos de diseño de un POS y para proteger la contabilidad, se realiza una desnormalización controlada en las `Órdenes`: al registrar una venta, el precio exacto actual del producto se copia de forma fija dentro de la orden. Esto garantiza que la información histórica sea inmutable frente a futuros cambios de precios en el catálogo.
+Se aplican reglas de normalización para evitar anomalías; por ejemplo, la información del perfil del usuario o la descripción detallada de un producto no se repiten innecesariamente. Sin embargo, por requerimientos de diseño de un POS y para proteger la contabilidad, se realiza una desnormalización controlada en las `Órdenes`: al registrar una venta, el precio exacto actual del producto se copia de forma fija dentro de la orden. Esto garantiza que la información histórica sea inmutable frente a futuros cambios de precios en el catálogo [@elmasri2015].
 
 ### Transacciones
 
-En el entorno TPS, una transacción es indivisible. Registrar una venta implica: calcular totales, insertar la orden, asociar el método de pago y actualizar la disponibilidad de la mesa. El motor de la base de datos se configura para garantizar atomicidad (Principios ACID), asegurando que si ocurre un fallo de red a la mitad del proceso, la base de datos ejecute un _Rollback_ (reversión completa de los pasos previos), previniendo que existan "ventas a medias" o corrupciones en los arqueos de caja.
+En el entorno TPS, una transacción es indivisible. Registrar una venta implica: calcular totales, insertar la orden, asociar el método de pago y actualizar la disponibilidad de la mesa. El motor de la base de datos se configura para garantizar atomicidad (Principios ACID), asegurando que si ocurre un fallo de red a la mitad del proceso, la base de datos ejecute un _Rollback_ (reversión completa de los pasos previos), previniendo que existan "ventas a medias" o corrupciones en los arqueos de caja [@elmasri2015].
 
 ## Metodología de desarrollo
 
@@ -384,22 +384,22 @@ Es un marco de trabajo ágil para el desarrollo, entrega y mantenimiento de prod
 
 #### Roles
 
-- **Product Owner:** Es el responsable de maximizar el valor del producto. Sus funciones son definir y mantener el _Product Backlog_; ser el punto de contacto único con el cliente; y aceptar o rechazar los incrementos funcionales.
-- **Scrum Master:** Responsable de que el equipo aplique correctamente Scrum. Facilita las ceremonias, elimina impedimentos y protege al equipo de interrupciones externas.
-- **Equipo de Desarrollo:** Equipo autoorganizado responsable de convertir los ítems del _Product Backlog_ en un incremento potencialmente entregable (programación, diseño y pruebas).
+- **Product Owner:** Es el responsable de maximizar el valor del producto. Sus funciones son definir y mantener el _Product Backlog_; ser el punto de contacto único con el cliente; y aceptar o rechazar los incrementos funcionales [@schwaber2020].
+- **Scrum Master:** Responsable de que el equipo aplique correctamente Scrum. Facilita las ceremonias, elimina impedimentos y protege al equipo de interrupciones externas [@schwaber2020].
+- **Equipo de Desarrollo:** Equipo autoorganizado responsable de convertir los ítems del _Product Backlog_ en un incremento potencialmente entregable (programación, diseño y pruebas) [@schwaber2020].
 
 #### Artefactos
 
-- **Product Backlog:** Lista única y priorizada de todos los requerimientos funcionales y técnicos necesarios para el sistema.
-- **Sprint Backlog:** Conjunto de requerimientos seleccionados para el _Sprint_ actual, divididos en tareas concretas a desarrollar por el equipo.
-- **Incremento:** La suma de todas las funcionalidades completadas durante el _Sprint_, las cuales deben cumplir con la Definición de Hecho (código probado y validado).
+- **Product Backlog:** Lista única y priorizada de todos los requerimientos funcionales y técnicos necesarios para el sistema [@schwaber2020].
+- **Sprint Backlog:** Conjunto de requerimientos seleccionados para el _Sprint_ actual, divididos en tareas concretas a desarrollar por el equipo [@schwaber2020].
+- **Incremento:** La suma de todas las funcionalidades completadas durante el _Sprint_, las cuales deben cumplir con la Definición de Hecho (código probado y validado) [@schwaber2020].
 
 #### Eventos
 
-- **Sprint Planning (Planificación):** Reunión de inicio donde el equipo define qué se va a entregar y cómo se va a construir el incremento durante el ciclo de trabajo.
-- **Daily Scrum (Reunión diaria):** Reunión breve de sincronización del equipo de desarrollo para evaluar el progreso y exponer bloqueos u obstáculos.
-- **Sprint Review (Revisión):** Demostración del _software_ funcional al _Product Owner_ y partes interesadas al finalizar el _Sprint_ para recoger impresiones.
-- **Sprint Retrospective (Retrospectiva):** Espacio de mejora continua donde el equipo reflexiona sobre sus propios procesos de trabajo de cara a la siguiente iteración.
+- **Sprint Planning (Planificación):** Reunión de inicio donde el equipo define qué se va a entregar y cómo se va a construir el incremento durante el ciclo de trabajo [@schwaber2020].
+- **Daily Scrum (Reunión diaria):** Reunión breve de sincronización del equipo de desarrollo para evaluar el progreso y exponer bloqueos u obstáculos [@schwaber2020].
+- **Sprint Review (Revisión):** Demostración del _software_ funcional al _Product Owner_ y partes interesadas al finalizar el _Sprint_ para recoger impresiones [@schwaber2020].
+- **Sprint Retrospective (Retrospectiva):** Espacio de mejora continua donde el equipo reflexiona sobre sus propios procesos de trabajo de cara a la siguiente iteración [@schwaber2020].
 
 ---
 
@@ -649,7 +649,7 @@ HU-11 & Actualización del estado de una orden & Como barista o mesero, quiero a
 \hline
 \rowcolor{headerblue} \bfseries \color{white} ID & \bfseries \color{white} Título & \bfseries \color{white} Historia de Usuario & \bfseries \color{white} Criterios de Aceptación & \bfseries \color{white} Prioridad & \bfseries \color{white} SP & \bfseries \color{white} Sprint \\ \hline
 \endhead
-HU-12 & Pago en línea con Razorpay & Como mesero, quiero procesar pagos en línea mediante la pasarela Razorpay al confirmar una orden, para ofrecer al cliente una alternativa de pago sin efectivo. & \textbf{CA1:} Dado que el cliente elige pago en línea, cuando selecciono ese método y confirmo, entonces se abre el modal de Razorpay con el monto correcto de la orden.\newline\newline\textbf{CA2:} Dado que el cliente completa el pago, cuando es verificado por Razorpay, entonces la orden queda registrada con los datos del pago y se genera la factura. & Must-have & 5 & Sprint 2 \\ \hline
+HU-12 & Pago digital con Binance Pay & Como mesero, quiero procesar pagos digitales mediante Binance Pay al confirmar una orden, para ofrecer al cliente una alternativa de pago sin efectivo en criptomonedas (USDT / BNB). & \textbf{CA1:} Dado que el cliente elige pago con Binance Pay, cuando selecciono ese método y confirmo, entonces el sistema genera la solicitud de pago a la API de Binance Pay con el monto correcto de la orden.\newline\newline\textbf{CA2:} Dado que el cliente completa el pago, cuando la transacción es verificada por Binance Pay, entonces la orden queda registrada con el \texttt{transactionId} y se genera la factura. & Must-have & 5 & Sprint 2 \\ \hline
 HU-13 & Generación de factura / comprobante & Como mesero, quiero generar una factura al completar una orden, para entregar al cliente un comprobante detallado de su consumo. & \textbf{CA1:} Dado que una orden fue pagada, cuando accedo a la opción de factura, entonces se muestra un documento con ítems, cantidades, subtotal, impuesto y total.\newline\newline\textbf{CA2:} Dado que estoy viendo la factura generada, cuando selecciono imprimir, entonces el sistema abre el diálogo de impresión con el formato correcto. & Must-have & 3 & Sprint 2 \\ \hline
 \caption{Historias de Usuario — Módulo de Pagos y Facturación}
 \label{tab:hu_pagos}
@@ -722,37 +722,110 @@ HU-28 & Integración con plataformas de delivery & Como administrador, quiero re
 
 Los diagramas UML del sistema han sido elaborados como evidencia gráfica del diseño funcional y estructural. Se incluyen los siguientes tipos de diagrama:
 
-**Diagrama de Casos de Uso:**
+**Diagramas de Casos de Uso:**
 
-El diagrama de casos de uso representa las interacciones entre los tres actores del sistema —Administrador, Cajero/Mesero y Barista/Cocina— y las funcionalidades que cada uno puede ejecutar dentro del Sistema POS. El Administrador tiene acceso a la gestión de empleados, catálogo, inventario y reportes; el Cajero opera el punto de venta (toma de órdenes, pagos y facturación); y el Barista interactúa con la pantalla KDS para gestionar el estado de los pedidos en producción.
+Los diagramas de casos de uso representan las interacciones entre los **cuatro actores** del sistema —Administrador, Cajero/Mesero, Barista/Cocina y Cliente— y las funcionalidades que cada uno puede ejecutar. El sistema se divide en seis áreas funcionales, cada una documentada en un diagrama independiente: _Autenticación_, _Gestión de Personal y Catálogo_, _Inventario y Reportes_, _Operación POS_, _Cocina KDS_ y _Pagos y Facturación_.
+
+**CU-1: Autenticación**
 
 \begin{diagrama}[H]
 \centering
-\includegraphics[width=0.95\linewidth]{assets/diagrama/casos_de_uso1.png}
-\caption{Diagrama de Casos de Uso — Sistema POS Cafetería}
-\label{diag:casos_de_uso}
+\includegraphics[width=0.70\linewidth]{assets/images/uml_casos_uso_01_autenticacion.png}
+\caption{Casos de Uso — Autenticación}
+\label{diag:cu_autenticacion}
+\end{diagrama}
+
+**CU-2: Gestión de Personal y Catálogo**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{assets/images/uml_casos_uso_02_gestion_personal_catalogo.png}
+\caption{Casos de Uso — Gestión de Personal y Catálogo}
+\label{diag:cu_gestion}
+\end{diagrama}
+
+**CU-3: Inventario y Reportes**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.70\linewidth]{assets/images/uml_casos_uso_03_inventario_reportes.png}
+\caption{Casos de Uso — Inventario y Reportes}
+\label{diag:cu_inventario}
+\end{diagrama}
+
+**CU-4: Operación POS**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.90\linewidth]{assets/images/uml_casos_uso_04_operacion_pos.png}
+\caption{Casos de Uso — Operación POS}
+\label{diag:cu_pos}
+\end{diagrama}
+
+**CU-5: Cocina KDS**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.65\linewidth]{assets/images/uml_casos_uso_05_cocina_kds.png}
+\caption{Casos de Uso — Cocina KDS}
+\label{diag:cu_kds}
+\end{diagrama}
+
+**CU-6: Pagos y Facturación**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{assets/images/uml_casos_uso_06_pagos_facturacion.png}
+\caption{Casos de Uso — Pagos y Facturación}
+\label{diag:cu_pagos}
 \end{diagrama}
 
 **Diagrama de Clases:**
 
-El diagrama de clases expone la estructura estática del modelo de datos del sistema, mapeando las seis entidades principales del dominio: \texttt{User}, \texttt{Category}, \texttt{Dish}, \texttt{Table}, \texttt{Order} y \texttt{Payment}, complementadas por la entidad \texttt{Insumo} para el control de inventario. Se detallan los atributos tipados de cada clase, sus métodos de negocio y las relaciones de cardinalidad (1:N entre usuarios y órdenes, 1:N entre categorías y platos, 1:1 entre órdenes y pagos, y 1:1 entre mesas y su orden activa).
+El diagrama de clases expone la estructura estática del modelo de dominio del sistema. Las entidades principales son: \texttt{User} (personal con roles Admin / Cashier / Barista), \texttt{Category} y \texttt{Dish} (catálogo del menú), \texttt{Table} (mesas con estados), \texttt{Order} (transacciones con tipo \texttt{DINE\_IN} o \texttt{TAKEAWAY}), \texttt{OrderItem} (ítems embebidos), \texttt{Payment} (cobros en efectivo o \textit{Binance Pay}), \texttt{Insumo} (inventario con estados de stock) y \texttt{ConsumptionLog} (bitácora de descuentos). Las relaciones de cardinalidad siguen la lógica transaccional: un \texttt{User} crea múltiples \texttt{Order}; una \texttt{Order} contiene uno o más \texttt{OrderItem}; una \texttt{Order} genera un \texttt{Payment}; las \texttt{Table} solo se asignan a órdenes de tipo en local.
 
 \begin{diagrama}[H]
 \centering
-\includegraphics[width=1.0\linewidth]{assets/diagrama/clases.png}
+\includegraphics[width=1.0\linewidth]{assets/images/uml_clases.png}
 \caption{Diagrama de Clases — Modelo de Dominio del Sistema POS}
 \label{diag:clases}
 \end{diagrama}
 
-**Diagrama de Actividades:**
+**Diagramas de Actividades:**
 
-El diagrama de actividades modela el flujo completo del proceso de venta transaccional (TPS), desde el inicio de sesión del cajero hasta el cierre y liberación de la mesa. Se divide en tres swimlanes que representan las responsabilidades paralelas del Cajero/Mesero, el Sistema Backend y el Barista/Cocina. Se evidencian los puntos de decisión críticos: validación de credenciales JWT, éxito o fallo de la transacción ACID (con rollback automático ante fallos), y la generación del comprobante PDF al completar el cobro.
+El proceso de venta transaccional (TPS) se documenta en tres diagramas de actividades independientes, organizados por etapa del flujo. Cada diagrama utiliza _swimlanes_ para distinguir la responsabilidad de cada actor o componente. El flujo completo va desde la toma de orden hasta la emisión del comprobante de pago.
+
+**ACT-1: Toma de Orden**
+
+Cubre la interacción inicial entre el cliente y el cajero, la clasificación del pedido (en local o para llevar), la construcción del carrito y el registro de la orden en el sistema con descuento automático de inventario.
 
 \begin{diagrama}[H]
 \centering
-\includegraphics[width=0.75\linewidth]{assets/diagrama/actividades.png}
-\caption{Diagrama de Actividades — Proceso de Venta Transaccional}
-\label{diag:actividades}
+\includegraphics[width=0.85\linewidth]{assets/images/uml_actividades_01_toma_orden.png}
+\caption{Diagrama de Actividades — Toma de Orden}
+\label{diag:act_toma_orden}
+\end{diagrama}
+
+**ACT-2: Preparación en Cocina (KDS)**
+
+Modela el ciclo de vida de la orden en cocina: desde la notificación a la pantalla KDS hasta la entrega al cliente por parte del cajero, pasando por los cambios de estado \texttt{PREPARING} → \texttt{READY}.
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.80\linewidth]{assets/images/uml_actividades_02_preparacion_cocina.png}
+\caption{Diagrama de Actividades — Preparación en Cocina (KDS)}
+\label{diag:act_cocina}
+\end{diagrama}
+
+**ACT-3: Proceso de Pago y Facturación**
+
+Detalla el cobro al cliente con dos caminos alternativos: efectivo (con cálculo de vuelto) o \textit{Binance Pay} (con verificación asíncrona vía API). Finaliza con el registro del pago, liberación de mesa y generación del comprobante.
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{assets/images/uml_actividades_03_proceso_pago.png}
+\caption{Diagrama de Actividades — Proceso de Pago y Facturación}
+\label{diag:act_pago}
 \end{diagrama}
 
 
@@ -768,22 +841,30 @@ El Diagrama de Contexto es la vista de más alto nivel. Su propósito es mostrar
 
 **Actores (usuarios del sistema):**
 
-- **Administrador:** Interactúa con el sistema a través de un navegador web en su estación de trabajo. Sus acciones se centran en la gestión del catálogo de productos y usuarios, y en la consulta de reportes financieros.
-- **Cajero / Operador POS:** Interactúa con el sistema a través de la interfaz táctil del POS desde la pantalla del punto de atención. Registra órdenes, gestiona el estado de las mesas y procesa los cobros de cada turno.
+- **Administrador:** Interactúa con el sistema a través de un navegador web en su estación de trabajo. Sus acciones se centran en la gestión del catálogo de productos, empleados, inventario y en la consulta de reportes financieros.
+- **Cajero / Mesero:** Interactúa con el sistema a través de la interfaz táctil del POS. Registra órdenes (en local y para llevar), gestiona el estado de las mesas y procesa los cobros en efectivo o mediante _Binance Pay_.
+- **Barista / Cocina:** Accede a la pantalla KDS (_Kitchen Display System_) para visualizar las órdenes entrantes y actualizar su estado de preparación en tiempo real.
+- **Cliente:** Actor externo que interactúa con el sistema a través del cajero. Puede solicitar consumo en el establecimiento (en local) o un pedido para llevar (_takeaway_), y elegir pagar en efectivo o con _Binance Pay_.
 
 **El sistema central:**
 
-- **Sistema POS Web — Cafetería (La Paz, Bolivia):** Plataforma web construida sobre la arquitectura MERN, que centraliza la gestión de transacciones, usuarios, productos y mesas del establecimiento.
+- **Sistema POS Web — Cafetería (La Paz, Bolivia):** Plataforma web construida sobre la arquitectura MERN, que centraliza la gestión de transacciones, usuarios, productos, mesas e inventario del establecimiento. Soporta dos modalidades de pedido: en local (con asignación de mesa) y para llevar (sin mesa).
 
 **Sistemas externos:**
 
-- **Módulo de Simulación de Pagos (Mock Gateway):** Sistema encargado de emular el comportamiento de una pasarela de pagos real. Permite registrar y confirmar transacciones mediante tarjetas de crédito o códigos QR de forma controlada, validando la lógica de negocio del POS sin necesidad de interactuar con entidades bancarias externas.
-  Si bien el sistema fue diseñado siguiendo los estándares de integración de pasarelas como Razorpay o Libelula, la versión actual del prototipo utiliza un Entorno de Simulación (Mock Gateway). Esta decisión permite validar el flujo completo de la lógica de negocio (apertura, cobro y cierre de mesa) sin incurrir en costos transaccionales ni depender de conectividad externa durante las pruebas de estrés del sistema.
+- **Binance Pay (Pasarela de Pagos Cripto):** Pasarela de pagos digital que procesa y verifica transacciones en criptomonedas (USDT / BNB). Sustituye al sistema de pagos anterior y permite al cliente pagar de forma digital sin efectivo, mediante verificación de transacción vía API REST de Binance Pay.
 - **Servicio de Hosting Cloud (AWS EC2 / DigitalOcean):** Infraestructura de nube donde se despliegan los contenedores Docker que alojan la API y la base de datos del sistema.
 
 **Relaciones clave en este nivel:**
 
-El _Administrador_ y el _Cajero_ acceden al Sistema POS a través del protocolo HTTPS desde sus respectivos navegadores. El Sistema POS se comunica con la _Pasarela de Pagos_ mediante llamadas HTTP/REST para procesar cobros electrónicos, y reside desplegado en el _Servicio de Hosting Cloud_.
+El _Administrador_, el _Cajero_ y el _Barista_ acceden al Sistema POS a través del protocolo HTTPS desde sus respectivos navegadores. El _Cliente_ interactúa con el sistema a través del cajero para realizar su pedido. El Sistema POS se comunica con _Binance Pay_ mediante llamadas HTTP/REST para iniciar y verificar cobros digitales, y reside desplegado en el _Servicio de Hosting Cloud_.
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{assets/images/c4_nivel1_contexto.png}
+\caption{C4 — Nivel 1: Diagrama de Contexto del Sistema POS Cafetería}
+\label{diag:c4_nivel1}
+\end{diagrama}
 
 #### Nivel 2 — Diagrama de Contenedores (_Containers_)
 
@@ -798,8 +879,8 @@ El Diagrama de Contenedores descompone el sistema en sus bloques tecnológicos d
 \endhead
 Tecnología & React.js 18 + Redux Toolkit + React Router DOM \\ \hline
 Tipo & Single Page Application (SPA) — ejecutada en el navegador \\ \hline
-Responsabilidad & Renderizar la interfaz del POS, el panel de administración y los reportes. Gestionar el estado global de la sesión y del carrito de compras. \\ \hline
-Comunicación & Envía peticiones HTTP/REST en formato JSON a la API Backend a través de \texttt{axios}. Recibe el JWT del backend y lo adjunta en la cabecera \texttt{Authorization} de cada petición subsiguiente. \\ \hline
+Responsabilidad & Renderizar la interfaz táctil del POS, el panel de administración, la pantalla KDS de cocina y los reportes. Gestionar el estado global de sesión, carrito de órdenes y tipo de pedido (en local / para llevar). \\ \hline
+Comunicación & Envía peticiones HTTP/REST en formato JSON a la API Backend a través de \texttt{axios}. Recibe el JWT del backend y lo adjunta en la cabecera \texttt{Authorization} de cada petición subsiguiente. Incluye el campo \texttt{orderType} (\texttt{dine\_in} / \texttt{takeaway}) en cada orden. \\ \hline
 \caption{Especificaciones Técnicas del Frontend}
 \label{tab:especificaciones_frontend}
 \end{longtable}
@@ -814,8 +895,8 @@ Comunicación & Envía peticiones HTTP/REST en formato JSON a la API Backend a t
 \endhead
 Tecnología & Node.js 20 LTS + Express.js 4 \\ \hline
 Tipo & Servidor de API RESTful — desplegado en contenedor Docker (AWS EC2) \\ \hline
-Responsabilidad & Exponer los \textit{endpoints} REST (\texttt{/api/user}, \texttt{/api/order}, \texttt{/api/table}, \texttt{/api/payment}, \texttt{/api/category}, \texttt{/api/dish}, \texttt{/api/metric}). Ejecutar la lógica de negocio, validaciones, cálculos transaccionales y control de acceso por roles mediante \textit{middlewares} JWT. \\ \hline
-Comunicación & Recibe peticiones HTTPS del Frontend. Lee y escribe documentos en MongoDB a través del ODM Mongoose. Invoca la API de la Pasarela de Pagos externa cuando se procesa un cobro electrónico. \\ \hline
+Responsabilidad & Exponer los \textit{endpoints} REST (\texttt{/api/user}, \texttt{/api/order}, \texttt{/api/table}, \texttt{/api/payment}, \texttt{/api/category}, \texttt{/api/dish}, \texttt{/api/metric}, \texttt{/api/inventory}). Ejecutar la lógica de negocio, validaciones, cálculos transaccionales, diferenciación de tipo de orden (en local / para llevar) y control de acceso por roles mediante \textit{middlewares} JWT. \\ \hline
+Comunicación & Recibe peticiones HTTPS del Frontend. Lee y escribe documentos en MongoDB a través del ODM Mongoose. Invoca la API de \textit{Binance Pay} para procesar y verificar cobros digitales en criptomonedas (USDT / BNB). \\ \hline
 \caption{Especificaciones Técnicas del Backend}
 \label{tab:especificaciones_backend}
 \end{longtable}
@@ -830,12 +911,66 @@ Comunicación & Recibe peticiones HTTPS del Frontend. Lee y escribe documentos e
 \endhead
 Tecnología & MongoDB 7 (desplegado en contenedor Docker o MongoDB Atlas) \\ \hline
 Tipo & Base de datos NoSQL orientada a documentos \\ \hline
-Responsabilidad & Persistir de forma duradera todos los documentos del sistema: usuarios (\texttt{users}), productos (\texttt{products}), mesas (\texttt{tables}), órdenes (\texttt{orders}) y pagos (\texttt{payments}). \\ \hline
+Responsabilidad & Persistir de forma duradera todos los documentos del sistema: usuarios (\texttt{users}), productos (\texttt{products}), mesas (\texttt{tables}), órdenes (\texttt{orders}, con campo \texttt{orderType}: \texttt{dine\_in} / \texttt{takeaway}), pagos (\texttt{payments}, con campo \texttt{method}: \texttt{cash} / \texttt{binance\_pay}) e insumos (\texttt{inventory}). \\ \hline
 Comunicación & Solo es accedida directamente por el Backend API a través del driver Mongoose. No expone puertos públicos; es accesible únicamente dentro de la red privada del entorno Docker. \\ \hline
 \caption{Especificaciones Técnicas de la Base de Datos}
 \label{tab:especificaciones_bd}
 \end{longtable}
 \endgroup
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{assets/images/c4_nivel2_contenedores.png}
+\caption{C4 — Nivel 2: Diagrama de Contenedores del Sistema POS Cafetería}
+\label{diag:c4_nivel2}
+\end{diagrama}
+
+#### Nivel 3 — Diagrama de Componentes (_Components_)
+
+El Diagrama de Componentes descompone el interior del contenedor de la **API REST** en sus bloques de código desplegables de forma lógica independiente. Muestra los módulos controladores y de servicio que conforman el servidor Node.js/Express.js, sus responsabilidades individuales y las dependencias entre ellos.
+
+**Componentes del Backend identificados:**
+
+- **JWT Auth Middleware:** Intercepta todas las peticiones entrantes a rutas protegidas. Verifica y desencripta el JWT adjunto en la cabecera `Authorization`. Extrae el _payload_ (identidad y rol) y lo adjunta al objeto `req.user`. Bloquea el acceso si el token es inválido, expirado o el rol no tiene permisos.
+- **User Controller & Service** (`/api/user`): Gestiona el ciclo de vida de los empleados: registro con hashing _bcrypt_, autenticación con emisión de JWT firmado, listado del personal activo y eliminación de cuentas.
+- **Table Controller & Service** (`/api/table`): Controla el CRUD de mesas físicas y su estado en tiempo real (Disponible / Ocupada / En Uso). Bloquea la eliminación de mesas con órdenes activas.
+- **Menu Controller & Service** (`/api/dish`, `/api/category`): Gestiona el catálogo de platos y categorías. Vincula cada plato con sus insumos para el descuento automático de inventario al confirmar órdenes.
+- **Order Controller & Service** (`/api/order`): Módulo central del TPS. Registra órdenes con tipo `DINE_IN` (en local, con asignación de mesa) o `TAKEAWAY` (para llevar, sin mesa). Calcula subtotal, impuesto (13 %) y total; actualiza el estado de la mesa si corresponde y dispara el descuento de inventario de forma atómica.
+- **KDS Controller & Service** (`/api/order` — vista cocina): Expone la vista filtrada de la pantalla KDS de cocina. Permite al barista actualizar el estado de las órdenes a través del flujo: _Entradas_ → _Preparando_ → _Lista_ → _Completada_.
+- **Payment Controller & Service** (`/api/payment`): Procesa el cobro de una orden en efectivo o mediante _Binance Pay_ (USDT / BNB). Invoca la API de _Binance Pay_ para verificar la transacción cripto, registra el pago en la colección `payments`, marca la orden como _Pagada_ y libera la mesa si el pedido fue en local.
+- **Inventory Controller & Service** (`/api/inventory`): Gestiona el ciclo de vida de los insumos: CRUD, cálculo automático de estado de stock (Crítico / Bajo / Normal / Abundante), registro de consumos manuales y reabastecimientos.
+- **Metrics Controller & Service** (`/api/metric`): Calcula métricas globales mediante consultas agregadas a MongoDB: total de órdenes, ingresos acumulados, platos activos, mesas y gasto diario en inventario de los últimos 7 días.
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=1.0\linewidth]{assets/images/c4_nivel3_componentes.png}
+\caption{C4 — Nivel 3: Diagrama de Componentes del Backend (API REST)}
+\label{diag:c4_nivel3}
+\end{diagrama}
+
+#### Nivel 4 — Diagrama de Código (_Code_)
+
+El Diagrama de Código amplía el módulo de mayor complejidad transaccional del sistema: el **Módulo de Gestión de Órdenes**. Muestra las clases, atributos, métodos y las relaciones de dependencia a nivel de código fuente entre los elementos que participan en el flujo de registro y procesamiento de una orden de venta.
+
+**Clases y entidades principales del módulo:**
+
+- **`OrderController`:** Capa de entrada HTTP. Captura las peticiones REST (`POST /api/order`, `GET`, `PUT`, `DELETE`) y delega la ejecución a `OrderService`. No contiene lógica de negocio.
+- **`OrderService`:** Núcleo de la lógica transaccional. Orquesta la creación de órdenes: invoca `calculateTotals()` para calcular subtotal (suma de `item.price × item.qty`), impuesto (13 %) y total; llama a `InventoryService.deductStock()` para descontar insumos; y actualiza el estado de la mesa mediante `TableModel`.
+- **`OrderModel`** (_Mongoose Schema_): Documento MongoDB que persiste la transacción. Contiene el tipo de orden (`OrderType`: `DINE_IN` / `TAKEAWAY`), la referencia a la mesa (solo para en local), al cajero creador y un arreglo embebido de `IOrderItem`. Registra el método de pago (`PaymentMethod`: `CASH` / `BINANCE_PAY`), estado y marcas de tiempo.
+- **`IOrderItem`** (_Embedded Document_): Subdocumento embebido dentro de `OrderModel`. Almacena la referencia al plato, su nombre al momento de la venta (snapshot inmutable), cantidad, precio unitario y subtotal de línea.
+- **`OrderType`** (_Enum_): Diferencia el tipo de pedido: `DINE_IN` (en local, con asignación de mesa) y `TAKEAWAY` (para llevar, sin mesa).
+- **`OrderStatus`** (_Enum_): Controla el ciclo de vida de la orden: `PENDING` → `IN_PROGRESS` → `PREPARING` → `READY` → `COMPLETED` / `CANCELLED`.
+- **`InventoryService`:** Servicio de soporte invocado por `OrderService`. Itera los ingredientes de cada plato ordenado y reduce el `currentStock` de cada `InsumoModel`. Recalcula el `StockStatus` automáticamente tras cada descuento.
+- **`PaymentMethod`** (_Enum_): Define los métodos de pago disponibles: `CASH` (efectivo) y `BINANCE_PAY` (criptomonedas USDT/BNB vía API de Binance Pay).
+- **`PaymentService`:** Procesa el cobro según el método seleccionado. Para `BINANCE_PAY`, invoca `verifyBinanceTx()` que llama a la API de Binance Pay para validar el `transactionId` y el monto. Persiste el comprobante en la colección `payments` y marca la orden como `COMPLETED`.
+- **`JWTAuthMiddleware`:** Protege las rutas del módulo de órdenes exigiendo un token válido con rol `Admin` o `Cashier`.
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=1.0\linewidth]{assets/images/c4_nivel4_codigo.png}
+\caption{C4 — Nivel 4: Diagrama de Código del Módulo de Gestión de Órdenes}
+\label{diag:c4_nivel4}
+\end{diagrama}
 
 ## Diseño de la Base de Datos
 
@@ -898,7 +1033,7 @@ Registra los comprobantes de las transacciones financieras procesadas, almacenan
 \rowcolor{headerblue} \bfseries \color{white} Campo & \bfseries \color{white} Tipo & \bfseries \color{white} Requerido & \bfseries \color{white} Descripción & \bfseries \color{white} Notas Técnicas \\ \hline
 \endhead
 \texttt{\_id} & ObjectId & \centering \textbf{Sí} \arraybackslash & Identificador único del documento. & Generado automáticamente por MongoDB. \\ \hline
-\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en el procesador. & ID retornado por el simulador o pasarela externa (ej. \texttt{TXN_829312}). \\ \hline
+\texttt{paymentId} & String & \centering No \arraybackslash & Identificador de la transacción en el procesador. & ID retornado por el simulador o pasarela externa (ej. \texttt{TXN\_829312}). \\ \hline
 \texttt{orderId} & String & \centering No \arraybackslash & Identificador del pedido asociado al pago. & Relación lógica con la colección \texttt{orders}. Almacenado como \texttt{String} para compatibilidad. \\ \hline
 \texttt{amount} & Number & \centering No \arraybackslash & Monto total de la transacción. & Valor numérico decimal. Representa el importe cobrado. \\ \hline
 \texttt{currency} & String & \centering No \arraybackslash & Código de la moneda de la transacción. & Ej: \texttt{"BOB"}, \texttt{"USD"}. \\ \hline
@@ -929,7 +1064,7 @@ Constituye el eje central del sistema. Registra cada transacción de venta de fo
 \texttt{items} & Array & \centering No \arraybackslash & Lista de productos incluidos en el pedido. & Arreglo de objetos con datos desnormalizados para garantizar la inmutabilidad histórica. \\ \hline
 \texttt{table} & ObjectId & \centering No \arraybackslash & Mesa física asignada al pedido. & \textbf{Referencia lógica} $\rightarrow$ vinculada al \texttt{\_id} de la colección \texttt{tables}. \\ \hline
 \texttt{paymentMethod} & String & \centering No \arraybackslash & Método de pago utilizado para el cierre. & Ej: \texttt{"Cash"}, \texttt{"Digital Payment"}, \texttt{"QR"}. \\ \hline
-\texttt{paymentData} & Object & \centering No \arraybackslash & Metadatos de confirmación de la transacción. & Almacena IDs de seguimiento generados por el simulador o pasarela externa (\texttt{transaction_id}). \\ \hline
+\texttt{paymentData} & Object & \centering No \arraybackslash & Metadatos de confirmación de la transacción. & Almacena IDs de seguimiento generados por el simulador o pasarela externa (\texttt{transaction\_id}). \\ \hline
 \texttt{createdAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de registro del documento. & Generado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
 \texttt{updatedAt} & Date & \centering \textbf{Sí} \arraybackslash & Fecha y hora de la última modificación. & Actualizado automáticamente mediante \texttt{timestamps} de Mongoose. \\ \hline
 \caption{Diccionario de datos: Colección Orders}
@@ -1129,71 +1264,151 @@ El sistema asegura la calidad del producto final a través de distintas evaluaci
 - **Pruebas de integración:** Ensayos del flujo Cliente hacia la API y hacia la base de datos extremo a extremo.
 - **Pruebas de aceptación:** Pruebas finales realizadas con un entorno cercano a la organización para validación definitiva del _Product Owner_.
 
-## Desarrollo del prototipo funcional
+Los casos de prueba se presentan agrupados por módulo funcional, en correspondencia directa con las historias de usuario del \emph{Product Backlog}. Cada caso especifica el tipo de evaluación, la acción a verificar, el requerimiento funcional asociado y el criterio de éxito esperado.
 
-A lo largo de los _sprints_ se generan prototipos incrementales. En esta etapa el proyecto expone sus interfaces plenamente interactivas reflejando casos de éxito desde el inicio de sesión (_login_), hasta el registro exitoso de la operación. _(Incluir evidencias y capturas de pantalla reales aquí)_.
+**6.1 Módulo de Autenticación y Control de Acceso**
 
-## Documentación de Ingeniería Completa
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-10 & Funcional & Iniciar sesión con correo y contraseña válidos desde la pantalla de \emph{login}. & RF-01 & El sistema autentica al usuario, genera un JWT y redirige al \emph{dashboard} correspondiente a su rol asignado. \\ \hline
+CP-11 & Funcional & Registrar un nuevo empleado con nombre, correo, teléfono, contraseña y rol asignado. & RF-02 & La cuenta es creada exitosamente y el empleado puede iniciar sesión con las credenciales registradas. \\ \hline
+CP-12 & Seguridad & Un usuario con rol de barista intenta acceder a la ruta del panel de administración. & RF-03 & El sistema bloquea el acceso y muestra un mensaje de acceso denegado sin exponer información sensible del sistema. \\ \hline
+\caption{Casos de Prueba — Módulo de Autenticación y Control de Acceso}
+\label{tab:cp_autenticacion}
+\end{longtable}
+\endgroup
 
-Se acompañan como anexos técnicos o repositorios vinculados:
+**6.2 Módulo de Dashboard y Panel de Control**
 
-- **Documentación funcional**
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-13 & Funcional & Cargar la página de inicio tras autenticarse como mesero o administrador. & RF-18 & Se visualizan métricas del negocio (ingresos totales, mesas ocupadas) y la lista de órdenes recientes con estado, mesa y hora de creación. \\ \hline
+CP-14 & Funcional & Acceder a la pestaña de Métricas globales del sistema como administrador. & RF-18 & Se muestran tarjetas con totales de órdenes, ingresos, platos activos, categorías y mesas, reflejando los datos más recientes del sistema. \\ \hline
+\caption{Casos de Prueba — Módulo de Dashboard y Panel de Control}
+\label{tab:cp_dashboard}
+\end{longtable}
+\endgroup
 
-La documentación funcional consolida todos los artefactos producidos durante la fase de análisis y modelado del sistema. Está orientada a servir como referencia oficial para el equipo de desarrollo, el _Product Owner_ y las pruebas de aceptación.
+**6.3 Módulo de Gestión de Mesas**
 
-- **Especificación de Requerimientos de Software (SRS)**
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-15 & Funcional & Crear una nueva mesa indicando número y capacidad desde el módulo de Mesas. & RF-10 & La mesa aparece en la vista con estado \emph{Disponible} y queda disponible para ser asignada al registrar nuevas órdenes. \\ \hline
+CP-16 & Funcional & Visualizar el panel de mesas y aplicar el filtro de estado \emph{En uso}. & RF-10 & Solo se muestran las mesas con órdenes activas, con información actualizada de número, capacidad, estado y nombre del cliente. \\ \hline
+\caption{Casos de Prueba — Módulo de Gestión de Mesas}
+\label{tab:cp_mesas}
+\end{longtable}
+\endgroup
 
-La Especificación de Requerimientos de Software documenta de forma estructurada y completa todos los requerimientos identificados para el Sistema POS de Cafetería. Se organiza en las siguientes secciones:
+**6.4 Módulo de Gestión del Menú**
 
-1. **Propósito del sistema:**  
-   Desarrollar un Sistema de Punto de Venta (POS) web basado en la arquitectura MERN para digitalizar y centralizar las operaciones de una cafetería en la ciudad de La Paz, eliminando los procesos manuales y garantizando la trazabilidad de cada transacción.
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-17 & Funcional & Crear una nueva categoría de menú con nombre, color e ícono desde la sección de Categorías. & RF-16 & La categoría queda registrada y disponible al crear o editar platos, visible como opción en el menú del POS. \\ \hline
+CP-18 & Funcional & Crear un nuevo plato asignándole nombre, precio, categoría e insumos requeridos con sus cantidades. & RF-15 & El plato queda registrado en el catálogo activo, visible en el menú y vinculado a los insumos para el descuento automático de inventario. \\ \hline
+\caption{Casos de Prueba — Módulo de Gestión del Menú}
+\label{tab:cp_menu}
+\end{longtable}
+\endgroup
 
-2. **Alcance funcional:**  
-   El sistema cubre seis módulos funcionales:
-   - Gestión de Ventas y Pedidos (RF-01, RF-08, RF-09, RF-11, RF-12, RF-13, RF-14)
-   - Control de Inventario (RF-03, RF-15, RF-16, RF-17, RF-18, RF-19)
-   - Gestión de Menú y Productos (RF-05, RF-06, RF-07, RF-10, RF-20, RF-21)
-   - Reportes y Toma de Decisiones (RF-04, RF-22, RF-23, RF-24, RF-25)
-   - Gestión de Proveedores y Compras (RF-02, RF-26, RF-27, RF-28)
-   - Gestión de Personal y Turnos (RF-29, RF-30, RF-31, RF-32)
+**6.5 Módulo de Toma y Gestión de Órdenes**
 
-3. **Restricciones del sistema:**
-   - Plataforma exclusivamente web
-   - Autenticación interna sin proveedores OAuth
-   - Pagos simulados sin integración bancaria real
-   - Sistema monosucursal en su primera versión
-   - Sin descuento automático de insumos compuestos  
-     _(Referencia completa en la sección Límites y Alcances del Marco Referencial)._
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-19 & Integración & Seleccionar una mesa, ingresar datos del cliente, agregar platos al carrito y confirmar la orden desde el módulo de Menú. & RF-04, RF-12 & La orden queda registrada con cálculo automático de subtotal, impuesto y total; aparece en la KDS del barista y en la lista de órdenes activas. \\ \hline
+CP-20 & Funcional & Filtrar la lista de órdenes aplicando el estado \emph{En Progreso}. & RF-04 & La lista muestra únicamente las órdenes con ese estado, con información visible de cliente, mesa, ítems y total a cobrar. \\ \hline
+\caption{Casos de Prueba — Módulo de Toma y Gestión de Órdenes}
+\label{tab:cp_ordenes}
+\end{longtable}
+\endgroup
 
-4. **Requerimientos funcionales:**  
-   32 requerimientos funcionales organizados en 6 módulos, con identificador, descripción, actor responsable y prioridad.  
-   _(Referencia: Tablas RF-01 a RF-32 en la sección 3.2)._
+**6.6 Módulo de Cocina (KDS)**
 
-5. **Requerimientos no funcionales:**  
-   13 requerimientos no funcionales en las categorías de Rendimiento, Confiabilidad, Seguridad, Disponibilidad, Escalabilidad, Usabilidad y Mantenibilidad.  
-   _(Referencia: Tabla RNF-01 a RNF-13 en la sección 3.2)._
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-21 & Integración & Verificar que una orden recién confirmada por el mesero aparece en la pantalla KDS del barista. & RF-06 & La orden aparece en la pestaña \emph{Entradas} de la KDS con número de mesa, nombre del cliente e ítems con sus cantidades. \\ \hline
+CP-22 & Integración & Cambiar el estado de una orden de \emph{Preparando} a \emph{Lista} desde la pantalla KDS. & RF-09 & La orden desaparece de la pestaña de preparación y el mesero puede visualizarla marcada como lista para ser entregada al cliente. \\ \hline
+\caption{Casos de Prueba — Módulo de Cocina (KDS)}
+\label{tab:cp_kds}
+\end{longtable}
+\endgroup
 
-- **Relevamiento documentado**
+**6.7 Módulo de Pagos y Facturación**
 
-El relevamiento de información se realizó mediante las siguientes técnicas aplicadas al personal de la cafetería:
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-23 & Integración & Procesar el pago de una orden mediante \emph{Binance Pay} (USDT / BNB) como método de cobro digital. & RF-13, RF-14 & La orden queda registrada con el \texttt{transactionId} de Binance Pay verificado, el estado cambia a \emph{Pagado} y se habilita la opción de generar la factura. \\ \hline
+CP-24 & Aceptación & Generar la factura de una orden pagada y verificar el contenido completo del comprobante. & RF-11 & Se muestra el documento con los ítems, cantidades, subtotal, impuesto y total; se habilita el diálogo de impresión con el formato correcto. \\ \hline
+\caption{Casos de Prueba — Módulo de Pagos y Facturación}
+\label{tab:cp_pagos}
+\end{longtable}
+\endgroup
 
-1. **Entrevista estructurada al administrador:**  
-   Se identificaron los procesos críticos de cobro, control de inventario y generación de reportes. El administrador manifestó la necesidad urgente de eliminar los descuadres de caja diarios y contar con información de ventas en tiempo real.
+**6.8 Módulo de Gestión de Inventario**
 
-2. **Observación directa del flujo de servicio:**  
-   Se documentó el ciclo completo de atención al cliente:  
-   `toma de pedido verbal → comanda en papel → preparación → cobro manual → anotación en cuaderno`  
-   Se identificaron los puntos de falla más frecuentes: comandas ilegibles, errores de suma y ausencia de trazabilidad.
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-25 & Funcional & Agregar un nuevo insumo con nombre, unidad, stock actual, stock mínimo y costo unitario desde la página de Insumos. & RF-17 & El insumo aparece en la lista con su estado de stock calculado automáticamente (Crítico / Bajo / Normal / Abundante). \\ \hline
+CP-26 & Integración & Confirmar una orden con platos que tienen insumos asociados y revisar el estado del inventario. & RF-17 & El stock de cada insumo se reduce según la cantidad usada por plato y el descuento queda registrado en el historial de consumos con fecha y descripción. \\ \hline
+CP-27 & Funcional & Reducir el stock de un insumo por debajo del umbral mínimo y acceder al panel de Insumos. & RF-17 & El insumo aparece destacado con indicador \emph{Crítico} o \emph{Bajo} y figura en el panel de alertas con su nivel actual de stock. \\ \hline
+CP-28 & Funcional & Registrar el reabastecimiento de un insumo crítico indicando la cantidad recibida en el formulario. & RF-17 & El stock del insumo aumenta correctamente por la cantidad indicada; si supera el umbral mínimo, desaparece del panel de alertas. \\ \hline
+CP-29 & Funcional & Buscar insumos escribiendo parte del nombre en el buscador y aplicar el filtro por estado \emph{Crítico}. & RF-17 & La lista se filtra en tiempo real mostrando únicamente los insumos en estado crítico cuyo nombre coincide con el texto ingresado. \\ \hline
+\caption{Casos de Prueba — Módulo de Gestión de Inventario}
+\label{tab:cp_inventario}
+\end{longtable}
+\endgroup
 
-3. **Revisión del repositorio de referencia:**  
-   Se analizó la estructura del repositorio _Restaurant_POS_System_ (amritmaurya1504, GitHub), identificando los módulos implementados: gestión de órdenes en tiempo real, reservas de mesa, autenticación con control de roles, integración de pagos y facturación automática. Estos módulos sirvieron como base para la definición del alcance funcional del presente sistema.
+**6.9 Módulo de Gestión de Empleados**
 
-- **Documentación técnica:** El diagrama de la arquitectura desplegada, diccionarios de datos, modelo E/R completo y especificación paramétrica de API.
-- **Documentación del sistema:** Manual de usuario para operadores, el manual técnico, directrices de instalación en entorno de servidor y parametrización de variables de entorno.
-- **Documentación del código:** Detalla la estructura de directorios del proyecto MERN y las dependencias utilizadas en el sistema de la cafetería.
-  - **Estructura del Proyecto:** Separación física y lógica entre el cliente (aplicación React en el directorio `/frontend`) y el servidor (API Node.js en el directorio `/backend`).
-  - **Librerías y Dependencias Backend:** Uso de `express` para el enrutamiento HTTP, `mongoose` como ODM para modelar los datos de MongoDB, `jsonwebtoken` para la generación y firma de tokens de sesión, `bcryptjs` para el hash de contraseñas, y `cors` para habilitar peticiones seguras desde el frontend.
-  - **Librerías y Dependencias Frontend:** Uso de `react` para la construcción de interfaces de usuario interactivas del POS, `react-router-dom` para la navegación entre el terminal de cobro y el panel de administración, y `axios` para consumir las rutas RESTful del backend asíncronamente.
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-30 & Funcional & Eliminar la cuenta de un empleado desde la sección de Empleados del panel de administración. & RF-02 & La cuenta es eliminada del sistema y el empleado ya no puede iniciar sesión con esas credenciales en ningún rol. \\ \hline
+\caption{Casos de Prueba — Módulo de Gestión de Empleados}
+\label{tab:cp_empleados}
+\end{longtable}
+\endgroup
+
+**6.10 Módulo de Interfaz y Experiencia de Usuario**
+
+\begingroup\scriptsize\setlength{\tabcolsep}{5pt}
+\begin{longtable}{|p{1.2cm}|p{1.8cm}|p{3.5cm}|p{2.0cm}|p{4.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} ID del Caso & \bfseries \color{white} Tipo de Prueba & \bfseries \color{white} Descripción & \bfseries \color{white} Req. Relacionado & \bfseries \color{white} Resultado Esperado \\ \hline
+\endhead
+CP-31 & Usabilidad & Activar el modo oscuro desde la barra de navegación, cerrar el navegador y volver a abrirlo. & RNF-07 & La interfaz cambia a paleta oscura sin recargar la página y el sistema mantiene la preferencia seleccionada al volver a abrir el navegador. \\ \hline
+\caption{Casos de Prueba — Módulo de Interfaz y Experiencia de Usuario}
+\label{tab:cp_interfaz}
+\end{longtable}
+\endgroup
+
+
 
 \newpage
 

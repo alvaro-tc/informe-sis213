@@ -1,0 +1,31 @@
+@startuml c4_nivel2_contenedores
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+
+title Sistema POS Cafetería — Nivel 2: Diagrama de Contenedores
+
+Person(admin, "Administrador", "Gestiona catálogo, empleados, inventario y reportes.")
+Person(cajero, "Cajero / Mesero", "Registra órdenes en local y para llevar. Procesa cobros.")
+Person(barista, "Barista / Cocina", "Visualiza y actualiza órdenes en KDS.")
+Person_Ext(cliente, "Cliente", "Realiza pedidos presenciales en local o para llevar.")
+
+System_Boundary(pos, "Sistema POS Web — Cafetería") {
+    Container(frontend, "Aplicación Web SPA", "React.js 18 + Redux Toolkit\n+ React Router DOM", "Renderiza la interfaz táctil del POS, el panel de administración, el KDS de cocina y los reportes. Gestiona el estado global de sesión, carrito de órdenes y tipo de pedido (en local / para llevar).")
+    Container(backend, "API REST", "Node.js 20 LTS + Express.js 4\nDockerizado en AWS EC2", "Expone los endpoints REST (/api/user, /api/order, /api/table, /api/payment, /api/dish, /api/metric, /api/inventory). Ejecuta lógica de negocio, validaciones, cálculos transaccionales y control de acceso JWT por roles.")
+    ContainerDb(db, "Base de Datos", "MongoDB 7 (NoSQL)\nMongoose ODM", "Persiste de forma duradera: usuarios, productos, mesas, órdenes (con tipo en_local / para_llevar), pagos e insumos. Solo accesible desde la red privada Docker.")
+}
+
+System_Ext(binance, "Binance Pay", "Procesa pagos digitales en criptomonedas (USDT / BNB). Verifica y confirma transacciones vía API REST.")
+System_Ext(cloud, "AWS EC2 / DigitalOcean", "Infraestructura cloud para despliegue de contenedores Docker del backend y la base de datos.")
+
+Rel(admin, frontend, "Administra desde su navegador", "HTTPS")
+Rel(cajero, frontend, "Opera desde pantalla táctil del POS", "HTTPS")
+Rel(barista, frontend, "Visualiza KDS en cocina", "HTTPS")
+Rel(cliente, frontend, "Realiza pedido en local\no para llevar", "HTTPS / Dispositivo")
+Rel(frontend, backend, "Envía peticiones con Bearer JWT\n(incluye tipo de orden)", "HTTPS / JSON (axios)")
+Rel(backend, db, "Lee y escribe documentos\nvía ODM Mongoose", "TCP / MongoDB Wire Protocol")
+Rel(backend, binance, "Inicia y verifica pagos\ncripto (USDT / BNB)", "HTTP/REST — Binance Pay API")
+Rel_U(cloud, backend, "Aloja el contenedor\ndel backend", "Docker / AWS")
+
+@enduml

@@ -1,0 +1,55 @@
+@startuml c4_nivel3_componentes
+!include <C4/C4_Component>
+
+LAYOUT_WITH_LEGEND()
+
+title Sistema POS Cafetería — Nivel 3: Diagrama de Componentes (API REST Backend)
+
+Container(frontend, "SPA Frontend", "React.js 18", "Envía peticiones REST con JWT al backend.")
+ContainerDb(db, "MongoDB", "Base de datos", "Persiste todos los documentos del sistema.")
+System_Ext(binance, "Binance Pay", "Pasarela de pagos cripto (USDT/BNB).")
+
+Container_Boundary(backend, "API REST — Node.js 20 / Express.js 4") {
+
+    Component(authMW, "JWT Auth Middleware", "Express.js Middleware\nbcrypt + jsonwebtoken", "Verifica y desencripta el JWT en cada petición. Controla el acceso por rol (Admin / Cashier / Barista) bloqueando rutas no autorizadas.")
+
+    Component(userCtrl, "User Controller\n& Service", "Express Router\nMongoose UserSchema", "Gestiona el ciclo de vida de empleados: registro con hash bcrypt, autenticación con emisión de JWT, listado y eliminación de cuentas.")
+
+    Component(tableCtrl, "Table Controller\n& Service", "Express Router\nMongoose TableSchema", "CRUD de mesas físicas. Controla disponibilidad y estado (Disponible / Ocupada / En Uso). Bloquea eliminación de mesas con órdenes activas.")
+
+    Component(menuCtrl, "Menu Controller\n& Service", "Express Router\nMongoose DishSchema\nCategorySchema", "Gestiona el catálogo de platos y categorías. Vincula platos con insumos para descuento automático. Controla disponibilidad según stock.")
+
+    Component(orderCtrl, "Order Controller\n& Service", "Express Router\nMongoose OrderSchema", "Registra órdenes (en local o para llevar) vinculadas a cajero. Calcula subtotal, impuesto (13%) y total. Actualiza estado de mesa si aplica. Dispara descuento de inventario.")
+
+    Component(kdsCtrl, "KDS Controller\n& Service", "Express Router\nMongoose OrderSchema", "Expone la vista KDS de cocina. Permite al barista actualizar estado de órdenes: Entradas → Preparando → Lista → Completada.")
+
+    Component(paymentCtrl, "Payment Controller\n& Service", "Express Router\nMongoose PaymentSchema", "Procesa el cobro (efectivo o Binance Pay cripto). Invoca la API de Binance Pay, registra el pago, marca la orden como pagada y libera la mesa si corresponde.")
+
+    Component(inventoryCtrl, "Inventory Controller\n& Service", "Express Router\nMongoose InsumoSchema", "CRUD de insumos. Gestiona stock, calcula estado (Crítico/Bajo/Normal/Abundante). Registra consumos manuales y reabastecimientos. Genera alertas de stock.")
+
+    Component(metricsCtrl, "Metrics Controller\n& Service", "Express Router\nAggregate MongoDB", "Calcula y expone métricas globales: total de órdenes, ingresos, platos activos, categorías, mesas y gasto diario en inventario (últimos 7 días).")
+}
+
+Rel(frontend, authMW, "Todas las peticiones\ncon Authorization: Bearer JWT", "HTTPS/JSON")
+
+Rel_D(authMW, userCtrl, "POST /api/user/register\nPOST /api/user/login\nDELETE /api/user/:id")
+Rel_D(authMW, tableCtrl, "GET/POST/PUT/DELETE /api/table")
+Rel_D(authMW, menuCtrl, "GET/POST/PUT/DELETE\n/api/dish — /api/category")
+Rel_D(authMW, orderCtrl, "GET/POST/PUT /api/order\n(incluye orderType: dine_in | takeaway)")
+Rel_D(authMW, kdsCtrl, "GET/PUT /api/order (KDS view)")
+Rel_D(authMW, paymentCtrl, "POST /api/payment\n(method: cash | binance_pay)")
+Rel_D(authMW, inventoryCtrl, "GET/POST/PUT/DELETE /api/inventory")
+Rel_D(authMW, metricsCtrl, "GET /api/metric")
+
+Rel(userCtrl, db, "users", "Mongoose")
+Rel(tableCtrl, db, "tables", "Mongoose")
+Rel(menuCtrl, db, "dishes + categories", "Mongoose")
+Rel(orderCtrl, db, "orders + tables + dishes", "Mongoose")
+Rel(orderCtrl, inventoryCtrl, "Descuenta stock\nal crear orden", "Internal call")
+Rel(kdsCtrl, db, "orders", "Mongoose")
+Rel(paymentCtrl, db, "payments + orders + tables", "Mongoose")
+Rel(paymentCtrl, binance, "Inicia / verifica\ntransacción cripto", "HTTP/REST")
+Rel(inventoryCtrl, db, "inventory", "Mongoose")
+Rel(metricsCtrl, db, "orders + inventory (aggregate)", "Mongoose")
+
+@enduml

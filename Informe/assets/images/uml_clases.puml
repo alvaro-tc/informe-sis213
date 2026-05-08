@@ -1,0 +1,201 @@
+@startuml uml_clases
+skinparam class {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 11
+}
+skinparam classHeader {
+    BackgroundColor #2563EB
+    FontColor #FFFFFF
+    FontSize 12
+    FontStyle Bold
+}
+skinparam enum {
+    BackgroundColor #FEF3C7
+    BorderColor #D97706
+    FontSize 10
+}
+skinparam note {
+    BackgroundColor #F0FDF4
+    BorderColor #16A34A
+    FontSize 10
+}
+skinparam linetype ortho
+
+title Diagrama de Clases — Modelo de Dominio del Sistema POS Cafetería
+
+enum RoleType {
+    ADMIN
+    CASHIER
+    BARISTA
+}
+
+enum OrderType {
+    DINE_IN
+    TAKEAWAY
+}
+
+enum OrderStatus {
+    PENDING
+    IN_PROGRESS
+    PREPARING
+    READY
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentMethod {
+    CASH
+    BINANCE_PAY
+}
+
+enum StockStatus {
+    CRITICAL
+    LOW
+    NORMAL
+    ABUNDANT
+}
+
+enum TableStatus {
+    AVAILABLE
+    OCCUPIED
+    IN_USE
+}
+
+class User {
+    +_id: ObjectId
+    +name: String
+    +email: String
+    +phone: String
+    +passwordHash: String
+    +role: RoleType
+    +createdAt: Date
+    +login(email, password): JWT
+    +logout(): void
+}
+
+class Table {
+    +_id: ObjectId
+    +number: Number
+    +capacity: Number
+    +color: String
+    +status: TableStatus
+    +clientName: String
+    +updateStatus(status): void
+}
+
+class Category {
+    +_id: ObjectId
+    +name: String
+    +color: String
+    +icon: String
+}
+
+class Dish {
+    +_id: ObjectId
+    +name: String
+    +price: Number
+    +available: Boolean
+    +category: ObjectId
+    +ingredients: Ingredient[]
+}
+
+class Ingredient {
+    <<Embedded>>
+    +insumo: ObjectId
+    +quantity: Number
+    +unit: String
+}
+
+class Order {
+    +_id: ObjectId
+    +clientName: String
+    +orderType: OrderType
+    +table: ObjectId
+    +items: OrderItem[]
+    +subtotal: Number
+    +tax: Number
+    +total: Number
+    +status: OrderStatus
+    +paymentMethod: PaymentMethod
+    +createdBy: ObjectId
+    +createdAt: Date
+    +calculateTotal(): Number
+    +updateStatus(status): void
+}
+
+class OrderItem {
+    <<Embedded>>
+    +dish: ObjectId
+    +dishName: String
+    +quantity: Number
+    +unitPrice: Number
+    +subtotal: Number
+}
+
+class Payment {
+    +_id: ObjectId
+    +order: ObjectId
+    +method: PaymentMethod
+    +amount: Number
+    +transactionId: String
+    +status: String
+    +paidAt: Date
+    +verify(): Boolean
+}
+
+class Insumo {
+    +_id: ObjectId
+    +name: String
+    +unit: String
+    +currentStock: Number
+    +minStock: Number
+    +maxStock: Number
+    +unitCost: Number
+    +stockStatus: StockStatus
+    +deductStock(qty): void
+    +restock(qty): void
+    +recalculateStatus(): void
+}
+
+class ConsumptionLog {
+    +_id: ObjectId
+    +insumo: ObjectId
+    +quantity: Number
+    +type: String
+    +description: String
+    +createdAt: Date
+}
+
+User "1" --> "*" Order : crea\n(createdBy)
+Table "1" --> "0..1" Order : asignada a\n(solo DINE_IN)
+Category "1" --> "*" Dish : agrupa
+Dish "1" *-- "*" Ingredient : contiene
+Order "1" *-- "1..*" OrderItem : incluye
+OrderItem "*" --> "1" Dish : referencia
+Order "1" --> "0..1" Payment : genera
+Insumo "1" --> "*" ConsumptionLog : registra consumos
+Ingredient "*" --> "1" Insumo : descuenta de
+User ..> RoleType
+Order ..> OrderType
+Order ..> OrderStatus
+Order ..> PaymentMethod
+Table ..> TableStatus
+Insumo ..> StockStatus
+Payment ..> PaymentMethod
+
+note bottom of Order
+  orderType == DINE_IN:
+    requiere asignación de mesa
+  orderType == TAKEAWAY:
+    sin mesa, pedido para llevar
+end note
+
+note right of Payment
+  method == BINANCE_PAY:
+    transactionId = ID de Binance
+    verificado vía Binance Pay API
+end note
+
+@enduml

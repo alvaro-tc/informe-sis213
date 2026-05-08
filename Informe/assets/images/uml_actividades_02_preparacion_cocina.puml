@@ -1,0 +1,43 @@
+@startuml uml_actividades_02_preparacion_cocina
+skinparam activity {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 11
+    DiamondBackgroundColor #FEF3C7
+    DiamondBorderColor #D97706
+}
+skinparam swimlane {
+    BorderColor #94A3B8
+    TitleFontColor #1E3A5F
+    TitleFontSize 12
+    TitleFontStyle Bold
+}
+skinparam noteBackgroundColor #F0FDF4
+skinparam noteBorderColor #16A34A
+skinparam StartColor #1D4ED8
+skinparam EndColor #DC2626
+
+title Diagrama de Actividades — Preparación en Cocina (KDS)\nSistema POS Cafetería
+
+|Sistema Backend|
+start
+:Orden registrada\n(status: PENDING);
+:Notifica a la pantalla KDS;
+
+|Barista / Cocina|
+:Recibe orden en KDS\n(pestaña: Entradas);
+:Cambia estado a\nPREPARING;
+:Prepara el pedido;
+:Cambia estado a\nREADY;
+
+|Sistema Backend|
+:Actualiza estado de orden\na READY en MongoDB;
+
+|Cajero / Mesero|
+:Recibe notificación\nde orden lista;
+:Entrega el pedido al cliente;
+
+stop
+
+@enduml

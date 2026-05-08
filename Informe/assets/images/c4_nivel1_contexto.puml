@@ -1,0 +1,25 @@
+@startuml c4_nivel1_contexto
+!include <C4/C4_Context>
+
+LAYOUT_WITH_LEGEND()
+
+title Sistema POS Cafetería — Nivel 1: Diagrama de Contexto
+
+Person(admin, "Administrador", "Gestiona el catálogo de productos, empleados, inventario y reportes financieros desde su panel de control.")
+Person(cajero, "Cajero / Mesero", "Registra órdenes presenciales (en local y para llevar), gestiona el estado de las mesas y procesa cobros desde el punto de venta táctil.")
+Person(barista, "Barista / Cocina", "Visualiza las órdenes entrantes en la pantalla KDS y actualiza el estado de preparación de cada pedido.")
+Person_Ext(cliente, "Cliente", "Realiza pedidos para consumir en la cafetería (en local) o pedidos para llevar. Puede pagar con efectivo o mediante Binance Pay.")
+
+System(pos, "Sistema POS Web — Cafetería\n(Arquitectura MERN)", "Plataforma web que centraliza la gestión de transacciones, usuarios, productos, mesas e inventario de la cafetería en La Paz, Bolivia. Soporta órdenes en local y para llevar.")
+
+System_Ext(binance, "Binance Pay\n(Pasarela de Pagos Cripto)", "Pasarela de pagos digital que procesa y verifica transacciones en criptomonedas (USDT / BNB). Alternativa al pago en efectivo para clientes y órdenes para llevar.")
+System_Ext(cloud, "Cloud Hosting\n(AWS EC2 / DigitalOcean)", "Infraestructura de nube donde se despliegan los contenedores Docker que alojan la API REST y la base de datos MongoDB del sistema.")
+
+Rel(admin, pos, "Gestiona catálogo, empleados,\ninventario y reportes", "HTTPS / Navegador Web")
+Rel(cajero, pos, "Registra órdenes en local\ny para llevar. Procesa cobros", "HTTPS / Pantalla táctil POS")
+Rel(barista, pos, "Visualiza y actualiza\nestado de órdenes (KDS)", "HTTPS / Navegador")
+Rel(cliente, pos, "Realiza pedido en local\no para llevar", "HTTPS / Dispositivo del cliente")
+Rel(pos, binance, "Procesa pagos digitales\n(USDT / BNB)", "HTTP/REST — Binance Pay API")
+Rel_D(pos, cloud, "Desplegado en contenedores\nDocker", "DevOps / CI-CD")
+
+@enduml

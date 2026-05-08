@@ -1,0 +1,192 @@
+@startuml c4_nivel4_codigo
+title Sistema POS Cafetería — Nivel 4: Diagrama de Código\nMódulo de Gestión de Órdenes (Order Module)
+
+skinparam class {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 11
+}
+skinparam classHeader {
+    BackgroundColor #2563EB
+    FontColor #FFFFFF
+    FontSize 12
+    FontStyle Bold
+}
+skinparam note {
+    BackgroundColor #FEF9C3
+    BorderColor #CA8A04
+}
+skinparam linetype ortho
+
+class OrderController {
+    +createOrder(req, res): Promise<void>
+    +getAllOrders(req, res): Promise<void>
+    +getOrderById(req, res): Promise<void>
+    +updateOrderStatus(req, res): Promise<void>
+    +deleteOrder(req, res): Promise<void>
+}
+
+class OrderService {
+    +create(orderData: CreateOrderDTO): Promise<IOrder>
+    +findAll(filters: OrderFilters): Promise<IOrder[]>
+    +findById(id: string): Promise<IOrder>
+    +updateStatus(id: string, status: OrderStatus): Promise<IOrder>
+    +remove(id: string): Promise<void>
+    -calculateTotals(items: OrderItemDTO[]): OrderTotals
+    -deductInventory(items: OrderItemDTO[]): Promise<void>
+    -updateTableStatus(tableId: string, status: string): Promise<void>
+}
+
+class OrderModel {
+    <<Mongoose Schema>>
+    +_id: ObjectId
+    +clientName: String
+    +orderType: OrderType
+    +table: ObjectId
+    +items: IOrderItem[]
+    +subtotal: Number
+    +tax: Number
+    +total: Number
+    +status: OrderStatus
+    +paymentMethod: PaymentMethod
+    +createdBy: ObjectId
+    +createdAt: Date
+}
+
+class IOrderItem {
+    <<Embedded Document>>
+    +dish: ObjectId
+    +dishName: String
+    +quantity: Number
+    +price: Number
+    +subtotal: Number
+}
+
+enum OrderType {
+    DINE_IN
+    TAKEAWAY
+}
+
+enum OrderStatus {
+    PENDING
+    IN_PROGRESS
+    PREPARING
+    READY
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentMethod {
+    CASH
+    BINANCE_PAY
+}
+
+class TableModel {
+    <<Mongoose Schema>>
+    +_id: ObjectId
+    +number: Number
+    +capacity: Number
+    +status: TableStatus
+    +color: String
+    +clientName: String
+}
+
+enum TableStatus {
+    AVAILABLE
+    OCCUPIED
+    IN_USE
+}
+
+class DishModel {
+    <<Mongoose Schema>>
+    +_id: ObjectId
+    +name: String
+    +price: Number
+    +category: ObjectId
+    +ingredients: IIngredient[]
+    +available: Boolean
+}
+
+class IIngredient {
+    <<Embedded Document>>
+    +insumo: ObjectId
+    +quantity: Number
+    +unit: String
+}
+
+class InventoryService {
+    +deductStock(dishId: ObjectId, qty: number): Promise<void>
+    +checkCriticalAlerts(): Promise<IAlert[]>
+    +restock(insumoId: string, qty: number): Promise<void>
+}
+
+class InsumoModel {
+    <<Mongoose Schema>>
+    +_id: ObjectId
+    +name: String
+    +unit: String
+    +currentStock: Number
+    +minStock: Number
+    +maxStock: Number
+    +unitCost: Number
+    +status: StockStatus
+}
+
+enum StockStatus {
+    CRITICAL
+    LOW
+    NORMAL
+    ABUNDANT
+}
+
+class PaymentService {
+    +processPayment(orderId: string, method: PaymentMethod): Promise<IPayment>
+    +verifyBinanceTx(txId: string): Promise<boolean>
+    +generateInvoice(orderId: string): Promise<Invoice>
+}
+
+class JWTAuthMiddleware {
+    +verifyToken(req, res, next): void
+    +authorizeRole(roles: string[]): Middleware
+    -decodeToken(token: string): JWTPayload
+}
+
+OrderController ..> OrderService : delega lógica
+OrderService --> OrderModel : persiste
+OrderService --> InventoryService : descuenta stock\nal crear orden
+OrderService --> TableModel : actualiza estado\n(solo si DINE_IN)
+OrderService --> DishModel : consulta precio\ne ingredientes
+OrderModel "1" *-- "1..*" IOrderItem : contiene
+IOrderItem ..> DishModel : referencia por ObjectId
+DishModel "1" *-- "0..*" IIngredient : contiene
+IIngredient ..> InsumoModel : referencia por ObjectId
+InventoryService --> InsumoModel : actualiza stock
+PaymentService --> OrderModel : marca pagado
+OrderModel ..> OrderType : usa
+OrderModel ..> OrderStatus : usa
+OrderModel ..> PaymentMethod : usa
+TableModel ..> TableStatus : usa
+InsumoModel ..> StockStatus : usa
+JWTAuthMiddleware ..> OrderController : protege rutas\n(Admin / Cashier)
+
+note right of OrderService
+  calculateTotals():
+  subtotal = sum(item.price * item.qty)
+  tax = subtotal * 0.13
+  total = subtotal + tax
+
+  Si orderType == DINE_IN:
+    → asignar mesa y cambiar estado
+  Si orderType == TAKEAWAY:
+    → no asignar mesa
+end note
+
+note bottom of PaymentService
+  verifyBinanceTx():
+  → llama Binance Pay API
+  → valida txId y monto
+  → retorna true/false
+end note
+
+@enduml

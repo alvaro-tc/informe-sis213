@@ -1,0 +1,55 @@
+@startuml uml_casos_uso_04_operacion_pos
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 12
+}
+skinparam actor {
+    BackgroundColor #DBEAFE
+    BorderColor #2563EB
+    FontSize 12
+    FontStyle Bold
+}
+skinparam packageStyle rectangle
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam linetype ortho
+
+title Casos de Uso — Operación POS\nSistema POS Cafetería
+
+actor "Cajero / Mesero" as cajero
+actor "Cliente" as cliente
+
+rectangle "Sistema POS Cafetería" {
+    package "Operación POS" {
+        (Registrar orden en local) as UC10
+        (Registrar orden para llevar) as UC11
+        (Agregar platos al carrito) as UC12
+        (Confirmar orden) as UC13
+        (Ver lista de órdenes) as UC14
+        (Gestionar estado de mesas) as UC15
+    }
+
+    package "Pedido del Cliente" {
+        (Solicitar pedido en local) as UC22
+        (Solicitar pedido para llevar) as UC23
+    }
+}
+
+cajero --> UC10
+cajero --> UC11
+cajero --> UC14
+cajero --> UC15
+
+cliente --> UC22
+cliente --> UC23
+
+UC10 ..> UC12 : <<include>>
+UC11 ..> UC12 : <<include>>
+UC12 ..> UC13 : <<include>>
+UC22 ..> UC10 : <<extend>>
+UC23 ..> UC11 : <<extend>>
+
+@enduml

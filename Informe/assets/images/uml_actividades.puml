@@ -1,0 +1,94 @@
+@startuml uml_actividades
+skinparam activity {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 11
+    DiamondBackgroundColor #FEF3C7
+    DiamondBorderColor #D97706
+}
+skinparam swimlane {
+    BorderColor #94A3B8
+    TitleFontColor #1E3A5F
+    TitleFontSize 12
+    TitleFontStyle Bold
+}
+skinparam noteBackgroundColor #F0FDF4
+skinparam noteBorderColor #16A34A
+skinparam StartColor #1D4ED8
+skinparam EndColor #DC2626
+
+title Diagrama de Actividades — Proceso de Venta Transaccional\nSistema POS Cafetería
+
+|Cliente|
+start
+:Llega a la cafetería\no contacta al cajero;
+:Solicita pedido\n(en local o para llevar);
+
+|Cajero / Mesero|
+:Recibe solicitud del cliente;
+if (¿Tipo de pedido?) then (En local)
+    :Selecciona mesa disponible;
+    :Asigna nombre del cliente\na la mesa;
+else (Para llevar)
+    :Registra nombre del cliente\n(sin asignar mesa);
+endif
+
+:Abre carrito de órdenes\nen el módulo de Menú;
+:Agrega platos al carrito\n(cantidad e ítems);
+
+|Sistema Backend|
+:Calcula subtotal\npor ítem y total;
+note right: subtotal = Σ(precio × qty)\ntax = subtotal × 0.13\ntotal = subtotal + tax
+
+|Cajero / Mesero|
+:Confirma la orden;
+
+|Sistema Backend|
+:Registra la orden en MongoDB\n(status: PENDING);
+:Descuenta insumos del\ninventario automáticamente;
+if (¿Stock de insumos crítico?) then (Sí)
+    :Genera alerta de\nstock bajo/crítico;
+endif
+:Actualiza estado de mesa\na OCCUPIED (si DINE_IN);
+:Notifica a la pantalla KDS;
+
+|Barista / Cocina|
+:Recibe orden en KDS\n(pestaña: Entradas);
+:Cambia estado a\nPREPARING;
+:Prepara el pedido;
+:Cambia estado a\nREADY;
+
+|Cajero / Mesero|
+:Notificación de orden lista;
+:Entrega el pedido al cliente;
+:Selecciona método de pago;
+if (¿Método de pago?) then (Efectivo)
+    :Registra monto en efectivo;
+    :Calcula vuelto si aplica;
+else (Binance Pay)
+    :Genera solicitud de pago\nen Binance Pay API;
+    |Sistema Backend|
+    :Envía petición a\nBinance Pay API;
+    if (¿Transacción verificada?) then (Sí)
+        :Confirma pago exitoso;
+    else (No)
+        :Devuelve error de pago;
+        |Cajero / Mesero|
+        :Notifica fallo al cliente\ny reintenta;
+        stop
+    endif
+endif
+
+|Sistema Backend|
+:Registra pago en MongoDB\n(método + transactionId);
+:Actualiza orden a\nCOMPLETED;
+:Libera la mesa\n(status: AVAILABLE)\n(solo si DINE_IN);
+:Genera factura / comprobante;
+
+|Cliente|
+:Recibe comprobante\n(digital o impreso);
+
+stop
+
+@enduml

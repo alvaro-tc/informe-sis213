@@ -1,0 +1,40 @@
+@startuml uml_casos_uso_06_pagos_facturacion
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #EEF4FF
+    BorderColor #2563EB
+    ArrowColor #1D4ED8
+    FontSize 12
+}
+skinparam actor {
+    BackgroundColor #DBEAFE
+    BorderColor #2563EB
+    FontSize 12
+    FontStyle Bold
+}
+skinparam packageStyle rectangle
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam linetype ortho
+
+title Casos de Uso — Pagos y Facturación\nSistema POS Cafetería
+
+actor "Cajero / Mesero" as cajero
+
+rectangle "Sistema POS Cafetería" {
+    package "Pagos y Facturación" {
+        (Seleccionar método de pago) as UC18
+        (Pagar con efectivo) as UC19
+        (Pagar con Binance Pay) as UC20
+        (Generar factura / comprobante) as UC21
+    }
+}
+
+cajero --> UC18
+cajero --> UC21
+
+UC18 ..> UC19 : <<extend>>
+UC18 ..> UC20 : <<extend>>
+UC18 ..> UC21 : <<include>>
+
+@enduml
