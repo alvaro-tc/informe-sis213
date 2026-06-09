@@ -1,1 +1,14 @@
-{}
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth *)",
+      "Bash(gh issue *)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\alvar\\\\Documents\\\\GitHub\\\\informe-sis213\" -Recurse -Filter \"descripcion*\")",
+      "Bash(Select-Object FullName)",
+      "Bash(gh label *)",
+      "Bash(Read \"/c/Users/alvar/AppData/Local/Temp/claude/C--Users-alvar-Documents-GitHub-informe-sis213/4d0b21fa-466b-4750-a799-29a1469dafb2/tasks/bu2lm6tr8.output\")",
+      "Bash(del pago_qr.png)",
+      "Bash(del _*)"
+    ]
+  }
+}

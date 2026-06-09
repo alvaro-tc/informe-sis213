@@ -1,0 +1,23 @@
+{
+  "name": "informe-sis213",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvaro-tc/informe-sis213.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvaro-tc/informe-sis213/issues"
+  },
+  "homepage": "https://github.com/alvaro-tc/informe-sis213#readme",
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

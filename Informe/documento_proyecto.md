@@ -1257,14 +1257,59 @@ El _backend_ de la cafetería está desarrollado en **Node.js** con el _framewor
 
 ## Validación y pruebas del sistema
 
-El sistema asegura la calidad del producto final a través de distintas evaluaciones de estrés y rendimiento:
+El sistema implementa una estrategia de calidad de software en cuatro niveles, asegurando tanto la corrección técnica del código como la conformidad con los requisitos del negocio. Cada nivel de prueba tiene un alcance, herramientas y responsable definidos.
 
-- **Pruebas unitarias:** Validando que las funciones matemáticas y servicios individuales del _backend_ operen según la lógica.
-- **Pruebas funcionales:** Ejecución de casos de uso (Ej: Qué sucede si el usuario ingresa un formato de fecha erróneo).
-- **Pruebas de integración:** Ensayos del flujo Cliente hacia la API y hacia la base de datos extremo a extremo.
-- **Pruebas de aceptación:** Pruebas finales realizadas con un entorno cercano a la organización para validación definitiva del _Product Owner_.
+### Pruebas Unitarias
 
-Los casos de prueba se presentan agrupados por módulo funcional, en correspondencia directa con las historias de usuario del \emph{Product Backlog}. Cada caso especifica el tipo de evaluación, la acción a verificar, el requerimiento funcional asociado y el criterio de éxito esperado.
+Las pruebas unitarias verifican el comportamiento correcto de funciones y módulos de forma aislada, sin dependencias externas. En el Sistema POS Cafetería se aplican sobre:
+
+- **Funciones de cálculo:** validación matemática de subtotales, impuesto (13% IVA boliviano) y totales de órdenes.
+- **Middlewares de seguridad:** verificación de que `isVerifiedUser` rechaza tokens JWT inválidos, expirados o manipulados.
+- **Schemas de validación Zod:** confirmación de que los schemas rechazan _payloads_ malformados antes de llegar a la base de datos.
+- **Lógica del orquestador QR (Django):** validación del algoritmo de failover entre proveedores MSC y ZAS y la correcta asignación de slots decimales para identificación de pagos.
+
+**Herramientas:** Jest (Node.js/Express), pytest (Django/Python).
+
+### Pruebas Funcionales
+
+Las pruebas funcionales evalúan que cada funcionalidad del sistema responde correctamente ante entradas válidas e inválidas, verificando el cumplimiento de los criterios de aceptación de cada historia de usuario:
+
+- Flujo completo de autenticación: registro, login, logout y redirección por rol.
+- Operaciones CRUD del catálogo: categorías, platos, insumos y mesas.
+- Generación y visualización de métricas en el dashboard.
+- Flujo de toma de órdenes con cálculo de totales en tiempo real.
+- Generación de facturas y comprobantes de pago.
+- Filtros de búsqueda en inventario, órdenes y mesas.
+- Generación del QR bancario y visualización del cronómetro de expiración.
+
+**Herramientas:** Supertest (pruebas de API REST automatizadas), Postman (colecciones de prueba manuales).
+
+### Pruebas de Integración
+
+Las pruebas de integración verifican la comunicación correcta entre los distintos componentes del sistema: el _frontend_ React, la API Node.js, la base de datos MongoDB, el orquestador Django y los servicios externos (WhatsApp/Groq):
+
+- **Frontend → API:** confirmación de que las peticiones HTTP del cliente son procesadas correctamente por el _backend_ con datos reales de MongoDB.
+- **API → Orquestador QR:** verificación del ciclo completo de generación de QR, recepción del webhook de confirmación y actualización de estado de la orden.
+- **API → WhatsApp:** comprobación de que los eventos de pago y cambio de estado disparan correctamente las notificaciones al cliente por WhatsApp (Baileys y Meta).
+- **API → Groq:** validación de que el chatbot recibe el contexto del menú actualizado y responde correctamente a consultas entrantes.
+- **Descuento de inventario:** verificación de que al confirmar una orden se reducen correctamente los stocks de todos los insumos vinculados según la receta de cada plato.
+
+**Herramientas:** Supertest con base de datos de prueba aislada, mocks de los servicios externos (Baileys, Meta, Groq).
+
+### Pruebas de Aceptación
+
+Las pruebas de aceptación son ejecutadas en el entorno de producción desplegado en Oracle Cloud, con datos representativos del negocio real. Validan que el sistema cumple los criterios del _Product Owner_ y los usuarios finales:
+
+- Flujo _end-to-end_ de una jornada completa: apertura de turno → toma de órdenes → preparación en KDS → cobro con QR bancario → cierre de caja.
+- Verificación de que todas las notificaciones WhatsApp se reciben en el celular del cliente (QR de pago, confirmación y actualización de estado).
+- Confirmación de que el chatbot Groq responde con información actualizada del menú en menos de 3 segundos.
+- Validación de que el pipeline CI/CD en Oracle Cloud mediante GitHub Actions completa el despliegue en menos de 5 minutos.
+
+**Herramientas:** Checklist manual con criterios de aceptación definidos en las historias de usuario del _Product Backlog_.
+
+---
+
+Los casos de prueba detallados se presentan a continuación, agrupados por módulo funcional y en correspondencia directa con las historias de usuario. Cada caso especifica el tipo de evaluación, la acción a verificar, el requerimiento funcional asociado y el criterio de éxito esperado.
 
 **6.1 Módulo de Autenticación y Control de Acceso**
 
@@ -1408,7 +1453,386 @@ CP-31 & Usabilidad & Activar el modo oscuro desde la barra de navegación, cerra
 \end{longtable}
 \endgroup
 
+\newpage
 
+## Desarrollo del Prototipo Funcional
+
+El prototipo funcional del Sistema TPS POS Cafetería fue construido e iterado a lo largo de cuatro Sprints bajo el marco Scrum. El resultado es un sistema web completamente operativo, desplegado en producción sobre un servidor Ubuntu alojado en **Oracle Cloud Infrastructure**, con entrega continua automatizada mediante **GitHub Actions** en cada push a la rama `main`.
+
+### Funcionalidades Implementadas
+
+**Sprint 1 — Base del sistema**
+
+Se implementaron los módulos core del sistema: autenticación con JWT y control de acceso por roles (Administrador, Mesero, Barista, Cajero), el panel POS táctil para toma de órdenes con carrito en tiempo real, la gestión visual de mesas con actualización vía WebSocket, y el módulo de administración del catálogo (categorías y platos con CRUD completo). Al finalizar el Sprint 1 el sistema era funcional para el ciclo básico: login → seleccionar mesa → tomar orden → visualizar en cocina.
+
+**Sprint 2 — Módulos avanzados**
+
+Se desarrollaron el display de cocina KDS con pestañas por estado (Entradas, Preparando, Listo), el módulo de gestión de inventario con descuento automático de insumos al confirmar órdenes, alertas visuales de stock crítico/bajo y gráfico de gasto semanal, la gestión de empleados desde el panel del administrador, el modo oscuro/claro persistente y las métricas globales del dashboard.
+
+**Sprint 3 — Integraciones externas**
+
+Se integró el **orquestador de pagos QR** desarrollado en **Django 5**, que genera códigos QR reales de bancos bolivianos (Mercantil Santa Cruz y Banco Ganadero) mediante ADB, con failover automático entre proveedores. Se implementó el módulo de **WhatsApp** con dos providers intercambiables: Baileys (WhatsApp Web, sin cuenta de negocio) y Meta Cloud API, para enviar el QR de pago, confirmaciones y actualizaciones de estado al cliente. Se integró el **chatbot IA con Groq** (modelo Llama 3.1 8B Instant) para responder consultas del menú por WhatsApp en tiempo real.
+
+**Sprint 4 — Despliegue en producción**
+
+Se aprovisionó el servidor en **Oracle Cloud Infrastructure** con Nginx como proxy inverso, PM2 como gestor de procesos para Node.js y systemd para el orquestador Django. Se configuró el pipeline de **GitHub Actions** que automatiza en cada push a `main`: build del frontend React, sincronización del código al servidor vía `rsync` sobre SSH y reinicio del proceso con `pm2 restart`.
+
+### Evidencias del Sistema
+
+A continuación se presentan capturas de pantalla del sistema funcional desplegado en producción. En cada sección se indica el rol que accede a la funcionalidad y el módulo al que corresponde.
+
+**Pantalla de Login — Autenticación**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/login.png}
+\caption{Pantalla de inicio de sesión — ingreso de credenciales y selección de rol}
+\label{diag:ss_login}
+\end{diagrama}
+
+**Dashboard del Administrador — Métricas globales**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/dashboard_admin.png}
+\caption{Dashboard administrativo — métricas de ingresos totales, órdenes activas, mesas ocupadas y platos}
+\label{diag:ss_dashboard}
+\end{diagrama}
+
+**Panel de Mesas — Estado en tiempo real**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/panel_mesas.png}
+\caption{Panel visual de mesas — tarjetas con estado Disponible, Ocupada y filtro por estado}
+\label{diag:ss_mesas}
+\end{diagrama}
+
+**Interfaz POS — Toma de órdenes**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/pos_orden.png}
+\caption{Interfaz POS táctil — selección de productos por categoría, carrito con cálculo automático de totales}
+\label{diag:ss_pos}
+\end{diagrama}
+
+**Pantalla KDS — Cocina**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/kds_cocina.png}
+\caption{Display de cocina KDS — órdenes organizadas por estado con cambio de fase por el barista}
+\label{diag:ss_kds}
+\end{diagrama}
+
+**Módulo de Inventario — Gestión de insumos**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/inventario.png}
+\caption{Módulo de inventario — lista de insumos con indicadores de stock crítico/bajo y panel de alertas}
+\label{diag:ss_inventario}
+\end{diagrama}
+
+**Pago QR Bancario — Generación y cobro**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/pago_qr.png}
+\caption{Módulo de pago QR — código QR bancario boliviano generado con cronómetro de expiración y estado en tiempo real}
+\label{diag:ss_qr}
+\end{diagrama}
+
+**Panel del Orquestador Django — Historial de pagos**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/orquestador_qr.png}
+\caption{Panel web del orquestador Django (:8500) — historial de pagos QR con estado, proveedor bancario y monto}
+\label{diag:ss_orquestador}
+\end{diagrama}
+
+**Panel de WhatsApp — Administración**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/whatsapp_panel.png}
+\caption{Panel de administración WhatsApp — estado del provider, QR de conexión Baileys y opciones de gestión}
+\label{diag:ss_whatsapp}
+\end{diagrama}
+
+**Notificación WhatsApp al cliente**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/whatsapp_notificacion.png}
+\caption{Notificación WhatsApp al cliente — imagen del QR de pago con monto, banco y tiempo estimado de expiración}
+\label{diag:ss_wa_notif}
+\end{diagrama}
+
+**Chatbot Groq en WhatsApp**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/chatbot_groq.png}
+\caption{Chatbot IA con Groq — respuestas automáticas a consultas del menú recibidas por WhatsApp}
+\label{diag:ss_chatbot}
+\end{diagrama}
+
+**Pipeline CI/CD — GitHub Actions**
+
+\begin{diagrama}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{assets/images/screenshots/github_actions.png}
+\caption{Pipeline de despliegue en GitHub Actions — pasos de build, rsync y reinicio PM2 en servidor Oracle Cloud}
+\label{diag:ss_cicd}
+\end{diagrama}
+
+\newpage
+
+## Documentación de Ingeniería Completa
+
+Esta sección consolida toda la documentación técnica y funcional producida durante el proyecto, cumpliendo los requisitos de documentación de ingeniería de software establecidos por la cátedra.
+
+### Documentación Funcional
+
+**Documento de Especificación de Requisitos (SRS)**
+
+El documento SRS del sistema se estructura en las siguientes secciones, todas desarrolladas en el presente informe:
+
+- **Propósito y alcance:** Sistema POS web para cafetería en La Paz, Bolivia, orientado a reemplazar el registro manual de pedidos y los cálculos de caja manuales. Usuarios objetivo: Administrador y personal operativo (mesero, barista, cajero).
+- **Descripción general del sistema:** Arquitectura MERN (MongoDB, Express, React, Node.js) con servicios adicionales para pagos QR (Django), notificaciones WhatsApp (Baileys/Meta) e IA conversacional (Groq).
+- **Restricciones:** Sistema web exclusivo (requiere navegador moderno), autenticación interna con JWT (sin OAuth externo), base de datos NoSQL (MongoDB), sin integración con sistemas tributarios gubernamentales en esta fase.
+
+**Relevamiento de la Información**
+
+El levantamiento de requerimientos se realizó mediante tres técnicas complementarias: (1) **entrevistas** con el administrador y el personal de caja para extraer requerimientos funcionales precisos y métricas requeridas en los reportes; (2) **observación directa** durante las horas pico para mapear el flujo real de trabajo, los tiempos de atención y la comunicación entre caja y barra; (3) **análisis documental** de los registros físicos existentes (comandas, libretas de contabilidad, inventarios manuales) como base para diseñar los esquemas de datos.
+
+**Requerimientos Funcionales y No Funcionales**
+
+Los 20 requerimientos funcionales (RF-01 a RF-20) y 9 no funcionales (RNF-01 a RNF-09) se encuentran especificados en detalle en la Sección **Determinación de requerimientos** del presente documento, con descripción, módulo asociado y prioridad (Must-have / Should-have / Could-have).
+
+**Historias de Usuario**
+
+El _Product Backlog_ del sistema comprende **33 historias de usuario** (HU-01 a HU-33), totalizando **159 story points**. Se organizan en once módulos funcionales (Autenticación, Dashboard, Mesas, Menú, Órdenes, Cocina KDS, Pagos y Facturación, Inventario, Empleados, Interfaz UX) y tres integraciones externas (Pagos QR Django, WhatsApp, Groq IA), distribuidas en cuatro Sprints de dos semanas cada uno. Las historias completas con criterios de aceptación en formato Dado/Cuando/Entonces se presentan en la Sección **Historias de Usuario** del presente documento.
+
+**Casos de Uso**
+
+Se elaboraron seis diagramas UML de casos de uso que cubren todos los actores del sistema (Administrador, Mesero, Barista, Cajero, Cliente): CU-1 Autenticación, CU-2 Gestión de Personal y Catálogo, CU-3 Inventario y Reportes, CU-4 Operación POS, CU-5 Cocina KDS, CU-6 Pagos y Facturación. Los diagramas en formato PlantUML y sus imágenes PNG se encuentran en `Informe/assets/images/`.
+
+### Documentación Técnica
+
+**Arquitectura del Sistema**
+
+El sistema sigue el patrón **Cliente-Servidor** con los siguientes componentes desplegados en Oracle Cloud Infrastructure:
+
+\begingroup\small
+\begin{longtable}{|p{3cm}|p{4cm}|p{6cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Componente & \bfseries \color{white} Tecnología & \bfseries \color{white} Responsabilidad \\ \hline
+\endhead
+Frontend & React 18 + Vite + Tailwind & SPA táctil, gestión de estado con Redux Toolkit \\ \hline
+Backend API & Node.js 20 + Express.js & API RESTful, lógica de negocio, WebSocket \\ \hline
+Base de datos & MongoDB + Mongoose & Persistencia de documentos, transacciones ACID \\ \hline
+Orquestador QR & Django 5 + SQLite + ADB & Generación de QR bancario, failover, webhooks \\ \hline
+WhatsApp & Baileys / Meta Cloud API & Notificaciones y chatbot \\ \hline
+IA Chatbot & Groq API (Llama 3.1) & Respuestas automáticas sobre el menú \\ \hline
+Proxy & Nginx & Reverse proxy, certificado SSL, archivos estáticos \\ \hline
+Proceso Node & PM2 & Gestión y monitoreo del proceso en producción \\ \hline
+CI/CD & GitHub Actions & Build, rsync y despliegue automático \\ \hline
+\caption{Componentes de arquitectura del sistema}
+\label{tab:arquitectura_componentes}
+\end{longtable}
+\endgroup
+
+La documentación de arquitectura completa, incluyendo el modelo C4 en cuatro niveles (Contexto, Contenedores, Componentes y Código), se presenta en la Sección **Diseño del sistema** del presente informe.
+
+**Diagramas UML**
+
+Se elaboraron los siguientes diagramas UML como evidencia del diseño funcional y estructural:
+
+- **Diagramas de Casos de Uso (6):** CU-1 a CU-6, uno por cada área funcional del sistema.
+- **Diagrama de Clases:** estructura de las entidades principales del dominio y sus relaciones.
+- **Diagramas de Actividades (3):** flujo de toma de orden, preparación en cocina y proceso de pago QR.
+
+Todos los diagramas están disponibles en formato PlantUML (`.puml`) y como imagen PNG en `Informe/assets/images/`.
+
+**Base de Datos**
+
+El sistema utiliza **MongoDB** como sistema de persistencia principal, con los siguientes modelos documentales: `User`, `Order`, `Table`, `Dish`, `Category`, `Insumo`. El orquestador Django utiliza **SQLite** para persistir el modelo `Payment` del ciclo de vida de los QR bancarios. Los diccionarios de datos completos con tipos, restricciones y relaciones entre colecciones se presentan en la Sección **Diseño de la Base de Datos** del presente informe.
+
+**API REST**
+
+La API del backend expone los siguientes grupos de endpoints, todos bajo el prefijo `/api`:
+
+\begingroup\small
+\begin{longtable}{|p{3.5cm}|p{4cm}|p{5.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Grupo & \bfseries \color{white} Prefijo & \bfseries \color{white} Operaciones principales \\ \hline
+\endhead
+Autenticación & \texttt{/api/user} & Registro, login, logout, listar, eliminar \\ \hline
+Órdenes & \texttt{/api/order} & Crear, listar, actualizar, confirmar pago \\ \hline
+Pagos QR & \texttt{/api/payment/qr} & Crear QR, estado, cancelar, webhook, enviar por WA \\ \hline
+Mesas & \texttt{/api/table} & CRUD completo + estados en tiempo real \\ \hline
+Catálogo & \texttt{/api/category, /api/dish} & CRUD de categorías y platos \\ \hline
+Inventario & \texttt{/api/insumo} & CRUD, consumo manual, reposición de stock \\ \hline
+WhatsApp & \texttt{/api/whatsapp} & Estado, QR, test, logout, switch-provider, webhooks \\ \hline
+Métricas & \texttt{/api/metric} & Dashboard: ventas, ingresos, órdenes \\ \hline
+Groq & \texttt{/api/groq} & Endpoints del chatbot IA \\ \hline
+\caption{Grupos de endpoints de la API REST}
+\label{tab:api_grupos}
+\end{longtable}
+\endgroup
+
+Todas las rutas marcadas como protegidas requieren la cookie `token` con un JWT válido. La autorización por rol se aplica a nivel de middleware en el backend.
+
+### Documentación del Sistema
+
+**Manual de Usuario**
+
+El manual de usuario describe, en lenguaje no técnico, los flujos de operación del sistema para cada rol:
+
+- **Administrador:** gestión del catálogo (altas, bajas y modificaciones de platos, categorías e insumos), administración de empleados, visualización de métricas y reportes, configuración del servicio WhatsApp y consulta del historial de pagos QR.
+- **Mesero:** selección de mesa, toma de órdenes con el POS táctil, visualización del estado de las órdenes y notificación al cliente.
+- **Barista:** operación de la pantalla KDS, avance del estado de preparación de pedidos.
+- **Cajero:** procesamiento del cobro, generación del QR bancario, envío del QR al cliente por WhatsApp y generación de la factura/comprobante.
+
+**Manual Técnico**
+
+Describe la configuración, variables de entorno y dependencias del sistema para administradores técnicos. El contenido completo se encuentra en el archivo `descripcion.md` del repositorio y cubre: stack tecnológico, configuración de entornos (`.env` del backend, frontend y orquestador), instalación local, estructura de carpetas, roles de usuario y flujos principales del sistema.
+
+**Manual de Instalación y Despliegue**
+
+El aprovisionamiento de un servidor nuevo se realiza ejecutando `bash deploy/setup-server.sh`. El pipeline completo de despliegue en producción está documentado en `.github/workflows/deploy.yml` e incluye los _secrets_ de GitHub necesarios (`SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_USER`, `QR_API_URL`). La configuración de Nginx se encuentra en `deploy/nginx.conf`.
+
+### Documentación del Código
+
+**Estructura del Proyecto**
+
+El repositorio `proyecto-sis213` se organiza en cuatro módulos principales:
+
+\begingroup\small
+\begin{longtable}{|p{3.5cm}|p{9.5cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Directorio & \bfseries \color{white} Contenido \\ \hline
+\endhead
+\texttt{pos-backend/} & API REST Node.js/Express: controladores, rutas, modelos Mongoose, middlewares JWT, servicios WhatsApp/Groq/QR, WebSocket \\ \hline
+\texttt{pos-frontend/} & SPA React 18: páginas, componentes por dominio, Redux slices, hooks, configuración Axios \\ \hline
+\texttt{api\_generador\_qr/} & Orquestador Django: modelos Payment, servicios de generación QR por banco, ADB, decoder OpenCV/pyzbar \\ \hline
+\texttt{deploy/} & Configuración Nginx, script de aprovisionamiento del servidor y pipeline GitHub Actions \\ \hline
+\caption{Estructura de directorios del repositorio}
+\label{tab:estructura_dirs}
+\end{longtable}
+\endgroup
+
+**Librerías y Dependencias Principales**
+
+\begingroup\small
+\begin{longtable}{|p{2.5cm}|p{2.5cm}|p{8cm}|}
+\hline
+\rowcolor{headerblue} \bfseries \color{white} Capa & \bfseries \color{white} Librería & \bfseries \color{white} Propósito \\ \hline
+\endhead
+Backend & express & Framework HTTP, enrutamiento RESTful \\ \hline
+Backend & mongoose & ODM para MongoDB, schemas y validaciones \\ \hline
+Backend & jsonwebtoken & Generación y verificación de JWT \\ \hline
+Backend & bcrypt & Hash irreversible de contraseñas \\ \hline
+Backend & zod & Validación de schemas de request body \\ \hline
+Backend & @whiskeysockets/baileys & WhatsApp Web reverse-engineered \\ \hline
+Backend & ws & WebSocket para eventos en tiempo real \\ \hline
+Frontend & react 18 + vite & SPA con compilación optimizada \\ \hline
+Frontend & @reduxjs/toolkit & Gestión de estado global \\ \hline
+Frontend & @tanstack/react-query & Fetching y caché de datos del servidor \\ \hline
+Frontend & tailwindcss & Framework de estilos utilitario \\ \hline
+Orquestador & django 5 & Framework web Python para el orquestador QR \\ \hline
+Orquestador & pyzbar + opencv & Decodificación de QR desde pantalla bancaria \\ \hline
+IA & groq & SDK oficial de Groq API (Llama 3.1) \\ \hline
+\caption{Librerías y dependencias principales del sistema}
+\label{tab:dependencias}
+\end{longtable}
+\endgroup
+
+\newpage
+
+# CONCLUSIONES Y RECOMENDACIONES
+
+## Conclusiones
+
+### Desarrollo del Sistema TPS
+
+Se desarrolló exitosamente un **prototipo funcional de un Sistema de Información Organizacional Web basado en el enfoque de Procesamiento de Transacciones (TPS)** para la gestión operativa de una cafetería. El sistema reemplaza íntegramente los procesos manuales de la organización —registro de pedidos en papel, cálculos mentales y arqueos de caja sin respaldo digital— por un flujo digital, trazable e inmutable que cubre el ciclo completo de servicio: desde el inicio de sesión del operador hasta la emisión del comprobante de pago y la actualización del inventario.
+
+El prototipo fue desarrollado sobre el _stack_ MERN (MongoDB, Express.js, React.js, Node.js), con servicios adicionales para pagos QR bancarios (orquestador Django), notificaciones al cliente (WhatsApp mediante Baileys y Meta Cloud API) e inteligencia artificial conversacional (chatbot Groq con modelo Llama 3.1 8B). La arquitectura implementada garantiza las propiedades ACID en las transacciones críticas de venta mediante sesiones de MongoDB, y el sistema fue desplegado en producción sobre infraestructura **Oracle Cloud Infrastructure** con entrega continua automatizada por **GitHub Actions**.
+
+### Módulos Implementados
+
+El sistema entrega los siguientes módulos completamente funcionales e integrados:
+
+- **Módulo de Autenticación y Control de Acceso (RBAC):** cinco roles diferenciados (Administrador, Mesero, Barista, Cajero, Cliente) con JWT en cookies _httpOnly_ y middleware de autorización en todas las rutas protegidas del _backend_.
+- **Módulo POS — Toma de Órdenes:** interfaz táctil con selección de mesa, carrito dinámico con cálculo de totales en tiempo real, soporte para órdenes _dine-in_ y _takeaway_.
+- **Módulo de Gestión de Mesas:** panel visual de estados con actualización en tiempo real mediante WebSocket, con restricciones de integridad referencial.
+- **Módulo de Cocina KDS:** display de preparación con flujo de estados (Entradas → Preparando → Listo → Completada), visible en tiempo real por el barista y el mesero.
+- **Módulo de Inventario:** control de insumos con descuento automático al confirmar órdenes, alertas de stock crítico/bajo y gráfico de gasto semanal.
+- **Módulo de Pagos QR Bancario:** generación de QR real de bancos bolivianos (Mercantil Santa Cruz y Banco Ganadero), con failover automático entre proveedores, confirmación de pago vía webhook y actualización inmutable del estado de la orden.
+- **Módulo WhatsApp:** envío de QR de pago, confirmaciones y actualizaciones de estado al cliente, con soporte para dos providers intercambiables en tiempo de ejecución.
+- **Chatbot IA:** respuestas automáticas a consultas del menú por WhatsApp, con contexto del catálogo activo actualizado en tiempo real.
+- **Módulo de Facturación:** generación de comprobantes de pago con detalle de ítems, subtotal, impuesto y total, habilitados para impresión directa.
+- **Módulo de Reportes y Métricas:** dashboard con indicadores financieros clave (ingresos totales, órdenes por estado, platos más vendidos, empleados activos).
+
+### Cumplimiento de Objetivos
+
+El desarrollo del sistema cumplió todos los objetivos específicos planteados al inicio del proyecto:
+
+- Se implementó el módulo de gestión de pedidos en tiempo real con la interfaz táctil dinámica construida en React.js.
+- Se diseñó e integró el sistema de control de acceso RBAC con autenticación JWT, diferenciando los permisos de todos los roles del sistema.
+- Se construyeron las APIs RESTful con Node.js y Express.js conectadas a MongoDB, soportando todas las operaciones CRUD de los módulos del sistema.
+- Se implementó el módulo de facturación con cálculo automático del cobro y generación de comprobantes.
+- Se desplegó el sistema en infraestructura _cloud_ (Oracle Cloud Infrastructure) con automatización completa del proceso de despliegue mediante GitHub Actions.
+- Adicionalmente, se superó el alcance original al integrar el orquestador de pagos QR bancario boliviano, el sistema de notificaciones WhatsApp y el chatbot IA, ofreciendo al negocio capacidades de digitalización que van más allá del ciclo básico de un TPS.
+
+## Recomendaciones
+
+### Mejoras Futuras
+
+Para iteraciones posteriores del sistema se recomienda implementar las siguientes funcionalidades identificadas durante el desarrollo como mejoras de alto impacto:
+
+- **Exportación de reportes financieros a CSV/PDF** desde el módulo de métricas del administrador, permitiendo el análisis de datos en herramientas externas como Excel o Google Sheets.
+- **Notificaciones de stock bajo en tiempo real** mediante _toast_ emergente al cajero en el momento en que una orden confirmada deja un insumo por debajo del umbral mínimo.
+- **Portal del cliente** con historial de sus órdenes, puntos de fidelización y estado de pedidos activos, accesible desde un enlace enviado por WhatsApp.
+- **Programa de fidelización** con acumulación de puntos por compra y aplicación de descuentos en el POS al identificar al cliente por su número de teléfono.
+- **Integración con plataformas de delivery** (PedidosYa, Rappi) mediante webhooks para centralizar todas las órdenes —presenciales y remotas— en un único sistema.
+- **Aplicación móvil nativa** (React Native / Expo) para el rol de mesero, optimizada para pantallas pequeñas y uso con una sola mano durante el servicio en sala.
+
+### Escalabilidad
+
+La arquitectura del sistema fue diseñada con la escalabilidad como atributo de calidad fundamental:
+
+- **Escalado horizontal del backend:** el servidor Node.js puede replicarse detrás de un balanceador de carga (Nginx upstream, AWS ELB) sin modificaciones de código, ya que el estado de sesión reside en los JWT (sin estado en el servidor) y los datos compartidos en MongoDB.
+- **Base de datos:** MongoDB Atlas ofrece _sharding_ automático para distribuir las colecciones de órdenes e insumos cuando el volumen de documentos supere los límites de un solo nodo.
+- **Contenedores Docker:** se recomienda contenerizar todos los componentes del sistema (backend, frontend, orquestador Django) para simplificar el despliegue en múltiples entornos y facilitar el escalado mediante orquestadores como Kubernetes o Docker Swarm.
+- **Caché de lectura:** para las consultas frecuentes de métricas y catálogo de productos, se recomienda incorporar Redis como capa de caché, reduciendo la carga sobre MongoDB en horas pico.
+- **Orquestador QR:** la arquitectura de proveedores (`msc.py`, `zas.py`, `registry.py`) está diseñada para agregar nuevos bancos bolivianos sin modificar la lógica central, soportando la expansión futura del sistema de pagos.
+
+### Seguridad
+
+Se recomienda fortalecer la postura de seguridad del sistema en los siguientes aspectos para un despliegue en producción de largo plazo:
+
+- **Renovación de JWT:** implementar tokens de actualización (_refresh tokens_) de larga duración almacenados en base de datos, complementando los tokens de acceso de corta duración (15 min), para reducir la ventana de exposición ante un token comprometido.
+- **HTTPS forzado:** habilitar HSTS (_HTTP Strict Transport Security_) en la configuración de Nginx para prevenir ataques de _downgrade_ a HTTP.
+- **Auditoría de accesos:** registrar en una colección inmutable de MongoDB todos los eventos de autenticación (login, logout, intentos fallidos) y las operaciones destructivas (eliminación de empleados, anulación de órdenes), incluyendo IP de origen y timestamp.
+- **Rotación de secretos:** establecer un proceso periódico (trimestral) de rotación del `JWT_SECRET`, el `QR_WEBHOOK_SECRET` y las claves SSH del pipeline CI/CD.
+- **Validación de webhooks:** verificar la firma HMAC en todos los webhooks entrantes (orquestador QR y Meta Cloud API) para prevenir inyección de pagos falsos desde fuentes externas.
+- **Rate limiting granular:** extender el rate limiting existente (ya implementado para WhatsApp) a los endpoints de autenticación para mitigar ataques de fuerza bruta sobre el login.
+
+### Integración con Otros Sistemas
+
+El sistema fue diseñado con una arquitectura orientada a servicios que facilita su integración con sistemas externos:
+
+- **Sistemas de contabilidad:** la API de órdenes puede conectarse con software de contabilidad boliviano (SIIGO, Monica) exportando las transacciones en formatos estándar (XML, JSON-LD) para registro contable automático.
+- **Pasarelas de pago internacionales:** la abstracción del orquestador de pagos permite incorporar _providers_ adicionales como Stripe, MercadoPago o PayPal siguiendo el patrón de `registry.py` del módulo Django, sin modificar la lógica del backend Node.
+- **Sistemas de inventario de proveedores:** se puede integrar con sistemas ERP de proveedores locales mediante EDI o APIs REST para automatizar las órdenes de reabastecimiento cuando un insumo alcanza el umbral crítico.
+- **Plataformas de analítica:** la colección de órdenes de MongoDB puede conectarse con herramientas de BI como Power BI, Google Data Studio o Metabase para generar reportes avanzados sobre tendencias de venta, rentabilidad por producto y patrones de demanda horaria.
+- **Sistemas de gestión hotelera (PMS):** para establecimientos con hospedaje, el POS puede integrarse con sistemas como Opera o Hestia para cargar consumos de cafetería directamente a la habitación del huésped.
 
 \newpage
 
